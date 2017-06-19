@@ -1,0 +1,1 @@
+This is a minimal social network with bot friendly API for didactical purpose. 
