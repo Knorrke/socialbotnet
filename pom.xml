@@ -125,7 +125,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>Main</mainClass>
+							<mainClass>app.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

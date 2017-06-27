@@ -11,7 +11,7 @@ public class FreeMarkerEngineConfig {
 	public static FreeMarkerEngine getEngine() {
 		Configuration config = new Configuration(new Version(2,3,0));
 		try {
-			config.setDirectoryForTemplateLoading(new File("src/main/resources/templates"));
+			config.setDirectoryForTemplateLoading(new File("../src/main/resources/templates"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
