@@ -65,7 +65,7 @@ public class UserController {
 					model.put("username", user.getUsername());
 					model.put("success", "Registrierung erfolgreich");
 				} else {
-					model.put("error", "Passwörter stimmen nicht überein");
+					model.put("error", "Passw&ouml;rter stimmen nicht &uuml;berein");
 				}
 			} catch (Exception e) {
 				Spark.halt(501);
