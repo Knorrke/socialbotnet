@@ -6,11 +6,15 @@ import org.springframework.stereotype.Service;
 import modules.user.dao.UserDaoInterface;
 import modules.user.model.User;
 import modules.util.PasswordUtil;
+import spark.Request;
 
 @Service
 public class UserService {
+	private static final String USER_SESSION_ID = "user";
+
 	@Autowired
 	private UserDaoInterface userDaoInterface;
+
 
 	public User getUserbyUsername(String username) {
 		return userDaoInterface.getUserbyUsername(username);
@@ -32,5 +36,18 @@ public class UserService {
 
 	public void setUserDao(UserDaoInterface userDaoInterface) {
 		this.userDaoInterface = userDaoInterface;
+	}
+	
+
+	public void addAuthenticatedUser(Request req, User user) {
+		req.session().attribute(USER_SESSION_ID, user);
+	}
+	
+	public void removeAuthenticatedUser(Request request) {
+		request.session().removeAttribute(USER_SESSION_ID);
+	}
+
+	public User getAuthenticatedUser(Request request) {
+		return request.session().attribute(USER_SESSION_ID);
 	}
 }

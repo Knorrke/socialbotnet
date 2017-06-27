@@ -16,7 +16,6 @@ import spark.Spark;
 
 public class UserController {
 
-	private static final String USER_SESSION_ID = "user";
 	private UserService service;
 
 	public UserController(UserService service) {
@@ -37,7 +36,7 @@ public class UserController {
 			}
 			User authenticated = service.checkUser(user);
 			if (authenticated != null) {
-				addAuthenticatedUser(req, authenticated);
+				service.addAuthenticatedUser(req, authenticated);
 				res.redirect("/");
 				Spark.halt();
 				model.put("username", user.getUsername());
@@ -60,7 +59,7 @@ public class UserController {
 				if (params.get("password").equals(params.get("password2"))) {					
 					BeanUtils.populate(user, params);
 					service.registerUser(user);
-					addAuthenticatedUser(req, user);
+					service.addAuthenticatedUser(req, user);
 					res.redirect("/");
 					Spark.halt();
 					model.put("username", user.getUsername());
@@ -81,9 +80,5 @@ public class UserController {
 	public String updateProfile(Request req, Response res) {
 		Map<String, Object> model = new HashMap<>();
 		return Renderer.render(model, "user/update.ftl");
-	}
-
-	private void addAuthenticatedUser(Request req, User user) {
-		req.session().attribute(USER_SESSION_ID, user);
 	}
 }

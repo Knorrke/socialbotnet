@@ -17,9 +17,9 @@
 	                    <li>
 	                        <a href="/">Startseite</a>
 	                    </li>
-	                    <#if user??>
+	                    <#if authenticatedUser??>
 		                    <li>
-		                        <a href="/posts">User</a>
+		                        <a href="/timeline/${authenticatedUser.username}">Eigene Timeline</a>
 		                    </li>
 		                    <li>
 		                        <a href="/logout">Abmelden</a>
