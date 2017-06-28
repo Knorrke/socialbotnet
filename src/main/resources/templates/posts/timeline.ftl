@@ -4,7 +4,7 @@
     <#if user??>
     	<h2>${user.username}s Timeline</h2>
     <#else>    
-    	<h2>Öffentliche Timeline</h2>
+    	<h2>&Ouml;ffentliche Timeline</h2>
     </#if>
     <#if message??>
     	<div class="success">
