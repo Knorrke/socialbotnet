@@ -14,12 +14,12 @@ public class PostService {
 	@Autowired
 	private PostDaoInterface postDaoInterface;
 
-	public List<Post> getUserTimelinePosts(User user) {
-		return postDaoInterface.getUserTimelinePosts(user);
+	public List<Post> getUserWallPosts(User user) {
+		return postDaoInterface.getUserWallPosts(user);
 	}
 
-	public List<Post> getPublicTimelinePosts() {
-		return postDaoInterface.getPublicTimelinePosts();
+	public List<Post> getPublicWallPosts() {
+		return postDaoInterface.getPublicWallPosts();
 	}
 
 	public void addPost(Post post) {

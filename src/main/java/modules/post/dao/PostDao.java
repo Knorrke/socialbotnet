@@ -25,39 +25,56 @@ public class PostDao implements PostDaoInterface {
 	}
 
 	@Override
-	public List<Post> getUserTimelinePosts(User user) {
+	public List<Post> getUserWallPosts(User user) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user.getId());
-		String sql = "SELECT * FROM post, user WHERE post.author_id = :user AND post.author_id = user.user_id order by post.pub_date desc LIMIT 50";
+		String sql = "SELECT post.*, u.*, w.username as wall_name "
+				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
+				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
+				+ "WHERE post.wall_id = :user "
+				+ "ORDER BY post.pub_date DESC LIMIT 50";
 		return template.query(sql, params, postsMapper);
 	}
 
 	@Override
-	public List<Post> getPublicTimelinePosts() {
+	public List<Post> getPublicWallPosts() {
 		Map<String, Object> params = new HashMap<String, Object>();
 
-		String sql = "SELECT * FROM post JOIN user ON post.author_id = user.user_id order by post.pub_date desc LIMIT 50";
+		String sql = "SELECT post.*, u.*, w.user_id as wall_id, w.username as wall_name "
+				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
+				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
+				+ "order by post.pub_date desc LIMIT 50";
 		return template.query(sql, params, postsMapper);
 	}
 
 	@Override
-	public void insertPost(Post m) {
-		// TODO Auto-generated method stub
-		System.err.println("POSTDAO called but not implemented");
+	public void insertPost(Post post) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("author_id", post.getUserId());
+		params.put("wall_id", post.getWall().getId());
+		params.put("text", post.getMessage());
+		params.put("pub_date", post.getPublishingDate());
+		String sql = "insert into post (author_id, wall_id, text, pub_date) values (:author_id, :wall_id, :text, :pub_date)";
+		
+		template.update(sql, params);
 	}
 
 	private RowMapper<Post> postsMapper = (rs, rowNum) -> {
 		Post post = new Post();
-		User user = new User();
-		user.setId(rs.getInt("author_id"));
-		user.setUsername(rs.getString("username"));
-		
 		post.setId(rs.getInt("post_id"));
-		post.setUser(user);
 		post.setMessage(rs.getString("text"));
-		
 		post.setPublishingDate(rs.getTimestamp("pub_date"));
 
+		User user = new User();		
+		user.setId(rs.getInt("author_id"));
+		user.setUsername(rs.getString("username"));
+		post.setUser(user);
+
+		User wall = new User();
+		wall.setId(rs.getInt("wall_id"));
+		wall.setUsername(rs.getString("wall_name"));
+		post.setWall(wall);
+		
 		return post;
 	};
 }

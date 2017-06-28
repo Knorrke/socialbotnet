@@ -11,6 +11,7 @@ public class Post {
 	private int id;
 	private String message;
 	private User user;
+	private User wall;
 	private String link;
 	private Image image;
 	private Timestamp publishingDate;
@@ -129,5 +130,19 @@ public class Post {
 	 */
 	public void setLikedBy(List<User> likedBy) {
 		this.likedBy = likedBy;
+	}
+
+	/**
+	 * @return the wall
+	 */
+	public User getWall() {
+		return wall;
+	}
+
+	/**
+	 * @param wall the wall to set
+	 */
+	public void setWall(User wall) {
+		this.wall = wall;
 	}
 }

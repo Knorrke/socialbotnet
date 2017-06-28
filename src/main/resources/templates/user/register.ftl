@@ -12,7 +12,7 @@
     		<strong>Error:</strong> ${error}
     	</div>
     </#if>
-    <form action="/register" method="post">
+    <form action="/registrieren" method="post">
 	   <dl>
 	     <dt>Nutzername:
 	     <dd><input type="text" name="username" size="30" maxlength="50" value="${username!}">

@@ -18,8 +18,8 @@ public class Router {
 	public void setupRoutes() {
 		
 		//User routes
-		Spark.get("/register", userController::register);
-		Spark.post("/register", userController::register);
+		Spark.get("/registrieren", userController::register);
+		Spark.post("/registrieren", userController::register);
 		
 		Spark.get("/login", userController::login);
 		Spark.post("/login", userController::login);
@@ -28,7 +28,10 @@ public class Router {
 		Spark.post("/user/update", userController::updateProfile);
 		
 		Spark.get("/", postController::getPosts);
-		Spark.get("/timeline/:username", postController::getUserPosts);
+		Spark.get("/pinnwand/:username", postController::getUserPosts);
+		
+		Spark.post("/post", postController::createPost);
+		Spark.post("/post/:username", postController::createPost);
 	}
 
 }

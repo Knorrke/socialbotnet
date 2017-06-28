@@ -19,14 +19,14 @@
 	                    </li>
 	                    <#if authenticatedUser??>
 		                    <li>
-		                        <a href="/timeline/${authenticatedUser.username}">Eigene Timeline</a>
+		                        <a href="/pinnwand/${authenticatedUser.username}">Eigene Pinnwand</a>
 		                    </li>
 		                    <li>
 		                        <a href="/logout">Abmelden</a>
 		                    </li>
 		                <#else>
 		                    <li>
-		                        <a href="/register">Registrieren</a>
+		                        <a href="/registrieren">Registrieren</a>
 		                    </li>
 		                    <li>
 		                        <a href="/login">Anmelden</a>

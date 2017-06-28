@@ -6,9 +6,9 @@ import modules.post.model.Post;
 import modules.user.model.User;
 
 public interface PostDaoInterface {
-	List<Post> getUserTimelinePosts(User user);
+	List<Post> getUserWallPosts(User user);
 	
-	List<Post> getPublicTimelinePosts();
+	List<Post> getPublicWallPosts();
 	
 	void insertPost(Post m);
 }
