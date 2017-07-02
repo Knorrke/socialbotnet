@@ -78,7 +78,6 @@ public class UserController {
 	}
 
 	public String updateProfile(Request req, Response res) {
-		Map<String, Object> model = new HashMap<>();
-		return Renderer.render(model, "user/update.ftl");
+		return "Not implemented yet";
 	}
 }

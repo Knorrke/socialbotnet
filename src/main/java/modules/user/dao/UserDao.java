@@ -57,4 +57,11 @@ public class UserDao implements UserDaoInterface {
 		return user;
 	};
 
+	@Override
+	public List<User> getAllUsers() {
+		String sql = "SELECT user_id, username FROM user ORDER BY user_id DESC LIMIT 100";
+		List<User> users = template.query(sql, userMapper);
+		return users;
+	}
+
 }

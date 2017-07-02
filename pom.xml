@@ -10,14 +10,15 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<spark.version>2.5.5</spark.version>
+		<spark.version>2.6.0</spark.version>
 		<spark.freemarker.version>2.5.5</spark.freemarker.version>
 		<freemarker.version>2.3.23</freemarker.version>
-		<spring.version>4.2.0.RELEASE</spring.version>
-		<hsqldb.version>2.3.3</hsqldb.version>
+		<spring.version>4.3.9.RELEASE</spring.version>
+		<hsqldb.version>2.4.0</hsqldb.version>
 		<dbcp.version>2.1.1</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.2</commons.beanutils.version>
+		<sl4j.version>1.7.21</sl4j.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->
@@ -78,8 +79,8 @@
 
 		<!-- Password hashes -->
 		<dependency>
-			<groupId>de.svenkubiak</groupId>
-			<artifactId>jBCrypt</artifactId>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
 			<version>${jbcrypt.version}</version>
 		</dependency>
 
@@ -90,12 +91,19 @@
 			<version>${commons.beanutils.version}</version>
 		</dependency>
 
+		<!-- For Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.21</version>
+			<version>${sl4j.version}</version>
 		</dependency>
 
+		<!-- Gson for serializing objects to JSON -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
