@@ -28,7 +28,7 @@ public class PostDao implements PostDaoInterface {
 	public List<Post> getUserWallPosts(User user) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user.getId());
-		String sql = "SELECT post.*, u.*, w.username as wall_name "
+		String sql = "SELECT post.*, u.username, u.user_id, w.username as wall_name "
 				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
 				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
 				+ "WHERE post.wall_id = :user "
@@ -40,7 +40,7 @@ public class PostDao implements PostDaoInterface {
 	public List<Post> getPublicWallPosts() {
 		Map<String, Object> params = new HashMap<String, Object>();
 
-		String sql = "SELECT post.*, u.*, w.user_id as wall_id, w.username as wall_name "
+		String sql = "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name "
 				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
 				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
 				+ "order by post.pub_date desc LIMIT 50";

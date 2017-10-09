@@ -1,5 +1,7 @@
 package modules.user.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,8 @@ public class UserService {
 
 
 	public User getUserbyUsername(String username) {
-		return userDaoInterface.getUserbyUsername(username);
+		User user = userDaoInterface.getUserbyUsernameWithoutPassword(username);
+		return user;
 	}
 
 	public User checkUser(User user) {
@@ -34,11 +37,15 @@ public class UserService {
 		userDaoInterface.registerUser(user);
 	}
 
+
+	public List<User> getAllUsers() {
+		return userDaoInterface.getAllUsers();
+	}
+	
 	public void setUserDao(UserDaoInterface userDaoInterface) {
 		this.userDaoInterface = userDaoInterface;
 	}
 	
-
 	public void addAuthenticatedUser(Request req, User user) {
 		req.session().attribute(USER_SESSION_ID, user);
 	}
