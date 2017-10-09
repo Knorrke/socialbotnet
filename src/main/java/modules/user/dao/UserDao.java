@@ -64,4 +64,19 @@ public class UserDao implements UserDaoInterface {
 		return users;
 	}
 
+	@Override
+	public User getUserbyUsernameWithoutPassword(String username) {
+		User foundUser = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("username", username);
+		
+		String sql = "SELECT user_id, username, null as password FROM user WHERE user.username=:username";
+		List<User> users = template.query(sql, params, userMapper);
+		if(users != null && !users.isEmpty()) {
+			foundUser = users.get(0);
+		}
+		
+		return foundUser;
+	}
+
 }

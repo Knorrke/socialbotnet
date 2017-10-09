@@ -19,7 +19,8 @@ public class UserService {
 
 
 	public User getUserbyUsername(String username) {
-		return userDaoInterface.getUserbyUsername(username);
+		User user = userDaoInterface.getUserbyUsernameWithoutPassword(username);
+		return user;
 	}
 
 	public User checkUser(User user) {

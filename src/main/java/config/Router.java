@@ -62,7 +62,7 @@ public class Router {
 					String password = params.getString("password");
 
 					if (password == null || username == null) {
-						halt(401, "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (user) und dein Passwort (password) mit.");
+						halt(401, "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.");
 					}
 
 					User authenticated = userApiController.login(req, res);

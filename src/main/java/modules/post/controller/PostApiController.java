@@ -35,16 +35,16 @@ public class PostApiController {
 	}
 
 	public Object createPost(Request req, Response res) {
-		UserApiController contrl = new UserApiController(userService);
-		User authenticatedUser = contrl.login(req, res);
-		
 		Post post = new Post();
-		post.setUser(authenticatedUser);
 		post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
 		try { // populate post attributes by params
 			MultiMap<String> params = new MultiMap<String>();
 			UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 			BeanUtils.populate(post, params);
+			
+			User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
+			post.setUser(authenticatedUser);
+
 			String username = req.params("username");
 			if (username != null) {
 				post.setWall(userService.getUserbyUsername(username));
