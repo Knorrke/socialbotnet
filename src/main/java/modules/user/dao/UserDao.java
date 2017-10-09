@@ -59,7 +59,7 @@ public class UserDao implements UserDaoInterface {
 
 	@Override
 	public List<User> getAllUsers() {
-		String sql = "SELECT user_id, username FROM user ORDER BY user_id DESC LIMIT 100";
+		String sql = "SELECT user_id, username, null as password FROM user ORDER BY user_id DESC LIMIT 100";
 		List<User> users = template.query(sql, userMapper);
 		return users;
 	}
