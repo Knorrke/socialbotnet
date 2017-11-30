@@ -11,4 +11,10 @@ public interface PostDaoInterface {
 	List<Post> getPublicWallPosts();
 	
 	void insertPost(Post m);
+
+	void likePost(Post post, User user);
+	void unlikePost(Post post, User user);
+
+	Post getPostById(int id);
+
 }

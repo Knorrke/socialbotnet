@@ -48,6 +48,13 @@ public class UserController {
 
 		return Renderer.render(model, "user/login.ftl");
 	}
+	
+	public String logout(Request req, Response res) {
+		service.removeAuthenticatedUser(req);
+		res.redirect("/");
+		Spark.halt();
+		return null;
+	}
 
 	public String register(Request req, Response res) {
 		Map<String, Object> model = new HashMap<>();

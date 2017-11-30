@@ -20,7 +20,7 @@
     	<div class="panel panel-info">
 	        <div class="panel-heading">
 	        	<#if user?? && user.username != authenticatedUser.username>
-			    	<h3 class="panel-title">Was möchtest du ${user.username} erzählen, ${authenticatedUser.username}?</h3>
+			    	<h3 class="panel-title">Was m&ouml;chtest du ${user.username} erz&auml;hlen, ${authenticatedUser.username}?</h3>
             		<#assign action="/post/${user.username}">
 	        	<#else>    
 			    	<h3 class="panel-title">Was denkst du gerade, ${authenticatedUser.username}?</h3>
@@ -57,6 +57,30 @@
                         </h4>
                     	${post.message} <br/>
 						<small>&mdash; ${post.publishingDate}</small>
+						<br/>
+						<br/>
+						<#assign likedByAuthenticatedUser=false>
+						<#assign likes>
+							<#assign i=0>
+							<#assign likesShown=3>
+							<#list post.likedBy as likingUser>
+								<#if i lt likesShown>
+									<#if i==0>Gef&auml;llt: <#else>,</#if>
+									 <a href="/pinnwand/${likingUser.username}">${likingUser.username}</a>
+								</#if>
+								<#assign i = i+1>
+								<#assign likedByAuthenticatedUser = likedByAuthenticatedUser || authenticatedUser?? && likingUser.id == authenticatedUser.id>
+							</#list>
+							<#if i gt likesShown> und ${i - likesShown} weiteren.</#if>
+						</#assign>
+						<#if authenticatedUser??>
+							<#if likedByAuthenticatedUser>
+								<a href="/unlike/${post.id}" style="margin-right:10px">Gef&auml;llt mir nicht mehr</a>
+							<#else>
+								<a href="/like/${post.id}" style="margin-right:10px">Gef&auml;llt mir</a>
+							</#if>
+						</#if>
+						${likes}
                     </div>
                 </div>
             <#else>

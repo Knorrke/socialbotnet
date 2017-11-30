@@ -9,6 +9,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -19,7 +22,8 @@ import spark.Response;
 import spark.Spark;
 
 public class PostController {
-
+	final static Logger logger = LoggerFactory.getLogger(PostController.class);
+	
 	private PostService postService;
 	private UserService userService;
 
@@ -56,6 +60,30 @@ public class PostController {
 		return Renderer.render(model, "posts/wall.ftl");
 	}
 
+	public String likePost(Request req, Response res) {
+		User authenticatedUser = userService.getAuthenticatedUser(req);
+		if (authenticatedUser == null) {
+			Spark.halt(401, "Du bist nicht angemeldet!");
+			return null;
+		}
+		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		postService.likePost(post, authenticatedUser);
+		res.redirect(req.headers("referer"));
+		return null;
+	}
+	
+	public String unlikePost(Request req, Response res) {
+		User authenticatedUser = userService.getAuthenticatedUser(req);
+		if (authenticatedUser == null) {
+			Spark.halt(401, "Du bist nicht angemeldet!");
+			return null;
+		}
+		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		postService.unlikePost(post, authenticatedUser);
+		res.redirect(req.headers("referer"));
+		return null;
+	}
+	
 	public String createPost(Request req, Response res) {
 		User authenticatedUser = userService.getAuthenticatedUser(req);
 		if (authenticatedUser == null) {

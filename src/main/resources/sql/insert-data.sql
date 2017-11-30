@@ -9,10 +9,10 @@ INSERT INTO user(user_id, username, password) VALUES (8, 'user008','$2a$10$o0Ayk
 INSERT INTO user(user_id, username, password) VALUES (9, 'user009','$2a$10$rbDB/WLckQTAO4St9TpMVOzSlJDrx98r2jgt9crwtsy8hCv7wIZkm');
 INSERT INTO user(user_id, username, password) VALUES (10, 'user010','$2a$10$rXBPyVPkaD5u7MbDckemPutPT/m.8SylMrI3su26aaV0pxP34kDwa');
 
-INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 1, 'This is a post written by user user001 on his own wall', TIMESTAMP '2014-01-15 02:00:22');
-INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 5, 'This is a post written by user user001 to user005', TIMESTAMP '2014-10-25 10:09:55');
-INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 4, 'This is a post written by user user001 to user004', TIMESTAMP '2014-07-14 09:46:28');
-INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 3, 'This is a post written by user user001 to user003', TIMESTAMP '2014-01-15 11:35:07');
+INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (1, 1, 1, 'This is a post written by user user001 on his own wall', TIMESTAMP '2014-01-15 02:00:22');
+INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (2, 1, 5, 'This is a post written by user user001 to user005', TIMESTAMP '2014-10-25 10:09:55');
+INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (3, 1, 4, 'This is a post written by user user001 to user004', TIMESTAMP '2014-07-14 09:46:28');
+INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (4, 1, 3, 'This is a post written by user user001 to user003', TIMESTAMP '2014-01-15 11:35:07');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 2, 'This is a post written by user user001 to user002', TIMESTAMP '2014-02-04 04:19:45');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 1, 'This is a post written by user user001 on his own wall', TIMESTAMP '2014-06-01 10:06:41');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (1, 10, 'This is a post written by user user001 to user010', TIMESTAMP '2014-03-14 00:56:15');
@@ -204,3 +204,16 @@ INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,6,  'This is a p
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,5,  'This is a post written by user user010 to user005', TIMESTAMP '2014-10-16 09:40:11');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,4,  'This is a post written by user user010 to user004', TIMESTAMP '2014-07-10 08:38:31');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,2,  'This is a post written by user user010 to user002', TIMESTAMP '2014-01-04 11:56:22');
+
+INSERT INTO likes(post_id, user_id) VALUES (1, 1);
+INSERT INTO likes(post_id, user_id) VALUES (1, 2);
+INSERT INTO likes(post_id, user_id) VALUES (1, 9);
+INSERT INTO likes(post_id, user_id) VALUES (2, 1);
+INSERT INTO likes(post_id, user_id) VALUES (2, 10);
+INSERT INTO likes(post_id, user_id) VALUES (3, 1);
+INSERT INTO likes(post_id, user_id) VALUES (3, 5);
+INSERT INTO likes(post_id, user_id) VALUES (3, 6);
+INSERT INTO likes(post_id, user_id) VALUES (3, 7);
+INSERT INTO likes(post_id, user_id) VALUES (4, 5);
+INSERT INTO likes(post_id, user_id) VALUES (4, 6);
+INSERT INTO likes(post_id, user_id) VALUES (4, 7);

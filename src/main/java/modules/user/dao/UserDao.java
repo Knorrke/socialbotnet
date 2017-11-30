@@ -43,8 +43,14 @@ public class UserDao implements UserDaoInterface {
 		params.put("username", user.getUsername());
 		params.put("password", user.getPassword());
 		String sql = "insert into user (username, password) values (:username, :password)";
-		
 		template.update(sql, params);
+
+		//fetch autoincremented id 
+		String query = "SELECT user_id FROM user WHERE username=:username and user.password=:password";
+		template.query(query, params, (row, rowNum) -> {
+			user.setId(row.getInt("user_id"));
+			return user;
+		});
 	}
 
 	private RowMapper<User> userMapper = (row, rowNum) -> {

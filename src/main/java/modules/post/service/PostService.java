@@ -29,4 +29,16 @@ public class PostService {
 	public void setPostDao(PostDaoInterface postDaoInterface) {
 		this.postDaoInterface = postDaoInterface;
 	}
+	
+	public void likePost(Post post, User user) {
+		postDaoInterface.likePost(post, user);
+	}
+
+	public void unlikePost(Post post, User user) {
+		postDaoInterface.unlikePost(post, user);
+	}
+
+	public Post getPostById(int id) {
+		return postDaoInterface.getPostById(id);
+	}
 }

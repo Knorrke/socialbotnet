@@ -2,8 +2,6 @@ package config;
 
 import static spark.Spark.*;
 
-import java.util.Map;
-
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
@@ -40,6 +38,9 @@ public class Router {
 
 		get("/login", userController::login);
 		post("/login", userController::login);
+		
+		get("/logout", userController::logout);
+		post("/logout", userController::logout);
 
 		get("/user/update", userController::updateProfile);
 		post("/user/update", userController::updateProfile);
@@ -49,6 +50,9 @@ public class Router {
 
 		post("/post", postController::createPost);
 		post("/post/:username", postController::createPost);
+
+		get("like/:post", postController::likePost);
+		get("unlike/:post", postController::unlikePost);
 
 		path("/api", () -> {
 			before("/*", (req, res) -> logger.info("Received api call to " + req.pathInfo()));
