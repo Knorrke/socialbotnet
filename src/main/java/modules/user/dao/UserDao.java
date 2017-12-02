@@ -85,4 +85,21 @@ public class UserDao implements UserDaoInterface {
 		return foundUser;
 	}
 
+	@Override
+	public void updateUser(User oldUser, User newUser) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user_id", oldUser.getId());
+		params.put("username", newUser.getUsername());
+		params.put("hobbies", newUser.getHobbies());
+		params.put("about", newUser.getAbout());
+		String sql = "UPDATE user " +
+				"SET username=:username, hobbies=:hobbies, about=:about " +
+				"WHERE user_id = :user_id";
+		template.update(sql, params);
+		newUser.setId(oldUser.getId());
+		oldUser.setUsername(newUser.getUsername());
+		oldUser.setHobbies(newUser.getHobbies());
+		oldUser.setAbout(newUser.getAbout());		
+	}
+
 }

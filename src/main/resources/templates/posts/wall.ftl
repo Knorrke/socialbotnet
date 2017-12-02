@@ -1,11 +1,11 @@
 <#import "../layout/layout.ftl" as layout />
-
-<@layout.masterTemplate title="Pinnwand">
     <#if user??>
-    	<h2>${user.username}s Pinnwand</h2>
-    <#else>    
-    	<h2>&Ouml;ffentliche Pinnwand</h2>
+    	<#assign pageTitle>${user.username}s Pinnwand</#assign>
+    <#else>
+    	<#assign pageTitle>&Ouml;ffentliche Pinnwand</#assign>
     </#if>
+
+<@layout.masterTemplate title="Pinnwand" colored=false pageTitle=pageTitle>
     <#if message??>
     	<div class="success">
     		${message}
@@ -17,17 +17,17 @@
     	</div>
     </#if>
 	<#if authenticatedUser??>
-    	<div class="panel panel-info">
-	        <div class="panel-heading">
+    	<div class="media colored media-info">
+	        <div class="media-heading">
 	        	<#if user?? && user.username != authenticatedUser.username>
-			    	<h3 class="panel-title">Was m&ouml;chtest du ${user.username} erz&auml;hlen, ${authenticatedUser.username}?</h3>
+			    	<h3 class="media-title">Was m&ouml;chtest du ${user.username} erz&auml;hlen, ${authenticatedUser.username}?</h3>
             		<#assign action="/post/${user.username}">
 	        	<#else>    
-			    	<h3 class="panel-title">Was denkst du gerade, ${authenticatedUser.username}?</h3>
+			    	<h3 class="media-title">Was denkst du gerade, ${authenticatedUser.username}?</h3>
             		<#assign action="/post">
 			    </#if>
 	        </div>
-            <div class="panel-body">
+            <div class="media-body">
                 <form class="form-horizontal" action="${action}" method="post">
                     <div class="input-group">
                         <input type="text" name="message" class="form-control" required/>
@@ -42,8 +42,7 @@
 	<div id="media-list" class="row">
         <#if posts??>
             <#list posts as post>
-                <hr/>
-                <div class="media">
+                <div class="media colored">
                     <div class="media-body">
                         <h4 class="media-heading">
                             <a href="/pinnwand/${post.user.username}">
@@ -61,17 +60,15 @@
 						<br/>
 						<#assign likedByAuthenticatedUser=false>
 						<#assign likes>
-							<#assign i=0>
 							<#assign likesShown=3>
 							<#list post.likedBy as likingUser>
-								<#if i lt likesShown>
-									<#if i==0>Gef&auml;llt: <#else>,</#if>
+								<#if likingUser?index lt likesShown>
+									<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
 									 <a href="/pinnwand/${likingUser.username}">${likingUser.username}</a>
 								</#if>
-								<#assign i = i+1>
 								<#assign likedByAuthenticatedUser = likedByAuthenticatedUser || authenticatedUser?? && likingUser.id == authenticatedUser.id>
 							</#list>
-							<#if i gt likesShown> und ${i - likesShown} weiteren.</#if>
+							<#if post.likedBy?size gt likesShown> und ${post.likedBy?size - likesShown} weiteren.</#if>
 						</#assign>
 						<#if authenticatedUser??>
 							<#if likedByAuthenticatedUser>

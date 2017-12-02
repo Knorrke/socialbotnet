@@ -1,7 +1,6 @@
 <#import "../layout/layout.ftl" as layout />
 
-<@layout.masterTemplate title="Registrieren">
-    <h2>Registrieren</h2>
+<@layout.masterTemplate pageTitle="Registrieren">
     <#if message??>
     	<div class="success">
     		${message}
@@ -21,6 +20,6 @@
 	     <dt>Passwort wiederholen:
 	     <dd><input type="password" name="password2" size="30">
 	   </dl>
-	   <div class="actions"><input type="submit" value="Sign In"></div>
+	   <div class="actions"><input type="submit" value="Registrieren"></div>
 	 </form>
 </@layout.masterTemplate>

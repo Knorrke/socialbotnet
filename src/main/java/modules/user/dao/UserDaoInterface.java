@@ -10,4 +10,5 @@ public interface UserDaoInterface {
 	User getUserbyUsernameWithoutPassword(String username);
 	void registerUser(User user);
 	List<User> getAllUsers();
+	void updateUser(User oldUser, User newUser);
 }

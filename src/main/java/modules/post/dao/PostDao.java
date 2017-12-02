@@ -39,14 +39,16 @@ public class PostDao implements PostDaoInterface {
 	}
 
 	private void populateLikedBy(List<Post> posts) {
-		for (Post post : posts) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			String sql = "SELECT user.username, user.user_id "
-					+ "FROM likes NATURAL JOIN user "
-					+ "WHERE likes.post_id = :post_id";
-			params.put("post_id", post.getId());
-			post.setLikedBy(template.query(sql, params, likesMapper));
-		}
+		posts.stream().forEach(this::populateLikedBy);
+	}
+	
+	private void populateLikedBy(Post post) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		String sql = "SELECT user.username, user.user_id "
+				+ "FROM likes NATURAL JOIN user "
+				+ "WHERE likes.post_id = :post_id";
+		params.put("post_id", post.getId());
+		post.setLikedBy(template.query(sql, params, likesMapper));
 	}
 
 	@Override
@@ -80,8 +82,8 @@ public class PostDao implements PostDaoInterface {
 		params.put("post_id", post.getId());
 		params.put("user_id", user.getId());
 		String sql = "INSERT INTO likes (post_id, user_id) VALUES (:post_id, :user_id)";
-		
 		template.update(sql, params);
+		populateLikedBy(post);
 	}
 
 	@Override
@@ -92,6 +94,7 @@ public class PostDao implements PostDaoInterface {
 		String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
 		
 		template.update(sql, params);
+		populateLikedBy(post);
 	}
 
 	@Override
@@ -106,6 +109,7 @@ public class PostDao implements PostDaoInterface {
 				+ "WHERE post.post_id = :post_id";
 		List<Post> posts = template.query(sql, params, postsMapper);
 		if(posts != null && !posts.isEmpty()) {
+			populateLikedBy(posts);
 			foundPost = posts.get(0);
 		}
 		

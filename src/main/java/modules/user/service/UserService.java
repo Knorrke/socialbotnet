@@ -57,4 +57,8 @@ public class UserService {
 	public User getAuthenticatedUser(Request request) {
 		return request.session().attribute(USER_SESSION_ID);
 	}
+
+	public void updateUser(User oldUser, User newUser) {
+		this.userDaoInterface.updateUser(oldUser, newUser);
+	}
 }

@@ -85,6 +85,26 @@ public class UserController {
 	}
 
 	public String updateProfile(Request req, Response res) {
-		return "Not implemented yet";
+		User authenticatedUser = service.getAuthenticatedUser(req);
+		if (authenticatedUser == null) {
+			Spark.halt(401, "Du bist nicht angemeldet!");
+			return null;
+		}
+		Map<String, Object> model = new HashMap<>();
+		if (req.requestMethod().equals("POST")) {
+			User user = new User();
+			try { // populate user attributes by registration params
+				MultiMap<String> params = new MultiMap<String>();
+				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+				BeanUtils.populate(user, params);
+				service.updateUser(authenticatedUser, user);
+				service.addAuthenticatedUser(req, user);
+			} catch (Exception e) {
+				Spark.halt(501);
+				return null;
+			}
+		}
+
+		return Renderer.render(model, "user/updateProfile.ftl");
 	}
 }

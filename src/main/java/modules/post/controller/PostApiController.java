@@ -8,7 +8,6 @@ import org.eclipse.jetty.util.UrlEncoded;
 
 import modules.post.model.Post;
 import modules.post.service.PostService;
-import modules.user.controller.UserApiController;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import spark.Request;
@@ -34,6 +33,27 @@ public class PostApiController {
 		return postService.getUserWallPosts(profileUser);
 	}
 
+	public Object likePost(Request req, Response res) {
+		MultiMap<String> params = new MultiMap<String>();
+		UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+		
+		User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
+		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		postService.likePost(post, authenticatedUser);
+		return post;
+	}
+
+	public Object unlikePost(Request req, Response res) {
+		MultiMap<String> params = new MultiMap<String>();
+		UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+		
+		User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
+		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		postService.unlikePost(post, authenticatedUser);
+		return post;
+	}
+	
+	
 	public Object createPost(Request req, Response res) {
 		Post post = new Post();
 		post.setPublishingDate(new Timestamp(System.currentTimeMillis()));

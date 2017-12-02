@@ -9,10 +9,11 @@ body {
 
 #root {
 	background-image: url("/images/background.jpg");
+	background-size: contain;
 }
 
 .header {
-	background: #000;
+	background: #000b;
 	color: #fff;
 	position: relative;
 	margin: 0;
@@ -53,16 +54,42 @@ nav li {
 .main {
 	width: 80%;
 	min-height: 500px;
-	margin: 20px auto;
+	margin: 0 auto 20px;
 	padding: 10px 30px;
-	background: rgba(255, 255, 255, 0.95);
 }
 
+.pageTitle {
+	width: 80%;
+	margin: 20px auto 0;
+	padding-top: 10px;
+}
+
+.colored {
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 20px;
+}
+
+.media {
+	padding: 0 20px 20px;
+	margin: 20px 0;
+	overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin:      15px 0px 15px;
+    padding:     0px;
+    font-weight: 600;
+    line-height: 1.7;
+}
 
 .footer {
-	background: #000;
+	background: #000b;
 	color: #fff;
 	position: relative;
 	margin: 0;
 	padding: 25px 50px 5px;
+}
+
+.actions {
+	align:right;
 }

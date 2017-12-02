@@ -4,6 +4,8 @@ public class User {
 
 	private int id;
 	private String username, password;
+	private String hobbies;
+	private String about;
 
 
 	/**
@@ -46,5 +48,33 @@ public class User {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the hobbies
+	 */
+	public String getHobbies() {
+		return hobbies;
+	}
+	
+	/**
+	 * @param hobbies the hobbies to set
+	 */
+	public void setHobbies(String hobbies) {
+		this.hobbies = hobbies;
+	}
+
+	/**
+	 * @return the about
+	 */
+	public String getAbout() {
+		return about;
+	}
+
+	/**
+	 * @param about the about to set
+	 */
+	public void setAbout(String about) {
+		this.about = about;
 	}
 }

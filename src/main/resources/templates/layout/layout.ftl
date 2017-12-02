@@ -1,4 +1,4 @@
-<#macro masterTemplate title="Willkommen">
+<#macro masterTemplate pageTitle="Willkommen im SocialBotNet" title=pageTitle colored=true>
         <!DOCTYPE html
                 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -40,7 +40,10 @@
 	            <div style="clear: both;"></div>
             </div>
 		</div>
-        <div class="main">
+		<div class="pageTitle">
+			<h1>${pageTitle}</h1>
+		</div>
+        <div class="main <#if colored==true>colored</#if>">
             <#nested />
         </div>
         <div class="footer">

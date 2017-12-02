@@ -52,7 +52,10 @@ public class Router {
 		post("/post/:username", postController::createPost);
 
 		get("like/:post", postController::likePost);
+		post("like/:post", postController::likePost);
 		get("unlike/:post", postController::unlikePost);
+		post("unlike/:post", postController::unlikePost);
+		
 
 		path("/api", () -> {
 			before("/*", (req, res) -> logger.info("Received api call to " + req.pathInfo()));
@@ -84,6 +87,8 @@ public class Router {
 			get("/pinnwand/:username", postApiController::getUserPosts, JSONUtil::jsonify);
 			post("/post", postApiController::createPost, JSONUtil::jsonify);
 			post("/post/:username", postApiController::createPost, JSONUtil::jsonify);
+			post("/like/:post", postApiController::likePost, JSONUtil::jsonify);
+			post("/unlike/:post", postApiController::unlikePost, JSONUtil::jsonify);
 
 			after((req, res) -> {
 				res.type("application/json");
@@ -96,7 +101,7 @@ public class Router {
 		String path = req.pathInfo();
 
 		String[] routesGETRegex = { "/api/users", "/api/posts", "/api/pinnwand/.*" };
-		String[] routesPOSTRegex = { "/api/post", "/api/post/.*" };
+		String[] routesPOSTRegex = { "/api/post", "/api/post/.*", "/api/like/.*", "/api/unlike/.*" };
 		
 		if (!requestMethod.equals("POST")) {
 			for (String routePOST : routesPOSTRegex) {
