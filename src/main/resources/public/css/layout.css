@@ -1,0 +1,86 @@
+body {
+	font-family: Roboto;
+	background: #4EA6ED;
+	padding: 0;
+	margin: 0;
+}
+
+#root {
+	background-image: url("/images/background.jpg");
+	background-size: contain;
+}
+
+.main {
+	width: 80%;
+	min-height: 500px;
+	margin: 0 auto 20px;
+	padding: 10px 30px;
+}
+
+#side-content {
+	float: right;
+	width: 230px;
+	padding-left: 20px;
+	border-left: 2px #000D54 solid;
+}
+
+#side-content .colored {
+	background-color: #e4e4e4;
+}
+
+.main .has-side-content {
+	margin-right: 250px;
+	padding-right: 20px;
+	border-right: 2px #000D54 solid;
+}
+
+
+/********************
+* Header and Footer *
+********************/
+
+.header {
+	background: #000b;
+	color: #fff;
+	position: relative;
+	margin: 0;
+}
+
+.header-inner {
+	margin: 0 5%;
+}
+
+.header a, .header a:visited, .header a:hover {
+	color: #fafafa;
+	text-decoration: none;
+	padding: .25em .75em;
+	transition: color .3s ease;
+}
+
+.header a:hover {
+	color: hsla(0,0%,100%,.65);
+}
+
+nav ul {
+	margin: 0;
+    padding: 0;
+    list-style: none;
+    float: right;
+}
+
+nav li {
+	display: inline-block;
+    padding: 1em 0;
+}
+
+.footer {
+	background: #000b;
+	color: #fff;
+	position: relative;
+	margin: 0;
+	padding: 25px 50px 5px;
+}
+#brand {
+	float: left;
+    padding: 1em 0;
+}

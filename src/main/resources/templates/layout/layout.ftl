@@ -19,7 +19,7 @@
 	                    </li>
 	                    <#if authenticatedUser??>
 		                    <li>
-		                        <a href="/pinnwand/${authenticatedUser.username}">Eigene Pinnwand</a>
+		                        <a href="/user/profile/${authenticatedUser.username}">Eigenes Profil</a>
 		                    </li>
 		                    <li>
 		                        <a href="/logout">Abmelden</a>

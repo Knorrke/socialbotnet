@@ -26,7 +26,7 @@ public class Router {
 	private PostApiController postApiController;
 
 	public Router(PostService postService, UserService userService) {
-		this.userController = new UserController(userService);
+		this.userController = new UserController(userService, postService);
 		this.postController = new PostController(postService, userService);
 		this.userApiController = new UserApiController(userService);
 		this.postApiController = new PostApiController(postService, userService);
@@ -42,11 +42,12 @@ public class Router {
 		get("/logout", userController::logout);
 		post("/logout", userController::logout);
 
+		get("/user/profile/:username", userController::showProfile);
 		get("/user/update", userController::updateProfile);
 		post("/user/update", userController::updateProfile);
 
 		get("/", postController::getPosts);
-		get("/pinnwand/:username", postController::getUserPosts);
+		get("/pinnwand/:username", userController::showProfile);
 
 		post("/post", postController::createPost);
 		post("/post/:username", postController::createPost);

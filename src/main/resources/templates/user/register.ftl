@@ -1,9 +1,9 @@
 <#import "../layout/layout.ftl" as layout />
 
 <@layout.masterTemplate pageTitle="Registrieren">
-    <#if message??>
+    <#if success??>
     	<div class="success">
-    		${message}
+    		${success}
     	</div>
     </#if>
     <#if error??>

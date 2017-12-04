@@ -1,9 +1,9 @@
 <#import "../layout/layout.ftl" as layout />
 
 <@layout.masterTemplate pageTitle="Profil aktualisieren">
-    <#if message??>
+    <#if success??>
     	<div class="success">
-    		${message}
+    		${success}
     	</div>
     </#if>
     <#if error??>
@@ -14,13 +14,13 @@
     <form action="/user/update" method="post">
 	   <dl>
 	     <dt>Nutzername:
-	     <dd><input type="text" name="username" size="30" maxlength="50" value="<#if authenticatedUser??>${authenticatedUser.username!}</#if>">
+	     <dd><input type="text" name="username" size="30" maxlength="50" value="${authenticatedUser.username!}">
 	   </dl>
 	   <dl>
 	     <dt>Hobbies:
-	     <dd><textarea name="hobbies" cols="30"></textarea>
+	     <dd><textarea name="hobbies" cols="30">${authenticatedUser.hobbies!}</textarea>
 	     <dt>&Uuml;ber mich:
-	     <dd><textarea name="about" cols="30"></textarea>
+	     <dd><textarea name="about" cols="30">${authenticatedUser.about!}</textarea>
 	   </dl>
 	   <div class="actions"><input type="submit" value="Aktualisieren"></div>
 	 </form>

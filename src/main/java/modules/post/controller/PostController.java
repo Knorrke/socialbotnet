@@ -41,12 +41,16 @@ public class PostController {
 		List<Post> posts = postService.getPublicWallPosts();
 		model.put("posts", posts);
 
-		return Renderer.render(model, "posts/wall.ftl");
+		return Renderer.render(model, "posts/wall.page.ftl");
 	}
 
 	public String getUserPosts(Request req, Response res) {
 		String username = req.params("username");
 		User profileUser = userService.getUserbyUsername(username);
+		if (profileUser == null ) {
+			Spark.halt(400, "User unbekannt");
+			return null;
+		}
 		User authenticatedUser = userService.getAuthenticatedUser(req);
 		Map<String, Object> model = new HashMap<>();
 		if (authenticatedUser != null) {
@@ -57,7 +61,7 @@ public class PostController {
 		List<Post> posts = postService.getUserWallPosts(profileUser);
 		model.put("posts", posts);
 
-		return Renderer.render(model, "posts/wall.ftl");
+		return Renderer.render(model, "posts/wall.page.ftl");
 	}
 
 	public String likePost(Request req, Response res) {
@@ -67,6 +71,10 @@ public class PostController {
 			return null;
 		}
 		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		if (post == null ) {
+			Spark.halt(400, "Post existiert nicht");
+			return null;
+		}
 		postService.likePost(post, authenticatedUser);
 		res.redirect(req.headers("referer"));
 		return null;
@@ -79,6 +87,10 @@ public class PostController {
 			return null;
 		}
 		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		if (post == null ) {
+			Spark.halt(400, "Post existiert nicht");
+			return null;
+		}
 		postService.unlikePost(post, authenticatedUser);
 		res.redirect(req.headers("referer"));
 		return null;

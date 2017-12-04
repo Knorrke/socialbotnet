@@ -1,12 +1,15 @@
 package modules.user.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import modules.post.model.Post;
+import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.Renderer;
@@ -16,10 +19,12 @@ import spark.Spark;
 
 public class UserController {
 
-	private UserService service;
+	private UserService userService;
+	private PostService postService;
 
-	public UserController(UserService service) {
-		this.service = service;
+	public UserController(UserService userService, PostService postService) {
+		this.userService = userService;
+		this.postService = postService;
 	}
 
 	public String login(Request req, Response res) {
@@ -34,9 +39,9 @@ public class UserController {
 				Spark.halt(501);
 				return null;
 			}
-			User authenticated = service.checkUser(user);
+			User authenticated = userService.checkUser(user);
 			if (authenticated != null) {
-				service.addAuthenticatedUser(req, authenticated);
+				userService.addAuthenticatedUser(req, authenticated);
 				res.redirect("/");
 				Spark.halt();
 				model.put("username", user.getUsername());
@@ -50,7 +55,7 @@ public class UserController {
 	}
 	
 	public String logout(Request req, Response res) {
-		service.removeAuthenticatedUser(req);
+		userService.removeAuthenticatedUser(req);
 		res.redirect("/");
 		Spark.halt();
 		return null;
@@ -65,8 +70,8 @@ public class UserController {
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				if (params.get("password").equals(params.get("password2"))) {					
 					BeanUtils.populate(user, params);
-					service.registerUser(user);
-					service.addAuthenticatedUser(req, user);
+					userService.registerUser(user);
+					userService.addAuthenticatedUser(req, user);
 					res.redirect("/");
 					Spark.halt();
 					model.put("username", user.getUsername());
@@ -84,8 +89,29 @@ public class UserController {
 
 	}
 
+	public String showProfile(Request req, Response res) {
+		Map<String, Object> model = new HashMap<>();
+
+		String username = req.params("username");
+		User profileUser = userService.getUserbyUsername(username);
+		if (profileUser == null ) {
+			Spark.halt(400, "User unbekannt");
+			return null;
+		}
+		model.put("user", profileUser);
+
+		User authenticatedUser = userService.getAuthenticatedUser(req);
+		if (authenticatedUser != null) {
+			model.put("authenticatedUser", authenticatedUser);
+		}
+
+		List<Post> posts = postService.getUserWallPosts(profileUser);
+		model.put("posts", posts);
+		return Renderer.render(model, "user/profile.ftl");
+	}
+	
 	public String updateProfile(Request req, Response res) {
-		User authenticatedUser = service.getAuthenticatedUser(req);
+		User authenticatedUser = userService.getAuthenticatedUser(req);
 		if (authenticatedUser == null) {
 			Spark.halt(401, "Du bist nicht angemeldet!");
 			return null;
@@ -97,14 +123,16 @@ public class UserController {
 				MultiMap<String> params = new MultiMap<String>();
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				BeanUtils.populate(user, params);
-				service.updateUser(authenticatedUser, user);
-				service.addAuthenticatedUser(req, user);
+				userService.updateUser(authenticatedUser, user);
+				userService.addAuthenticatedUser(req, user);
+				model.put("success", "Profil erfolgreich aktualisiert");
 			} catch (Exception e) {
 				Spark.halt(501);
 				return null;
 			}
 		}
-
+		
+		model.put("authenticatedUser", authenticatedUser);
 		return Renderer.render(model, "user/updateProfile.ftl");
 	}
 }

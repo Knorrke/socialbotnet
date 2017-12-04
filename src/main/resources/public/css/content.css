@@ -1,0 +1,31 @@
+.pageTitle {
+	width: 80%;
+	margin: 20px auto 0;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.colored {
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 20px;
+}
+
+.media {
+	padding: 20px;
+	margin: 20px 0;
+	overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin:      0 0 15px;
+    padding:     0px;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}

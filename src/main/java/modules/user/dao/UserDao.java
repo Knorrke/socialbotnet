@@ -59,13 +59,15 @@ public class UserDao implements UserDaoInterface {
 		user.setId(row.getInt("user_id"));
 		user.setUsername(row.getString("username"));
 		user.setPassword(row.getString("password"));
+		user.setHobbies(row.getString("hobbies"));
+		user.setAbout(row.getString("about"));
 
 		return user;
 	};
 
 	@Override
 	public List<User> getAllUsers() {
-		String sql = "SELECT user_id, username, null as password FROM user ORDER BY user_id DESC LIMIT 100";
+		String sql = "SELECT user_id, username, null as password, hobbies, about FROM user ORDER BY user_id DESC LIMIT 100";
 		List<User> users = template.query(sql, userMapper);
 		return users;
 	}
@@ -76,7 +78,7 @@ public class UserDao implements UserDaoInterface {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		
-		String sql = "SELECT user_id, username, null as password FROM user WHERE user.username=:username";
+		String sql = "SELECT user_id, username, null as password, hobbies, about FROM user WHERE user.username=:username";
 		List<User> users = template.query(sql, params, userMapper);
 		if(users != null && !users.isEmpty()) {
 			foundUser = users.get(0);

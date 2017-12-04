@@ -1,11 +1,21 @@
 package modules.user.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+import javax.imageio.ImageIO;
+
+import modules.util.Identicons;
+
 public class User {
 
 	private int id;
 	private String username, password;
 	private String hobbies;
 	private String about;
+	private BufferedImage icon;
 
 
 	/**
@@ -20,6 +30,7 @@ public class User {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
+		this.setIcon(Identicons.generateIdenticons(username, 100, 100));
 	}
 
 	/**
@@ -76,5 +87,34 @@ public class User {
 	 */
 	public void setAbout(String about) {
 		this.about = about;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public BufferedImage getIcon() {
+		return icon;
+	}
+
+	public String getImageAsBase64() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			ImageIO.write( icon, "png", baos );
+			baos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] data = baos.toByteArray();
+		byte[] encoded = Base64.getEncoder().encode(data);
+		String base64String = new String(encoded);
+		return "data:image/png;base64," + base64String;
+	}
+	
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(BufferedImage icon) {
+		this.icon = icon;
 	}
 }
