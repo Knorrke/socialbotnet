@@ -38,7 +38,7 @@ public class PostApiController {
 		UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 		
 		User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		Post post = postService.getPostById(Integer.parseInt(params.getString("postid")));
 		postService.likePost(post, authenticatedUser);
 		return post;
 	}
@@ -48,7 +48,7 @@ public class PostApiController {
 		UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 		
 		User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-		Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+		Post post = postService.getPostById(Integer.parseInt(params.getString("postid")));
 		postService.unlikePost(post, authenticatedUser);
 		return post;
 	}

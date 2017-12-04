@@ -34,4 +34,25 @@ public class UserApiController {
 	public Object getUsers(Request req, Response res) {
 		return service.getAllUsers();
 	}
+	
+	public User updateProfile(Request req, Response res) {
+		User newUser = new User();
+		User oldUser = new User(); 
+		try { 
+			MultiMap<String> params = new MultiMap<String>();
+			UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+
+			oldUser = service.getUserbyUsername(params.getString("username"));
+		
+			newUser.setUsername(params.getString("newUsername") != null ? params.getString("newUsername") : oldUser.getUsername());
+			newUser.setHobbies(params.getString("hobbies") != null ? params.getString("hobbies") : oldUser.getHobbies());
+			newUser.setAbout(params.getString("about") != null ? params.getString("about") : oldUser.getAbout());
+			newUser.setId(oldUser.getId());
+			
+		} catch (Exception e) {
+			Spark.halt(501, "Interner Fehler aufgetreten. Bitte melde das Problem!");
+		}
+		service.updateUser(oldUser, newUser);
+		return oldUser;
+	}
 }

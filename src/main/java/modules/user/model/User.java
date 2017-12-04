@@ -15,7 +15,6 @@ public class User {
 	private String username, password;
 	private String hobbies;
 	private String about;
-	private BufferedImage icon;
 
 
 	/**
@@ -30,7 +29,6 @@ public class User {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
-		this.setIcon(Identicons.generateIdenticons(username, 100, 100));
 	}
 
 	/**
@@ -89,14 +87,8 @@ public class User {
 		this.about = about;
 	}
 
-	/**
-	 * @return the icon
-	 */
-	public BufferedImage getIcon() {
-		return icon;
-	}
-
 	public String getImageAsBase64() {
+		BufferedImage icon = Identicons.generateIdenticons(username, 100, 100);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			ImageIO.write( icon, "png", baos );
@@ -109,12 +101,5 @@ public class User {
 		byte[] encoded = Base64.getEncoder().encode(data);
 		String base64String = new String(encoded);
 		return "data:image/png;base64," + base64String;
-	}
-	
-	/**
-	 * @param icon the icon to set
-	 */
-	public void setIcon(BufferedImage icon) {
-		this.icon = icon;
 	}
 }

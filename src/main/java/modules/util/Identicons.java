@@ -26,7 +26,7 @@ public class Identicons {
 		WritableRaster raster = identicon.getRaster();
 
 		int[] background = new int[] { 255, 255, 255, 0 };
-		int[] foreground = new int[] { hash[0] & 255, hash[1] & 255, hash[2] & 255, 255 };
+		int[] foreground = new int[] { hash[0] & 191, hash[1] & 191, hash[2] & 191, 255 };
 
 		for (int x = 0; x < width; x++) {
 			// Enforce horizontal symmetry

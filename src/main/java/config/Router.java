@@ -86,10 +86,13 @@ public class Router {
 			get("/users", userApiController::getUsers, JSONUtil::jsonify);
 			get("/posts", postApiController::getPosts, JSONUtil::jsonify);
 			get("/pinnwand/:username", postApiController::getUserPosts, JSONUtil::jsonify);
+			
+			post("/user/update", userApiController::updateProfile, JSONUtil::jsonify);
+
 			post("/post", postApiController::createPost, JSONUtil::jsonify);
 			post("/post/:username", postApiController::createPost, JSONUtil::jsonify);
-			post("/like/:post", postApiController::likePost, JSONUtil::jsonify);
-			post("/unlike/:post", postApiController::unlikePost, JSONUtil::jsonify);
+			post("/like", postApiController::likePost, JSONUtil::jsonify);
+			post("/unlike", postApiController::unlikePost, JSONUtil::jsonify);
 
 			after((req, res) -> {
 				res.type("application/json");
@@ -102,7 +105,7 @@ public class Router {
 		String path = req.pathInfo();
 
 		String[] routesGETRegex = { "/api/users", "/api/posts", "/api/pinnwand/.*" };
-		String[] routesPOSTRegex = { "/api/post", "/api/post/.*", "/api/like/.*", "/api/unlike/.*" };
+		String[] routesPOSTRegex = { "/api/post", "/api/post/.*", "/api/like", "/api/unlike" };
 		
 		if (!requestMethod.equals("POST")) {
 			for (String routePOST : routesPOSTRegex) {
