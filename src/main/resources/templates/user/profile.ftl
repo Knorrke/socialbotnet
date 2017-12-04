@@ -37,7 +37,7 @@
                 <#if user.hobbies != "">
                 	${user.hobbies}
                 <#else>
-					Leider hat ${user.hobbies} noch keine Hobbies angegeben
+					Leider hat ${user.username} noch keine Hobbies angegeben
                 </#if>
             </div>
         </div>

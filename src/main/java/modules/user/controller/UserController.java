@@ -126,6 +126,7 @@ public class UserController {
 				userService.updateUser(authenticatedUser, user);
 				userService.addAuthenticatedUser(req, user);
 				model.put("success", "Profil erfolgreich aktualisiert");
+				res.redirect("/user/profile/"+user.getUsername());
 			} catch (Exception e) {
 				Spark.halt(501);
 				return null;

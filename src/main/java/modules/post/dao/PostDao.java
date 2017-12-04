@@ -58,7 +58,10 @@ public class PostDao implements PostDaoInterface {
 		String sql = "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name "
 				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
 				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
-				+ "order by post.pub_date desc LIMIT 50";
+				+ "ORDER BY "
+				+ "(SELECT COUNT(likes.user_id) FROM post p JOIN likes on p.post_id = likes.post_id "
+				+ " WHERE p.post_id = post.post_id) desc, "
+				+ "post.pub_date desc LIMIT 50";
 		List<Post> posts = template.query(sql, params, postsMapper);
 		populateLikedBy(posts);
 		return posts;
