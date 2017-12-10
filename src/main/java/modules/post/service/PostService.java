@@ -14,12 +14,20 @@ public class PostService {
 	@Autowired
 	private PostDaoInterface postDaoInterface;
 
-	public List<Post> getUserWallPosts(User user) {
-		return postDaoInterface.getUserWallPosts(user);
+	public List<Post> getLatestUserWallPosts(User user, int limit) {
+		return postDaoInterface.getLatestUserWallPosts(user, limit);
+	}
+	
+	public List<Post> getMostLikedUserWallPosts(User user, int limit) {
+		return postDaoInterface.getMostLikedUserWallPosts(user, limit);
 	}
 
-	public List<Post> getPublicWallPosts() {
-		return postDaoInterface.getPublicWallPosts();
+	public List<Post> getLatestWallPosts(int limit) {
+		return postDaoInterface.getLatestWallPosts(limit);
+	}
+	
+	public List<Post> getMostLikedWallPosts(int limit) {
+		return postDaoInterface.getMostLikedWallPosts(limit);
 	}
 
 	public void addPost(Post post) {

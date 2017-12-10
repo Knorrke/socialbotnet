@@ -25,14 +25,33 @@ public class PostDao implements PostDaoInterface {
 	}
 
 	@Override
-	public List<Post> getUserWallPosts(User user) {
+	public List<Post> getLatestUserWallPosts(User user, int limit) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user.getId());
+		params.put("limit", limit);
 		String sql = "SELECT post.*, u.username, u.user_id, w.username as wall_name "
 				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
 				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
 				+ "WHERE post.wall_id = :user "
-				+ "ORDER BY post.pub_date DESC LIMIT 50";
+				+ "ORDER BY post.pub_date DESC LIMIT :limit";
+		List<Post> posts = template.query(sql, params, postsMapper);
+		populateLikedBy(posts);
+		return posts;
+	}
+	
+	@Override
+	public List<Post> getMostLikedUserWallPosts(User user, int limit) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user.getId());
+		params.put("limit", limit);
+		String sql = "SELECT post.*, u.username, u.user_id, w.username as wall_name "
+				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
+				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
+				+ "WHERE post.wall_id = :user "
+				+ "ORDER BY "
+				+ "(SELECT COUNT(likes.user_id) FROM post p JOIN likes on p.post_id = likes.post_id "
+				+ " WHERE p.post_id = post.post_id) desc, "
+				+ "post.pub_date DESC LIMIT :limit";
 		List<Post> posts = template.query(sql, params, postsMapper);
 		populateLikedBy(posts);
 		return posts;
@@ -52,16 +71,32 @@ public class PostDao implements PostDaoInterface {
 	}
 
 	@Override
-	public List<Post> getPublicWallPosts() {
+	public List<Post> getMostLikedWallPosts(int limit) {
 		Map<String, Object> params = new HashMap<String, Object>();
-
+		params.put("limit", limit);
+		
 		String sql = "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name "
 				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
 				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
 				+ "ORDER BY "
 				+ "(SELECT COUNT(likes.user_id) FROM post p JOIN likes on p.post_id = likes.post_id "
 				+ " WHERE p.post_id = post.post_id) desc, "
-				+ "post.pub_date desc LIMIT 50";
+				+ "post.pub_date desc LIMIT :limit";
+		List<Post> posts = template.query(sql, params, postsMapper);
+		populateLikedBy(posts);
+		return posts;
+	}
+	
+
+	@Override
+	public List<Post> getLatestWallPosts(int limit) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("limit", limit);
+		
+		String sql = "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name "
+				+ "FROM (post JOIN user u ON post.author_id = u.user_id ) "
+				+ "LEFT OUTER JOIN user w ON post.wall_id = w.user_id "
+				+ "ORDER BY post.pub_date desc LIMIT :limit";
 		List<Post> posts = template.query(sql, params, postsMapper);
 		populateLikedBy(posts);
 		return posts;

@@ -24,13 +24,26 @@ public class PostApiController {
 	}
 
 	public Object getPosts(Request req, Response res) {
-		return postService.getPublicWallPosts();
+		int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
+		
+		
+		if(req.queryParams("sortby") != null && req.queryParams("sortby").equals("likes")) {				
+			return postService.getMostLikedWallPosts(limit);
+		} else {
+			return postService.getLatestWallPosts(limit);
+		}
 	}
 
 	public Object getUserPosts(Request req, Response res) {
 		String username = req.params("username");
 		User profileUser = userService.getUserbyUsername(username);
-		return postService.getUserWallPosts(profileUser);
+		
+		int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
+		if(req.queryParams("sortby") != null && req.queryParams("sortby").equals("likes")) {				
+			return postService.getMostLikedUserWallPosts(profileUser, limit);
+		} else {
+			return postService.getLatestUserWallPosts(profileUser, limit);
+		}
 	}
 
 	public Object likePost(Request req, Response res) {

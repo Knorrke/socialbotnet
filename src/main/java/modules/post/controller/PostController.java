@@ -38,28 +38,21 @@ public class PostController {
 		if (user != null) {
 			model.put("authenticatedUser", user);
 		}
-		List<Post> posts = postService.getPublicWallPosts();
-		model.put("posts", posts);
-
-		return Renderer.render(model, "posts/wall.page.ftl");
-	}
-
-	public String getUserPosts(Request req, Response res) {
-		String username = req.params("username");
-		User profileUser = userService.getUserbyUsername(username);
-		if (profileUser == null ) {
-			Spark.halt(400, "User unbekannt");
-			return null;
+		String sortBy = req.queryParams("sortby");
+		if (sortBy == null || sortBy.equals("")) {
+			List<Post> recentPosts = postService.getLatestWallPosts(50);
+			List<Post> mostLiked = postService.getMostLikedWallPosts(5);
+			model.put("mostliked", mostLiked);
+			model.put("posts", recentPosts);
+		} else if (sortBy.equals("likes")){			
+			List<Post> posts = postService.getMostLikedWallPosts(50);
+			model.put("mostliked", posts);
+			model.put("sortby", "likes");
+		} else {
+			List<Post> posts = postService.getLatestWallPosts(50);
+			model.put("posts", posts);
+			model.put("sortby", "time");
 		}
-		User authenticatedUser = userService.getAuthenticatedUser(req);
-		Map<String, Object> model = new HashMap<>();
-		if (authenticatedUser != null) {
-			model.put("authenticatedUser", authenticatedUser);
-		}
-		;
-		model.put("user", profileUser);
-		List<Post> posts = postService.getUserWallPosts(profileUser);
-		model.put("posts", posts);
 
 		return Renderer.render(model, "posts/wall.page.ftl");
 	}

@@ -22,8 +22,11 @@ The following GET requests are supported:
 [{"id":2,"username":"user002","hobbies":"football","about":"I am user002"},{"id":1,"username":"user001","hobbies":"telekinesis","about":"I am user001"}]
 ```
 
-- GET request to `/api/posts`: Receive all posts created on the minimalsocialnetwork  
-**Example output**  
+- GET request to `/api/posts`: Receive all posts created on the minimalsocialnetwork. They can be sorted by `likes` or `time` (default) using the `sortby` handle. Also the number of results can be limited by `limit` (default 50).
+**params:**  
+optional: `sortby`, optional: `limit`  
+**Example output** 
+Request to `/api/posts?sortby=likes&limit=1`
 ```
 [
   {
@@ -40,7 +43,7 @@ The following GET requests are supported:
 ]
 ```
 
-- GET request to `/api/pinnwand/:username`: Receive all posts created on the minimalsocialnetwork posted to `:username`s wall  
+- GET request to `/api/pinnwand/:username`: Receive all posts created on the minimalsocialnetwork posted to `:username`s wall. They can be sorted by `likes` or `time` (default) using the `sortby` handle. Also the number of results can be limited by `limit` (default 50)  
 **Example output**  
 The output is exactly as from `/api/posts/`, but filtered after username of wall.
 

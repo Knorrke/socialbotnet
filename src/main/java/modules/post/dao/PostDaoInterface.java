@@ -6,9 +6,10 @@ import modules.post.model.Post;
 import modules.user.model.User;
 
 public interface PostDaoInterface {
-	List<Post> getUserWallPosts(User user);
-	
-	List<Post> getPublicWallPosts();
+	List<Post> getLatestUserWallPosts(User user, int limit);
+	List<Post> getMostLikedUserWallPosts(User user, int limit);
+	List<Post> getMostLikedWallPosts(int limit);
+	List<Post> getLatestWallPosts(int limit);
 	
 	void insertPost(Post m);
 

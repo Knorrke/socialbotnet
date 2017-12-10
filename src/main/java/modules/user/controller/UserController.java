@@ -105,8 +105,17 @@ public class UserController {
 			model.put("authenticatedUser", authenticatedUser);
 		}
 
-		List<Post> posts = postService.getUserWallPosts(profileUser);
-		model.put("posts", posts);
+		String sortBy = req.queryParams("sortby");
+		if (sortBy != null && sortBy.equals("likes")){			
+			List<Post> posts = postService.getMostLikedUserWallPosts(profileUser, 50);
+			model.put("mostliked", posts);
+			model.put("sortby", "likes");
+		} else {
+			List<Post> posts = postService.getLatestUserWallPosts(profileUser, 50);
+			model.put("posts", posts);
+			model.put("sortby", "time");
+		}
+
 		return Renderer.render(model, "user/profile.ftl");
 	}
 	
