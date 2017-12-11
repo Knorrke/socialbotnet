@@ -1,13 +1,13 @@
-INSERT INTO user(user_id, username, password) VALUES (1, 'user001','$2a$10$IHdRfnhNgQesPFD5hrUcMOvyx5RrRcklkpXfs9YX4j1qXvouEeVIa');
-INSERT INTO user(user_id, username, password) VALUES (2, 'user002','$2a$10$NlU0bdBUiegZWZvl6CGpj.wV5YfbDGZ8lYznxWp2NNE4F9cYJJFOe');
-INSERT INTO user(user_id, username, password) VALUES (3, 'user003','$2a$10$gwEVdI6lSDrkIkGLrsHTIOzLEgnT3gDUDYMOfxvOdnoqvGpf275fm');
-INSERT INTO user(user_id, username, password) VALUES (4, 'user004','$2a$10$W2ZJXI00xhL03vwcy2Y/DeZe.BqMf4dUSP5lxEQFAqV.ocbUAYS4m');
-INSERT INTO user(user_id, username, password) VALUES (5, 'user005','$2a$10$Q209gpOY73eZM5/7ix8Hxua/d8cPiV0nhBF.cPgEmtoY.2WN3z/k6');
-INSERT INTO user(user_id, username, password) VALUES (6, 'user006','$2a$10$6njApozqiAlwamwi8oqgF.70eeTpgl4Z4SUpKK72AnIhHd3WXK/ei');
-INSERT INTO user(user_id, username, password) VALUES (7, 'user007','$2a$10$YQifsq3fEABCJNM.ebxlmuJTNSvtJR72jZWHxLoU8A6Lap1QV/WP6');
-INSERT INTO user(user_id, username, password) VALUES (8, 'user008','$2a$10$o0AykWkpgbKak8EyMM/J2.ntdjieJnf6.vgtcQVwnSW6n74YkjQMu');
-INSERT INTO user(user_id, username, password) VALUES (9, 'user009','$2a$10$rbDB/WLckQTAO4St9TpMVOzSlJDrx98r2jgt9crwtsy8hCv7wIZkm');
-INSERT INTO user(user_id, username, password) VALUES (10, 'user010','$2a$10$rXBPyVPkaD5u7MbDckemPutPT/m.8SylMrI3su26aaV0pxP34kDwa');
+INSERT INTO users(user_id, username, password) VALUES (1, 'user001','$2a$10$IHdRfnhNgQesPFD5hrUcMOvyx5RrRcklkpXfs9YX4j1qXvouEeVIa');
+INSERT INTO users(user_id, username, password) VALUES (2, 'user002','$2a$10$NlU0bdBUiegZWZvl6CGpj.wV5YfbDGZ8lYznxWp2NNE4F9cYJJFOe');
+INSERT INTO users(user_id, username, password) VALUES (3, 'user003','$2a$10$gwEVdI6lSDrkIkGLrsHTIOzLEgnT3gDUDYMOfxvOdnoqvGpf275fm');
+INSERT INTO users(user_id, username, password) VALUES (4, 'user004','$2a$10$W2ZJXI00xhL03vwcy2Y/DeZe.BqMf4dUSP5lxEQFAqV.ocbUAYS4m');
+INSERT INTO users(user_id, username, password) VALUES (5, 'user005','$2a$10$Q209gpOY73eZM5/7ix8Hxua/d8cPiV0nhBF.cPgEmtoY.2WN3z/k6');
+INSERT INTO users(user_id, username, password) VALUES (6, 'user006','$2a$10$6njApozqiAlwamwi8oqgF.70eeTpgl4Z4SUpKK72AnIhHd3WXK/ei');
+INSERT INTO users(user_id, username, password) VALUES (7, 'user007','$2a$10$YQifsq3fEABCJNM.ebxlmuJTNSvtJR72jZWHxLoU8A6Lap1QV/WP6');
+INSERT INTO users(user_id, username, password) VALUES (8, 'user008','$2a$10$o0AykWkpgbKak8EyMM/J2.ntdjieJnf6.vgtcQVwnSW6n74YkjQMu');
+INSERT INTO users(user_id, username, password) VALUES (9, 'user009','$2a$10$rbDB/WLckQTAO4St9TpMVOzSlJDrx98r2jgt9crwtsy8hCv7wIZkm');
+INSERT INTO users(user_id, username, password) VALUES (10, 'user010','$2a$10$rXBPyVPkaD5u7MbDckemPutPT/m.8SylMrI3su26aaV0pxP34kDwa');
 
 INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (1, 1, 1, 'This is a post written by user user001 on his own wall', TIMESTAMP '2014-01-15 02:00:22');
 INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (2, 1, 5, 'This is a post written by user user001 to user005', TIMESTAMP '2014-10-25 10:09:55');

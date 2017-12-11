@@ -28,7 +28,7 @@ public class UserDao implements UserDaoInterface {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		
-		String sql = "SELECT * FROM user WHERE user.username=:username";
+		String sql = "SELECT * FROM users WHERE users.username=:username";
 		List<User> users = template.query(sql, params, userMapper);
 		if(users != null && !users.isEmpty()) {
 			foundUser = users.get(0);
@@ -42,11 +42,11 @@ public class UserDao implements UserDaoInterface {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", user.getUsername());
 		params.put("password", user.getPassword());
-		String sql = "insert into user (username, password) values (:username, :password)";
+		String sql = "insert into users (username, password) values (:username, :password)";
 		template.update(sql, params);
 
 		//fetch autoincremented id 
-		String query = "SELECT user_id FROM user WHERE username=:username and user.password=:password";
+		String query = "SELECT user_id FROM users WHERE username=:username and users.password=:password";
 		template.query(query, params, (row, rowNum) -> {
 			user.setId(row.getInt("user_id"));
 			return user;
@@ -67,7 +67,7 @@ public class UserDao implements UserDaoInterface {
 
 	@Override
 	public List<User> getAllUsers() {
-		String sql = "SELECT user_id, username, null as password, hobbies, about FROM user ORDER BY user_id DESC LIMIT 100";
+		String sql = "SELECT user_id, username, null as password, hobbies, about FROM users ORDER BY user_id DESC LIMIT 100";
 		List<User> users = template.query(sql, userMapper);
 		return users;
 	}
@@ -78,7 +78,7 @@ public class UserDao implements UserDaoInterface {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		
-		String sql = "SELECT user_id, username, null as password, hobbies, about FROM user WHERE user.username=:username";
+		String sql = "SELECT user_id, username, null as password, hobbies, about FROM users WHERE users.username=:username";
 		List<User> users = template.query(sql, params, userMapper);
 		if(users != null && !users.isEmpty()) {
 			foundUser = users.get(0);
@@ -94,7 +94,7 @@ public class UserDao implements UserDaoInterface {
 		params.put("username", newUser.getUsername());
 		params.put("hobbies", newUser.getHobbies());
 		params.put("about", newUser.getAbout());
-		String sql = "UPDATE user " +
+		String sql = "UPDATE users " +
 				"SET username=:username, hobbies=:hobbies, about=:about " +
 				"WHERE user_id = :user_id";
 		template.update(sql, params);
