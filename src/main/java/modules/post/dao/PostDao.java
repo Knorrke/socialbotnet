@@ -109,6 +109,11 @@ public class PostDao implements PostDaoInterface {
 		params.put("wall_id", post.getWall().getId());
 		params.put("text", post.getMessage());
 		params.put("pub_date", post.getPublishingDate());
+		String findExisting = "SELECT * FROM post WHERE author_id=:author_id and wall_id=:wall_id and text=:text";
+		boolean maximumReached = template.query(findExisting, params, (rs, num) -> true).size() > 4;
+		if (maximumReached) {
+			return;
+		}
 		String sql = "INSERT INTO post (author_id, wall_id, text, pub_date) VALUES (:author_id, :wall_id, :text, :pub_date)";
 		
 		template.update(sql, params);
@@ -116,9 +121,14 @@ public class PostDao implements PostDaoInterface {
 	
 	@Override
 	public void likePost(Post post, User user) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();		
 		params.put("post_id", post.getId());
 		params.put("user_id", user.getId());
+		String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
+		boolean newLike = template.query(findExisting, params, (rs, num) -> true).isEmpty();
+		if (!newLike) {
+			return;
+		}
 		String sql = "INSERT INTO likes (post_id, user_id) VALUES (:post_id, :user_id)";
 		template.update(sql, params);
 		populateLikedBy(post);
