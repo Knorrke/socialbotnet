@@ -27,6 +27,13 @@ h1, h2, h3, h4, h5, h6 {
 a {
 	text-decoration: none;
 }
+a[href^="//"]:after, 
+a[href^="http://"]:after, 
+a[href^="https://"]:after {
+	content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);
+	margin: 0 0 0 5px;
+}
+
 a:hover {
 	text-decoration: underline;
 }

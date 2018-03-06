@@ -6,6 +6,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -88,8 +89,12 @@ public class PostApiController {
 			Spark.halt(501);
 			return null;
 		}
-
-		postService.addPost(post);
+		
+		try {
+			postService.addPost(post);
+		} catch (InputTooLongException e) {
+			Spark.halt(400, e.getMessage());
+		}
 		return post;
 	}
 }

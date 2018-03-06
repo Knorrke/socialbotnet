@@ -13,7 +13,7 @@ CREATE TABLE post (
   post_id SERIAL NOT NULL PRIMARY KEY,
   author_id INTEGER NOT NULL REFERENCES users(user_id),
   wall_id INTEGER NOT NULL REFERENCES users(user_id),
-  text VARCHAR(160) NOT NULL,
+  text VARCHAR(240) NOT NULL,
   pub_date TIMESTAMP
 );
 

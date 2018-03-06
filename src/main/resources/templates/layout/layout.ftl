@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <title>${title} | Tinyverse</title>
+    <title>${title} | SocialBotNet</title>
+    <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist für den Einsatz im Unterricht entwickelt worden."></meta>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
@@ -35,7 +36,7 @@
 		            </ul>
 		        </nav>
 	            <div id="brand">
-	                <a href="/">Social Bot Netz</a>
+	                <a href="/">SocialBotNet</a>
 	            </div>
 	            <div style="clear: both;"></div>
             </div>
@@ -48,9 +49,11 @@
         </div>
         <div class="footer">
             <p>
-                SocialBotNetz &mdash; Ein botfreundliches soziales Netzwerk
+                SocialBotNet &mdash; Ein botfreundliches soziales Netzwerk
+    			<span style="float: right;">
+					<a href="//github.com/Knorrke/socialbotnet">Quellcode</a>
+				</span>
             </p>
-
         </div>
     </div>
 </body>

@@ -4,6 +4,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import modules.error.InputTooLongException;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import spark.Request;
@@ -52,7 +53,11 @@ public class UserApiController {
 		} catch (Exception e) {
 			Spark.halt(501, "Interner Fehler aufgetreten. Bitte melde das Problem!");
 		}
-		service.updateUser(oldUser, newUser);
+		try {
+			service.updateUser(oldUser, newUser);
+		} catch (InputTooLongException e) {
+			Spark.halt(400, e.getMessage());
+		}
 		return oldUser;
 	}
 }

@@ -50,14 +50,16 @@ body {
 	margin: 0 5%;
 }
 
-.header a, .header a:visited, .header a:hover {
+.header a, .header a:visited, .header a:hover,
+.footer a, .footer a:visited, .footer a:hover {
 	color: #fafafa;
 	text-decoration: none;
 	padding: .25em .75em;
 	transition: color .3s ease;
 }
 
-.header a:hover {
+.header a:hover,
+.footer a:hover {
 	color: hsla(0,0%,100%,.65);
 }
 

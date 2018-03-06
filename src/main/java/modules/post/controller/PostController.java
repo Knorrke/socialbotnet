@@ -12,6 +12,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -116,7 +117,11 @@ public class PostController {
 			return null;
 		}
 
-		postService.addPost(post);
+		try {
+			postService.addPost(post);
+		} catch (InputTooLongException e) {
+			
+		}
 		return null;
 	}
 }

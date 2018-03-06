@@ -7,7 +7,9 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.springframework.web.util.HtmlUtils;
 
+import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -68,7 +70,7 @@ public class UserController {
 			try { // populate user attributes by registration params
 				MultiMap<String> params = new MultiMap<String>();
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-				if (params.get("password").equals(params.get("password2"))) {					
+				if (params.get("password").equals(params.get("password2"))) {
 					BeanUtils.populate(user, params);
 					userService.registerUser(user);
 					userService.addAuthenticatedUser(req, user);
@@ -79,6 +81,8 @@ public class UserController {
 				} else {
 					model.put("error", "Passw&ouml;rter stimmen nicht &uuml;berein");
 				}
+			} catch(InputTooLongException e) {
+				model.put("error", e.getMessage());
 			} catch (Exception e) {
 				Spark.halt(501);
 				return null;
@@ -136,6 +140,8 @@ public class UserController {
 				userService.addAuthenticatedUser(req, user);
 				model.put("success", "Profil erfolgreich aktualisiert");
 				res.redirect("/user/profile/"+user.getUsername());
+			} catch(InputTooLongException e) {
+				model.put("error", e.getMessage());
 			} catch (Exception e) {
 				Spark.halt(501);
 				return null;

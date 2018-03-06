@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
+import modules.error.InputTooLongException;
 import modules.user.dao.UserDaoInterface;
 import modules.user.model.User;
 import modules.util.PasswordUtil;
@@ -32,8 +34,10 @@ public class UserService {
 		}
 	}
 
-	public void registerUser(User user) {
+	public void registerUser(User user) throws InputTooLongException {
 		user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
+		escapeHtmlInUser(user);
+		checkUserdataToLong(user);
 		userDaoInterface.registerUser(user);
 	}
 
@@ -58,7 +62,29 @@ public class UserService {
 		return request.session().attribute(USER_SESSION_ID);
 	}
 
-	public void updateUser(User oldUser, User newUser) {
+	public void updateUser(User oldUser, User newUser) throws InputTooLongException {
+		escapeHtmlInUser(newUser);
+		checkUserdataToLong(newUser);
 		this.userDaoInterface.updateUser(oldUser, newUser);
+	}
+	
+
+	private boolean checkUserdataToLong(User user) throws InputTooLongException {
+		return checkData("Benutzername", 50, user.getUsername())
+				&& checkData("Über mich", 255, user.getAbout())
+				&& checkData("Hobbies", 255, user.getHobbies())
+				&& checkData("Passwort", 255, user.getPassword());
+	}
+	
+	private boolean checkData(String description, int maxlength, String data) throws InputTooLongException {
+		int length = data.length();
+		if (maxlength < length) throw new InputTooLongException(description, maxlength,length);
+		else return true;
+	}
+
+	private void escapeHtmlInUser(User user) {
+		user.setAbout(HtmlUtils.htmlEscape(user.getAbout()));
+		user.setHobbies(HtmlUtils.htmlEscape(user.getHobbies()));
+		user.setUsername(HtmlUtils.htmlEscape(user.getUsername()));
 	}
 }
