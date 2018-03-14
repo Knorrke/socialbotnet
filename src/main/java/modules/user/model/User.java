@@ -12,9 +12,9 @@ import modules.util.Identicons;
 public class User {
 
 	private int id;
-	private String username, password;
-	private String hobbies;
-	private String about;
+	private String username="", password="";
+	private String hobbies="";
+	private String about="";
 
 
 	/**

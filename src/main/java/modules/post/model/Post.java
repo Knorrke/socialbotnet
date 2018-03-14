@@ -2,6 +2,7 @@ package modules.post.model;
 
 import java.awt.Image;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import modules.user.model.User;
@@ -9,13 +10,13 @@ import modules.user.model.User;
 public class Post {
 
 	private int id;
-	private String message;
+	private String message="";
 	private User user;
 	private User wall;
-	private String link;
+	private String link="";
 	private Image image;
 	private Timestamp publishingDate;
-	private List<User> likedBy;
+	private List<User> likedBy = new ArrayList<>();
 	
 	/**
 	 * @return the message

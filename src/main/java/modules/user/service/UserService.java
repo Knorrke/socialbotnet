@@ -72,8 +72,7 @@ public class UserService {
 	private boolean checkUserdataToLong(User user) throws InputTooLongException {
 		return checkData("Benutzername", 50, user.getUsername())
 				&& checkData("Über mich", 255, user.getAbout())
-				&& checkData("Hobbies", 255, user.getHobbies())
-				&& checkData("Passwort", 255, user.getPassword());
+				&& checkData("Hobbies", 255, user.getHobbies());
 	}
 	
 	private boolean checkData(String description, int maxlength, String data) throws InputTooLongException {
@@ -83,8 +82,8 @@ public class UserService {
 	}
 
 	private void escapeHtmlInUser(User user) {
+		user.setUsername(HtmlUtils.htmlEscape(user.getUsername()));
 		user.setAbout(HtmlUtils.htmlEscape(user.getAbout()));
 		user.setHobbies(HtmlUtils.htmlEscape(user.getHobbies()));
-		user.setUsername(HtmlUtils.htmlEscape(user.getUsername()));
 	}
 }

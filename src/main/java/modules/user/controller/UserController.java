@@ -7,8 +7,11 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.util.HtmlUtils;
 
+import config.Router;
 import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
@@ -21,6 +24,7 @@ import spark.Spark;
 
 public class UserController {
 
+	final static Logger logger = LoggerFactory.getLogger(UserController.class);
 	private UserService userService;
 	private PostService postService;
 
@@ -71,8 +75,10 @@ public class UserController {
 				MultiMap<String> params = new MultiMap<String>();
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				if (params.get("password").equals(params.get("password2"))) {
+					logger.debug("registration passwords match");
 					BeanUtils.populate(user, params);
 					userService.registerUser(user);
+					logger.debug("registration succeeded");
 					userService.addAuthenticatedUser(req, user);
 					res.redirect("/");
 					Spark.halt();
@@ -85,6 +91,7 @@ public class UserController {
 				model.put("error", e.getMessage());
 			} catch (Exception e) {
 				Spark.halt(501);
+				logger.error("Internal server error on registration");
 				return null;
 			}
 		}
