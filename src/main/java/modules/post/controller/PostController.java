@@ -113,7 +113,7 @@ public class PostController {
 				res.redirect("/pinnwand/" + authenticatedUser.getUsername());
 			}
 		} catch (Exception e) {
-			Spark.halt(501);
+			Spark.halt(500);
 			return null;
 		}
 
