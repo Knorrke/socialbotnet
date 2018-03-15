@@ -86,7 +86,7 @@ public class PostApiController {
 				post.setWall(authenticatedUser);
 			}
 		} catch (Exception e) {
-			Spark.halt(501);
+			Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
 			return null;
 		}
 		

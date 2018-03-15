@@ -9,9 +9,7 @@ import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.util.HtmlUtils;
 
-import config.Router;
 import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
@@ -42,7 +40,7 @@ public class UserController {
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				BeanUtils.populate(user, params);
 			} catch (Exception e) {
-				Spark.halt(501);
+				Spark.halt(500);
 				return null;
 			}
 			User authenticated = userService.checkUser(user);
@@ -90,7 +88,7 @@ public class UserController {
 			} catch(InputTooLongException e) {
 				model.put("error", e.getMessage());
 			} catch (Exception e) {
-				Spark.halt(501);
+				Spark.halt(500);
 				logger.error("Internal server error on registration");
 				return null;
 			}
@@ -150,7 +148,7 @@ public class UserController {
 			} catch(InputTooLongException e) {
 				model.put("error", e.getMessage());
 			} catch (Exception e) {
-				Spark.halt(501);
+				Spark.halt(500);
 				return null;
 			}
 		}

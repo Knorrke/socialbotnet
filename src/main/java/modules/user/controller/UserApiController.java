@@ -26,7 +26,7 @@ public class UserApiController {
 			UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 			BeanUtils.populate(user, params);
 		} catch (Exception e) {
-			Spark.halt(501, "Interner Fehler aufgetreten. Bitte melde das Problem!");
+			Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
 		}
 		return service.checkUser(user);
 	}
@@ -51,7 +51,7 @@ public class UserApiController {
 			newUser.setId(oldUser.getId());
 			
 		} catch (Exception e) {
-			Spark.halt(501, "Interner Fehler aufgetreten. Bitte melde das Problem!");
+			Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
 		}
 		try {
 			service.updateUser(oldUser, newUser);

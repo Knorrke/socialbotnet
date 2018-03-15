@@ -4,7 +4,7 @@ public class ResponseError {
 	private String error;
 
 	public ResponseError(String message, String... args) {
-		this.error = String.format(message, args);
+		this.error = String.format(message, (Object[]) args);
 	}
 
 	public ResponseError(Exception e) {

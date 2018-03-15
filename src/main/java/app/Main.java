@@ -12,7 +12,8 @@ import modules.user.service.UserService;
 @ComponentScan({ "config", "modules", "service" })
 public class Main {
     public static void main(String[] args) {
-    	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
+    	@SuppressWarnings("resource")
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
     	new WebConfig(ctx.getBean(PostService.class), ctx.getBean(UserService.class));
     	ctx.registerShutdownHook();
     }
