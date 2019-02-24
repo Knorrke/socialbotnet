@@ -8,48 +8,49 @@ import java.security.MessageDigest;
 
 public class Identicons {
 
-	public static byte[] hash(String input) {
-		try{
-		byte[] bytesOfMessage = input.getBytes("UTF-8");
+  public static byte[] hash(String input) {
+    try {
+      byte[] bytesOfMessage = input.getBytes("UTF-8");
 
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		return md.digest(bytesOfMessage);
-		} catch(Exception ignore){return null;}
-	}
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      return md.digest(bytesOfMessage);
+    } catch (Exception ignore) {
+      return null;
+    }
+  }
 
-	public static BufferedImage generateIdenticons(String text, int image_width, int image_height) {
-		int width = 5, height = 5;
+  public static BufferedImage generateIdenticons(String text, int image_width, int image_height) {
+    int width = 5, height = 5;
 
-		byte[] hash = hash(text);
-		
-		BufferedImage identicon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		WritableRaster raster = identicon.getRaster();
+    byte[] hash = hash(text);
 
-		int[] background = new int[] { 255, 255, 255, 0 };
-		int[] foreground = new int[] { hash[0] & 191, hash[1] & 191, hash[2] & 191, 255 };
+    BufferedImage identicon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    WritableRaster raster = identicon.getRaster();
 
-		for (int x = 0; x < width; x++) {
-			// Enforce horizontal symmetry
-			int i = x < 3 ? x : 4 - x;
-			for (int y = 0; y < height; y++) {
-				int[] pixelColor;
-				// toggle pixels based on bit being on/off
-				if ((hash[i] >> y & 1) == 1)
-					pixelColor = foreground;
-				else
-					pixelColor = background;
-				raster.setPixel(x, y, pixelColor);
-			}
-		}
+    int[] background = new int[] {255, 255, 255, 0};
+    int[] foreground = new int[] {hash[0] & 191, hash[1] & 191, hash[2] & 191, 255};
 
-		BufferedImage finalImage = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_ARGB);
+    for (int x = 0; x < width; x++) {
+      // Enforce horizontal symmetry
+      int i = x < 3 ? x : 4 - x;
+      for (int y = 0; y < height; y++) {
+        int[] pixelColor;
+        // toggle pixels based on bit being on/off
+        if ((hash[i] >> y & 1) == 1) pixelColor = foreground;
+        else pixelColor = background;
+        raster.setPixel(x, y, pixelColor);
+      }
+    }
 
-		// Scale image to the size you want
-		AffineTransform at = new AffineTransform();
-		at.scale(image_width / width, image_height / height);
-		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-		finalImage = op.filter(identicon, finalImage);
+    BufferedImage finalImage =
+        new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_ARGB);
 
-		return finalImage;
-	}
+    // Scale image to the size you want
+    AffineTransform at = new AffineTransform();
+    at.scale(image_width / width, image_height / height);
+    AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+    finalImage = op.filter(identicon, finalImage);
+
+    return finalImage;
+  }
 }

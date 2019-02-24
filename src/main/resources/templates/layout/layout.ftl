@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
     <title>${title} | SocialBotNet</title>
-    <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist für den Einsatz im Unterricht entwickelt worden."></meta>
+    <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden."></meta>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
