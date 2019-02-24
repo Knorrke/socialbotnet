@@ -30,10 +30,38 @@ a {
 a[href^="//"]:after, 
 a[href^="http://"]:after, 
 a[href^="https://"]:after {
-	content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);
+	content: url("/images/external_link.png");
 	margin: 0 0 0 5px;
 }
 
 a:hover {
 	text-decoration: underline;
+}
+
+.text-element {
+	padding: 5px 0 5px 15px;
+	border: 1px solid #000;
+	border-radius: 20px;
+	display: inline-block;
+}
+
+.text-element input, .text-element textarea {
+	border: none;
+	background-color: transparent;
+}
+
+.text-element .img-button {
+	background: none;
+	border: none;
+	vertical-align: middle;
+	cursor: pointer;
+	padding: 5px 20px;
+	margin: -5px 0;
+}
+
+button[type="submit"] {
+	background-color: #f2f2f2;
+	border: 1px solid #5F6368;
+	line-height: 27px;
+	border-radius: 6px;
 }

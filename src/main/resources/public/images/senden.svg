@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Ebene_1"
+   data-name="Ebene 1"
+   viewBox="0 0 435.16 251.1348"
+   version="1.1"
+   sodipodi:docname="senden.svg"
+   width="435.16"
+   height="251.1348"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata26">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview24"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="1.668772"
+     inkscape:cx="479.81989"
+     inkscape:cy="54.157154"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Ebene_1"
+     scale-x="1"
+     inkscape:object-paths="true" />
+  <defs
+     id="defs10">
+    <clipPath
+       id="clip-path">
+      <circle
+         cx="400"
+         cy="400"
+         r="400"
+         style="fill:none"
+         id="circle2" />
+    </clipPath>
+    <linearGradient
+       id="Unbenannter_Verlauf_66"
+       x1="404.70291"
+       y1="387.70291"
+       x2="139.7002"
+       y2="652.70569"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-opacity="0"
+         id="stop7" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="translate(-182.42,-274.4326)"
+     id="layer1"
+     style="fill:#1a1a1a">
+    <path
+       inkscape:connector-curvature="0"
+       id="path4718"
+       d="M 182.42,394.8784 617.58,274.4326 481.9456,525.5674 396.79017,468.55662 333.9176,525.3425 365.89655,448.44747 616.9394,274.852 333.43755,431.23984 325.472,523.4481 290.53879,426.59727 Z"
+       style="fill:#1a1a1a"
+       sodipodi:nodetypes="ccccccccccc" />
+  </g>
+</svg>

@@ -6,7 +6,7 @@
                 <a href="/user/profile/${post.user.username}">
                 ${post.user.username}
                 </a>
-                <#if !user?? && post.wall.username != post.user.username>
+                <#if post.wall.username != post.user.username>
                     an <a href="/user/profile/${post.wall.username}">
                 	${post.wall.username}
                 	</a> 

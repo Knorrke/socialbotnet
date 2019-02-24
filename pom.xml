@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.socialnetwork</groupId>
@@ -10,15 +11,16 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<spark.version>2.6.0</spark.version>
-		<spark.freemarker.version>2.5.5</spark.freemarker.version>
+		<spark.version>2.8.0</spark.version>
+		<spark.freemarker.version>2.7.1</spark.freemarker.version>
 		<freemarker.version>2.3.23</freemarker.version>
-		<spring.version>4.3.9.RELEASE</spring.version>
-		<hsqldb.version>2.4.0</hsqldb.version>
-		<dbcp.version>2.1.1</dbcp.version>
+		<spring.version>5.1.5.RELEASE</spring.version>
+		<hsqldb.version>2.4.1</hsqldb.version>
+		<dbcp.version>2.6.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
-		<commons.beanutils.version>1.9.2</commons.beanutils.version>
-		<sl4j.version>1.7.21</sl4j.version>
+		<commons.beanutils.version>1.9.3</commons.beanutils.version>
+		<sl4j.version>1.7.25</sl4j.version>
+		<maven-git-code-format.version>1.20</maven-git-code-format.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->
@@ -116,10 +118,11 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.1</version>
+			<version>2.8.5</version>
 		</dependency>
 	</dependencies>
 	<build>
+	<pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -129,7 +132,19 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>
+			</plugin>			
+		    <plugin>
+		      <groupId>com.cosium.code</groupId>
+		      <artifactId>maven-git-code-format</artifactId>
+		      <version>${maven-git-code-format.version}</version>
+		      <executions>
+		        <execution>
+		          <goals>
+		            <goal>install-hooks</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -153,5 +168,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		</pluginManagement>
 	</build>
 </project>
