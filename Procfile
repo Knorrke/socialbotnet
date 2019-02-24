@@ -1,1 +1,1 @@
-web: java -cp target/social-bot-net-1.0-jar-with-dependencies.jar app/Main
+web: java -jar target/social-bot-net-1.0-jar-with-dependencies.jar
