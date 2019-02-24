@@ -1,14 +1,14 @@
 package config;
 
 import static spark.Spark.port;
-import static spark.Spark.staticFileLocation;
+import static spark.Spark.staticFiles;
 
 import modules.post.service.PostService;
 import modules.user.service.UserService;
 
 public class WebConfig {
   public WebConfig(PostService postService, UserService userService) {
-    staticFileLocation("/public");
+    staticFiles.location("/public");
     port(getHerokuAssignedPort());
 
     new Router(postService, userService).setupRoutes();
