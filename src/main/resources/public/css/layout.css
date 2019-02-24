@@ -1,13 +1,12 @@
 body {
 	font-family: Roboto;
-	background: #4EA6ED;
 	padding: 0;
 	margin: 0;
+	background: #152c3f;
 }
 
 #root {
-	background-image: url("/images/background.jpg");
-	background-size: contain;
+	background: #4EA6ED;
 }
 
 .main {
@@ -25,7 +24,7 @@ body {
 }
 
 #side-content .colored {
-	background-color: #e4e4e4;
+	background-color: #f2f2f2;
 }
 
 .main .has-side-content {
@@ -34,7 +33,13 @@ body {
 	border-right: 2px #000D54 solid;
 }
 
+dt {
+	margin-top: 15px;
+}
 
+button {
+	cursor: pointer;
+}
 /********************
 * Header and Footer *
 ********************/

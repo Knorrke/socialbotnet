@@ -14,12 +14,21 @@
     <form action="/registrieren" method="post">
 	   <dl>
 	     <dt>Nutzername:
-	     <dd><input type="text" name="username" size="30" maxlength="50" value="${username!}">
+	     <dd>
+ 		    <span class="text-element">
+	     		<input type="text" name="username" size="30" maxlength="50" value="${username!}">
+	     	</span>
 	     <dt>Passwort:
-	     <dd><input type="password" name="password" size="30">
+	     <dd>
+		     <span class="text-element">
+		     	<input type="password" name="password" size="30">
+		     </span>
 	     <dt>Passwort wiederholen:
-	     <dd><input type="password" name="password2" size="30">
+	     <dd>
+		     <span class="text-element">
+			     <input type="password" name="password2" size="30">
+		     </span>
 	   </dl>
-	   <div class="actions"><input type="submit" value="Registrieren"></div>
+	   <div class="actions"><button type="submit">Registrieren</button></div>
 	 </form>
 </@layout.masterTemplate>

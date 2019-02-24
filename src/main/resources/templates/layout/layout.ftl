@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
+	<div id="loadOverlay" style="background-color:#4EA6ED; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
     <div id="root">
         <div class="header">
         	<div class="header-inner">

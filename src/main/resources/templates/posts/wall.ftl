@@ -1,4 +1,5 @@
 <#import "./post.ftl" as postLayout />
+<#import "../common/text-input.ftl" as textInput/>
 <#if message??>
 	<div class="success">
 		${message}
@@ -23,10 +24,7 @@
         <div class="media-body">
             <form class="form-horizontal" action="${action}" method="post">
                 <div class="input-group">
-                    <input type="text" name="message" class="form-control" required/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit"> Teilen </button>
-                    </span>
+                	<@textInput.show/>
                 </div>
             </form>
         </div>

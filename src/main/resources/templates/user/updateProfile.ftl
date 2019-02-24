@@ -14,14 +14,23 @@
     <form action="/user/update" method="post">
 	   <dl>
 	     <dt>Nutzername:
-	     <dd><input type="text" name="username" size="30" maxlength="50" value="${authenticatedUser.username!}">
+	     <dd>
+		     <span class="text-element">
+		     	<input type="text" name="username" size="30" maxlength="50" value="${authenticatedUser.username!}">
+		     </span>
 	   </dl>
 	   <dl>
 	     <dt>Hobbies:
-	     <dd><textarea name="hobbies" cols="30">${authenticatedUser.hobbies!}</textarea>
+	     <dd>
+		     <span class="text-element">
+		     	<textarea name="hobbies" cols="30" rows="4">${authenticatedUser.hobbies!}</textarea>
+	     	</span>
 	     <dt>&Uuml;ber mich:
-	     <dd><textarea name="about" cols="30">${authenticatedUser.about!}</textarea>
+	     <dd>
+		     <span class="text-element">
+			     <textarea name="about" cols="30" rows="4">${authenticatedUser.about!}</textarea>
+		     </span>
 	   </dl>
-	   <div class="actions"><input type="submit" value="Aktualisieren"></div>
+	   <div class="actions"><button type="submit">Aktualisieren</button></div>
 	 </form>
 </@layout.masterTemplate>
