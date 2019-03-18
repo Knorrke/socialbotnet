@@ -1,5 +1,6 @@
 package modules.user.controller;
 
+import java.util.List;
 import modules.error.InputTooLongException;
 import modules.user.model.User;
 import modules.user.service.UserService;
@@ -23,6 +24,8 @@ public class UserApiController {
     try {
       MultiMap<String> params = new MultiMap<String>();
       UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+      List<String> password = params.getOrDefault("password", params.getValues("passwort"));
+      params.put("password", password);
       BeanUtils.populate(user, params);
     } catch (Exception e) {
       Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");

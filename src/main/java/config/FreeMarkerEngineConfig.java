@@ -6,8 +6,9 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 public class FreeMarkerEngineConfig {
   public static FreeMarkerEngine getEngine() {
-    Configuration config = new Configuration(new Version(2, 3, 23));
+    Configuration config = new Configuration(new Version(2, 3, 28));
     config.setClassForTemplateLoading(FreeMarkerEngineConfig.class, "/templates");
+    config.setDefaultEncoding("UTF-8");
     return new FreeMarkerEngine(config);
   }
 }

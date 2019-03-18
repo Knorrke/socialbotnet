@@ -7,7 +7,6 @@ import modules.user.model.User;
 import modules.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
 import spark.Request;
 
 @Service
@@ -33,7 +32,6 @@ public class UserService {
 
   public void registerUser(User user) throws InputTooLongException {
     user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
-    escapeHtmlInUser(user);
     checkUserdataToLong(user);
     userDaoInterface.registerUser(user);
   }
@@ -59,7 +57,6 @@ public class UserService {
   }
 
   public void updateUser(User oldUser, User newUser) throws InputTooLongException {
-    escapeHtmlInUser(newUser);
     checkUserdataToLong(newUser);
     this.userDaoInterface.updateUser(oldUser, newUser);
   }
@@ -75,11 +72,5 @@ public class UserService {
     int length = data.length();
     if (maxlength < length) throw new InputTooLongException(description, maxlength, length);
     else return true;
-  }
-
-  private void escapeHtmlInUser(User user) {
-    user.setUsername(HtmlUtils.htmlEscape(user.getUsername()));
-    user.setAbout(HtmlUtils.htmlEscape(user.getAbout()));
-    user.setHobbies(HtmlUtils.htmlEscape(user.getHobbies()));
   }
 }

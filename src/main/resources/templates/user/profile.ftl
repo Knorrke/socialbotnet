@@ -1,3 +1,4 @@
+<#ftl output_format="XML">
 <#import "../layout/layout.ftl" as layout />
 <#assign pageTitle>
 <div><img src="${user.imageAsBase64}"></div>

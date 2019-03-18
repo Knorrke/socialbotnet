@@ -1,3 +1,4 @@
+<#ftl output_format="XML">
 <#import "./post.ftl" as postLayout />
 <#import "../common/text-input.ftl" as textInput/>
 <#if message??>

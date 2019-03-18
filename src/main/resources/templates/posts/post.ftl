@@ -1,3 +1,4 @@
+<#ftl output_format="XML">
 <#macro show post>
     <div class="media colored">
         <div class="media-body">

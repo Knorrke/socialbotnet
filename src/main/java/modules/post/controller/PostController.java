@@ -1,5 +1,6 @@
 package modules.post.controller;
 
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -104,10 +105,10 @@ public class PostController {
       String username = req.params("username");
       if (username != null) {
         post.setWall(userService.getUserbyUsername(username));
-        res.redirect("/pinnwand/" + username);
+        res.redirect("/pinnwand/" + URLEncoder.encode(username, "UTF-8"));
       } else {
         post.setWall(authenticatedUser);
-        res.redirect("/pinnwand/" + authenticatedUser.getUsername());
+        res.redirect("/pinnwand/" + URLEncoder.encode(authenticatedUser.getUsername(), "UTF-8"));
       }
     } catch (Exception e) {
       Spark.halt(500);

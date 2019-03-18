@@ -9,12 +9,12 @@ import modules.user.service.UserService;
 public class WebConfig {
   public WebConfig(PostService postService, UserService userService) {
     staticFiles.location("/public");
-    port(getHerokuAssignedPort());
-
+    staticFiles.expireTime(60 * 60 * 24 * 7);
+    port(getAssignedPort());
     new Router(postService, userService).setupRoutes();
   }
 
-  static int getHerokuAssignedPort() {
+  static int getAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
       return Integer.parseInt(processBuilder.environment().get("PORT"));

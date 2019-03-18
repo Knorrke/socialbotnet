@@ -7,7 +7,6 @@ import modules.post.model.Post;
 import modules.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
 
 @Service
 public class PostService {
@@ -30,7 +29,6 @@ public class PostService {
   }
 
   public void addPost(Post post) throws InputTooLongException {
-    escapeHtmlInPost(post);
     checkPostDataTooLong(post);
     postDaoInterface.insertPost(post);
   }
@@ -55,9 +53,5 @@ public class PostService {
     if (post.getMessage().length() > 240)
       throw new InputTooLongException("Nachricht", 240, post.getMessage().length());
     else return true;
-  }
-
-  private void escapeHtmlInPost(Post post) {
-    post.setMessage(HtmlUtils.htmlEscape(post.getMessage()));
   }
 }

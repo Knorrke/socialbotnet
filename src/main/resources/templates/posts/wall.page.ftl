@@ -1,3 +1,4 @@
+<#ftl output_format="XML">
 <#import "../layout/layout.ftl" as layout />
 <#if user??>
 	<#assign pageTitle>${user.username}s Pinnwand</#assign>

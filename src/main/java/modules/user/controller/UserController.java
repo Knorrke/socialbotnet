@@ -1,5 +1,6 @@
 package modules.user.controller;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +142,7 @@ public class UserController {
         userService.updateUser(authenticatedUser, user);
         userService.addAuthenticatedUser(req, user);
         model.put("success", "Profil erfolgreich aktualisiert");
-        res.redirect("/user/profile/" + user.getUsername());
+        res.redirect("/user/profile/" + URLEncoder.encode(user.getUsername(), "UTF-8"));
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {
