@@ -9,16 +9,20 @@ import modules.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDao implements PostDaoInterface {
 
   private NamedParameterJdbcTemplate template;
+  private SimpleJdbcInsert insertTemplate;
 
   @Autowired
   public PostDao(DataSource ds) {
     template = new NamedParameterJdbcTemplate(ds);
+    insertTemplate =
+        new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns("post_id");
   }
 
   @Override
@@ -116,10 +120,8 @@ public class PostDao implements PostDaoInterface {
     if (maximumReached) {
       return;
     }
-    String sql =
-        "INSERT INTO post (author_id, wall_id, text, pub_date) VALUES (:author_id, :wall_id, :text, :pub_date)";
-
-    template.update(sql, params);
+    Number generatedKey = insertTemplate.executeAndReturnKey(params);
+    post.setId(generatedKey.intValue());
   }
 
   @Override
