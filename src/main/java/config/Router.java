@@ -2,6 +2,8 @@ package config;
 
 import static spark.Spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import modules.post.controller.PostApiController;
 import modules.post.controller.PostController;
 import modules.post.service.PostService;
@@ -10,6 +12,7 @@ import modules.user.controller.UserController;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.JSONUtil;
+import modules.util.Renderer;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
@@ -55,6 +58,14 @@ public class Router {
     post("like/:post", postController::likePost);
     get("unlike/:post", postController::unlikePost);
     post("unlike/:post", postController::unlikePost);
+
+    get(
+        "/material",
+        (req, res) -> {
+          Map<String, Object> model = new HashMap<>();
+
+          return Renderer.render(model, "meta/material.ftl");
+        });
 
     path(
         "/api",

@@ -8,15 +8,19 @@
  	<meta charset="UTF-8" />
     <title>${title} | SocialBotNet</title>
     <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden." />
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32" />
-	<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16" />
 </head>
 <body>
 	<div id="loadOverlay" style="background-color:#4EA6ED; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
     <div id="root">
         <div class="header">
         	<div class="header-inner">
+	            <div id="brand">
+	                <a href="/"><img id="header-image" src="/assets/images/favicon-32x32.png">SocialBotNet</a>
+                	<a href="/material">Materialien</a>
+	            </div>
 	            <nav class="menu">
 	                <ul>
 	                    <li>
@@ -39,9 +43,6 @@
 		                </#if>
 		            </ul>
 		        </nav>
-	            <div id="brand">
-	                <a href="/">SocialBotNet</a>
-	            </div>
 	            <div style="clear: both;"></div>
             </div>
 		</div>
