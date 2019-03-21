@@ -17,11 +17,27 @@
     <div id="root">
         <div class="header">
         	<div class="header-inner">
-	            <div id="brand">
-	                <a href="/"><img id="header-image" src="/assets/images/favicon-32x32.png">SocialBotNet</a>
-                	<a href="/material">Materialien</a>
-	            </div>
-	            <nav class="menu">
+            	<div id="gi-header">
+	            	<a href="http://fg-bil.de">
+	            		<div id="gi-fg-bil">
+	            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
+	            			<span id="gi-fg-bil-title">
+	            				Fachgruppe<br>BIL
+            				</span>
+            			</div>
+        			</a>
+    			</div>
+	            <nav id="menu-meta">
+	            	<ul>
+	                	<li>
+	                		<a href="/"><img id="header-image" src="/assets/images/favicon-16x16.png">SocialBotNet</a>
+	                	</li>
+	                	<li>
+		                	<a href="/material">Materialien</a>
+	                	</li>
+                	</ul>
+	            </nav>
+	            <nav id="menu">
 	                <ul>
 	                    <li>
 	                        <a href="/">Startseite</a>

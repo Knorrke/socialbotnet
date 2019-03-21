@@ -35,7 +35,7 @@
         	<ul>
         		<li><a href="/assets/material/handout.pdf">Handout zu GET- und POST-Anfragen</a></li>
         		<li><a href="/assets/material/jsonHandout.pdf">Handout zum Arbeiten mit der JSON-Vorlage</a></li>
-        		<li><a href="/assets/material/jsonHandout.pdf">Handout zum Arbeiten mit der Objekt-Vorlage</a></li>
+        		<li><a href="/assets/material/objekteHandout.pdf">Handout zum Arbeiten mit der Objekt-Vorlage</a></li>
         	</ul>
         </div>
     </div>

@@ -52,7 +52,8 @@ button {
 }
 
 .header-inner {
-	margin: 0 5%;
+	margin: 0 5% 0 0;
+	position: relative;
 }
 
 .header a, .header a:visited, .header a:hover,
@@ -68,6 +69,49 @@ button {
 	color: hsla(0,0%,100%,.65);
 }
 
+/** GI logo **/
+#gi-header {
+	display: inline-block;
+	vertical-align: middle;
+}
+#gi-header a {
+	padding-left: 0;
+}
+#gi-header a:after {
+	display:none;
+}
+#gi-image {
+	height: 50px;
+	vertical-align: middle;
+}
+#gi-fg-bil-title {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 15px;
+}
+#gi-fg-bil {
+    padding: 10px 20px 10px;
+    display: inline-block;
+    color: rgb(74,74,74);
+    //border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+	background-color: white;
+    background-position: right bottom;
+}
+
+#gi-fg-bil:hover {
+	transition: all 0.5s ease;
+	background: linear-gradient(to bottom right, #eee 45%, white 55%);
+	background-size: 200% 200%;
+	background-position: left top;
+}
+
+/** navigation top left **/
+#menu-meta {
+	display: inline-block;
+	vertical-align: bottom;
+}
+
 .header a:hover #header-image {
 	background-color: hsla(0,0%,100%,.65);
 }
@@ -78,8 +122,14 @@ button {
 	border-radius: 100px;
 	margin-right: 5px;
 	padding: 5px;
-	width: 20px;
-	vertical-align: middle;
+	vertical-align: bottom;
+}
+
+/** navigation top right **/
+#menu {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;	
 }
 
 nav ul {
@@ -94,14 +144,12 @@ nav li {
     padding: 1em 0;
 }
 
+/** footer **/
+
 .footer {
 	background: #000b;
 	color: #fff;
 	position: relative;
 	margin: 0;
 	padding: 25px 50px 5px;
-}
-#brand {
-	float: left;
-    padding: 1em 0;
 }
