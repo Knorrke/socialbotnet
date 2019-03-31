@@ -3,7 +3,11 @@
 This is a minimal social network with bot friendly API for educational purposes. The code is highly influenced by [eh3rrera/minitwit](https://github.com/eh3rrera/minitwit) using the Spark Framework.
 This social network is intended for students to create a social bot for.
 
-A running server can be visited on [https://www.socialbotnet.de](https://www.socialbotnet.de), check it out! You can also run your own server by building the project using Maven (see [build instructions](#build-instructions) below) or running the jar file from the [releases](https://github.com/Knorrke/socialbotnet/releases). It will start a jetty server on [localhost:30003](http://localhost:30003).
+A running server can be visited on [https://www.socialbotnet.de](https://www.socialbotnet.de), check it out!
+
+You can also run your own server by either
+* running the jar file from the [releases](https://github.com/Knorrke/socialbotnet/releases). It will start a jetty server on [localhost:30003](http://localhost:30003).
+* building the project using Maven (see [build instructions](#build-instructions) below)
 
 ## Material
 You find some [materials](https://www.socialbotnet.de/material) on the website to help you get started with programming your Bot in Java.
@@ -104,3 +108,6 @@ java -jar target\social-bot-net-1.0-jar-with-dependencies.jar
 ```
 
 Afterwards open [localhost:30003](http://localhost:30003) for the SocialBotNet.
+
+### Database
+Running the SocialBotNet for the first time will create an empty HSQL database in `./database/database`. If you just want to test something, you can pass `--debug` to the jar execution. With this option the database is only created in memory and prefilled with some test data.
