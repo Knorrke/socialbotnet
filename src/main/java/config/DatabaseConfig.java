@@ -20,7 +20,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 @Configuration
 public class DatabaseConfig {
   /** Set to true to use in-memory database * */
-  public static boolean DEBUG_MODE = false;
+  private static boolean DEBUG_MODE = false;
 
   static final Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
@@ -81,6 +81,12 @@ public class DatabaseConfig {
     }
   }
 
+  /**
+   * Sets the debug mode (default false). To enable debug database call this before creating the
+   * database.
+   *
+   * @param debug
+   */
   public static void setDebugMode(boolean debug) {
     DEBUG_MODE = debug;
   }
