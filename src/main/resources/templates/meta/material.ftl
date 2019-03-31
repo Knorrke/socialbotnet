@@ -20,8 +20,8 @@
         <div class="media-body">
         	Die Projektvorlagen stellen eine Klasse <code>NetzwerkVerbindung</code> zur Verf&uuml;gung, die den Verbindungsaufbau und die Verarbeitung von Datenstr&ouml;men abnimmt.
         	<ul>
-        		<li><a href="/assets/material/JSON-Vorlage.zip">Projekt nur mit JSON</a> &mdash; In diesem Projekt muss man die JSON-Daten direkt als JSON verarbeiten. Das ist etwas anspruchsvoller, aber funktioniert auch mit APIs von anderen Websiten.</li>
-        		<li><a href="/assets/material/Objekte-Vorlage.zip">Projekt mit Objekten</a> &mdash; In diesem Projekt steht eine Hilfsklasse zur Verf&uuml;gung, die die JSON-Antworten in richtige Objekte &uuml;bersetzt. Der Code ist dadurch anschaulicher</li>
+        		<li><a href="/assets/material/json-vorlage.zip">Projekt nur mit JSON</a> &mdash; In diesem Projekt muss man die JSON-Daten direkt als JSON verarbeiten. Das ist etwas anspruchsvoller, aber funktioniert auch mit APIs von anderen Websiten.</li>
+        		<li><a href="/assets/material/objekte-vorlage.zip">Projekt mit Objekten</a> &mdash; In diesem Projekt steht eine Hilfsklasse zur Verf&uuml;gung, die die JSON-Antworten in richtige Objekte &uuml;bersetzt. Der Code ist dadurch anschaulicher</li>
         	</ul>
         </div>
     </div>
@@ -34,8 +34,8 @@
         	Die Handouts stellen die notwendige Theorie dar und f&uuml;hren Beispiele zur Anwendung im SocialBotNet vor.
         	<ul>
         		<li><a href="/assets/material/handout.pdf">Handout zu GET- und POST-Anfragen</a></li>
-        		<li><a href="/assets/material/jsonHandout.pdf">Handout zum Arbeiten mit der JSON-Vorlage</a></li>
-        		<li><a href="/assets/material/objekteHandout.pdf">Handout zum Arbeiten mit der Objekt-Vorlage</a></li>
+        		<li><a href="/assets/material/json-handout.pdf">Handout zum Arbeiten mit der JSON-Vorlage</a></li>
+        		<li><a href="/assets/material/objekte-handout.pdf">Handout zum Arbeiten mit der Objekt-Vorlage</a></li>
         	</ul>
         </div>
     </div>
