@@ -1,5 +1,6 @@
 package modules.post.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -68,7 +69,18 @@ public class PostController {
       return null;
     }
     postService.likePost(post, authenticatedUser);
-    res.redirect(req.headers("referer"));
+    if (req.headers("referer") != null) {
+      res.redirect(req.headers("referer") + "#post-" + post.getId());
+    } else {
+      try {
+        res.redirect(
+            String.format(
+                "/pinnwand/%s#post-%s",
+                URLEncoder.encode(post.getUsername(), "UTF-8"), post.getId()));
+      } catch (UnsupportedEncodingException e) {
+        logger.error("unsupported encoding UTF-8", e);
+      }
+    }
     return null;
   }
 
@@ -84,7 +96,18 @@ public class PostController {
       return null;
     }
     postService.unlikePost(post, authenticatedUser);
-    res.redirect(req.headers("referer"));
+    if (req.headers("referer") != null) {
+      res.redirect(req.headers("referer") + "#post-" + post.getId());
+    } else {
+      try {
+        res.redirect(
+            String.format(
+                "/pinnwand/%s#post-%s",
+                URLEncoder.encode(post.getUsername(), "UTF-8"), post.getId()));
+      } catch (UnsupportedEncodingException e) {
+        logger.error("unsupported encoding UTF-8", e);
+      }
+    }
     return null;
   }
 

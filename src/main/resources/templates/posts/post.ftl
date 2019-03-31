@@ -1,6 +1,6 @@
 <#ftl output_format="XML">
 <#macro show post>
-    <div class="media colored">
+    <div id="post-${post.id?c}" class="media colored">
         <div class="media-body">
             <h4 class="media-heading">
                 <img src="${post.user.imageAsBase64}" width="30px" style="vertical-align:middle">
@@ -31,9 +31,9 @@
 			</#assign>
 			<#if authenticatedUser??>
 				<#if likedByAuthenticatedUser>
-					<a href="/unlike/${post.id}" style="margin-right:10px">Gef&auml;llt mir nicht mehr</a>
+					<a href="/unlike/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir nicht mehr</a>
 				<#else>
-					<a href="/like/${post.id}" style="margin-right:10px">Gef&auml;llt mir</a>
+					<a href="/like/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir</a>
 				</#if>
 			</#if>
 			${likes}
