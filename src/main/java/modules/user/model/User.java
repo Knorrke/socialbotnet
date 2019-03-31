@@ -10,7 +10,7 @@ import modules.util.Identicons;
 public class User {
 
   private int id;
-  private String username = "", password = "";
+  private String username = "", password = null;
   private String hobbies = "";
   private String about = "";
 

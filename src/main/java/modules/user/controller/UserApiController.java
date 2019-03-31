@@ -2,6 +2,7 @@ package modules.user.controller;
 
 import java.util.List;
 import modules.error.InputTooLongException;
+import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -37,7 +38,7 @@ public class UserApiController {
     return service.getAllUsers();
   }
 
-  public User updateProfile(Request req, Response res) {
+  public Object updateProfile(Request req, Response res) {
     User newUser = new User();
     User oldUser = new User();
     try {
@@ -57,12 +58,14 @@ public class UserApiController {
       newUser.setId(oldUser.getId());
 
     } catch (Exception e) {
-      Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
+      res.status(500);
+      return new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!");
     }
     try {
       service.updateUser(oldUser, newUser);
     } catch (InputTooLongException e) {
-      Spark.halt(400, e.getMessage());
+      res.status(400);
+      return new ResponseError(e);
     }
     return oldUser;
   }

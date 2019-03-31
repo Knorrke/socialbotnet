@@ -63,7 +63,7 @@ public class UserService {
 
   private boolean checkUserdataToLong(User user) throws InputTooLongException {
     return checkData("Benutzername", 50, user.getUsername())
-        && checkData("�ber mich", 255, user.getAbout())
+        && checkData("Ueber mich", 255, user.getAbout())
         && checkData("Hobbies", 255, user.getHobbies());
   }
 

@@ -2,6 +2,7 @@ package modules.post.controller;
 
 import java.sql.Timestamp;
 import modules.error.InputTooLongException;
+import modules.error.ResponseError;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -11,7 +12,6 @@ import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 public class PostApiController {
   private PostService postService;
@@ -36,6 +36,11 @@ public class PostApiController {
     String username = req.params("username");
     User profileUser = userService.getUserbyUsername(username);
 
+    if (profileUser == null) {
+      res.status(400);
+      return new ResponseError("Der User %s existiert nicht", username);
+    }
+
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
     if (req.queryParams("sortby") != null && req.queryParams("sortby").equals("likes")) {
       return postService.getMostLikedUserWallPosts(profileUser, limit);
@@ -49,7 +54,16 @@ public class PostApiController {
     UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-    Post post = postService.getPostById(Integer.parseInt(params.getString("postid")));
+    if (!params.containsKey("postid")) {
+      res.status(400);
+      return new ResponseError("Parameter postid fehlt in der Anfrage.");
+    }
+    int id = Integer.parseInt(params.getString("postid"));
+    Post post = postService.getPostById(id);
+    if (post == null) {
+      res.status(400);
+      return new ResponseError("Der Post mit id %s existiert nicht", id);
+    }
     postService.likePost(post, authenticatedUser);
     return post;
   }
@@ -59,7 +73,17 @@ public class PostApiController {
     UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-    Post post = postService.getPostById(Integer.parseInt(params.getString("postid")));
+    if (!params.containsKey("postid")) {
+      res.status(400);
+      return new ResponseError("Parameter postid fehlt in der Anfrage.");
+    }
+    int id = Integer.parseInt(params.getString("postid"));
+    Post post = postService.getPostById(id);
+    if (post == null) {
+      res.status(400);
+      return new ResponseError("Der Post mit id %s existiert nicht", id);
+    }
+
     postService.unlikePost(post, authenticatedUser);
     return post;
   }
@@ -70,6 +94,10 @@ public class PostApiController {
     try { // populate post attributes by params
       MultiMap<String> params = new MultiMap<String>();
       UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+      if (!params.containsKey("message")) {
+        res.status(400);
+        return new ResponseError("Parameter message fehlt in der Anfrage.");
+      }
       BeanUtils.populate(post, params);
 
       User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
@@ -82,14 +110,15 @@ public class PostApiController {
         post.setWall(authenticatedUser);
       }
     } catch (Exception e) {
-      Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
-      return null;
+      res.status(500);
+      return new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!");
     }
 
     try {
       postService.addPost(post);
     } catch (InputTooLongException e) {
-      Spark.halt(400, e.getMessage());
+      res.status(400);
+      return new ResponseError(e);
     }
     return post;
   }

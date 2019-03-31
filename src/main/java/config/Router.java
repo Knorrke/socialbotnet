@@ -4,6 +4,7 @@ import static spark.Spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import modules.error.ResponseError;
 import modules.post.controller.PostApiController;
 import modules.post.controller.PostController;
 import modules.post.service.PostService;
@@ -18,7 +19,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
-import spark.Spark;
+import spark.Response;
 
 public class Router {
   static final Logger logger = LoggerFactory.getLogger(Router.class);
@@ -71,7 +72,7 @@ public class Router {
         "/api",
         () -> {
           before("/*", (req, res) -> logger.info("Received api call to " + req.pathInfo()));
-          before("/*", (req, res) -> checkCorrectRequestType(req));
+          before("/*", this::checkCorrectRequestType);
           before(
               "/*",
               (req, res) -> {
@@ -82,16 +83,23 @@ public class Router {
                   String password = params.getString("password");
 
                   if (password == null || username == null) {
+                    res.type("application/json");
                     halt(
                         401,
-                        "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.");
+                        JSONUtil.jsonify(
+                            new ResponseError(
+                                "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.")));
                   }
 
                   User authenticated = userApiController.login(req, res);
 
                   if (authenticated == null) {
-                    Spark.halt(
-                        401, "Login fehlgeschlagen. Falscher Nutzername oder falsches Passwort.");
+                    res.type("application/json");
+                    halt(
+                        401,
+                        JSONUtil.jsonify(
+                            new ResponseError(
+                                "Login fehlgeschlagen. Falscher Nutzername oder falsches Passwort.")));
                   }
 
                   logger.info("Authentication successfull");
@@ -109,14 +117,26 @@ public class Router {
           post("/like", postApiController::likePost, JSONUtil::jsonify);
           post("/unlike", postApiController::unlikePost, JSONUtil::jsonify);
 
+          notFound(
+              (req, res) -> {
+                if (req.pathInfo().startsWith("/api/")) {
+                  res.type("application/json");
+                  return JSONUtil.jsonify(
+                      new ResponseError("Diese Adresse existiert in der API nicht"));
+                } else {
+                  res.type("text/html");
+                  return "<html><body><h1>404 Not Found</h1></body></html>";
+                }
+              });
           after(
+              "/*",
               (req, res) -> {
                 res.type("application/json");
               });
         });
   }
 
-  private boolean checkCorrectRequestType(Request req) {
+  private boolean checkCorrectRequestType(Request req, Response res) {
     String requestMethod = req.requestMethod();
     String path = req.pathInfo();
 
@@ -126,7 +146,13 @@ public class Router {
     if (!requestMethod.equals("POST")) {
       for (String routePOST : routesPOSTRegex) {
         if (path.matches(routePOST)) {
-          halt(400, "Falscher Anfragemodus. Erwartet wurde POST, erhalten wurde " + requestMethod);
+          res.type("application/json");
+          halt(
+              400,
+              JSONUtil.jsonify(
+                  new ResponseError(
+                      "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
+                      "POST", requestMethod)));
           return false;
         }
       }
@@ -135,7 +161,13 @@ public class Router {
     if (!requestMethod.equals("GET")) {
       for (String routeGET : routesGETRegex) {
         if (path.matches(routeGET)) {
-          halt(400, "Falscher Anfragemodus. Erwartet wurde GET, erhalten wurde " + requestMethod);
+          res.type("application/json");
+          halt(
+              400,
+              JSONUtil.jsonify(
+                  new ResponseError(
+                      "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
+                      "GET", requestMethod)));
           return false;
         }
       }
