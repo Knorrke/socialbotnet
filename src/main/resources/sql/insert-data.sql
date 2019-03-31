@@ -204,6 +204,7 @@ INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,6,  'This is a p
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,5,  'This is a post written by user user010 to user005', TIMESTAMP '2014-10-16 09:40:11');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,4,  'This is a post written by user user010 to user004', TIMESTAMP '2014-07-10 08:38:31');
 INSERT INTO post(author_id, wall_id, text, pub_date) VALUES (10,2,  'This is a post written by user user010 to user002', TIMESTAMP '2014-01-04 11:56:22');
+INSERT INTO post(post_id, author_id, wall_id, text, pub_date) VALUES (1205, 1,1,  'This is a post id above 1000 because of issue #5', TIMESTAMP '2014-01-04 11:56:22');
 
 INSERT INTO likes(post_id, user_id) VALUES (1, 1);
 INSERT INTO likes(post_id, user_id) VALUES (1, 2);
