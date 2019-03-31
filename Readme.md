@@ -104,7 +104,7 @@ mvn clean package
 ```
 and run it
 ```
-java -jar target\social-bot-net-1.0-jar-with-dependencies.jar
+java -jar target\social-bot-net-1.1-jar-with-dependencies.jar
 ```
 
 Afterwards open [localhost:30003](http://localhost:30003) for the SocialBotNet.

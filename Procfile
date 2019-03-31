@@ -1,1 +1,1 @@
-web: java -jar target/social-bot-net-1.0-jar-with-dependencies.jar
+web: java -jar target/socialbotnet-1.1-jar-with-dependencies.jar
