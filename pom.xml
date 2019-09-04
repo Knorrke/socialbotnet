@@ -19,7 +19,7 @@
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<dbcp.version>2.6.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
-		<commons.beanutils.version>1.9.3</commons.beanutils.version>
+		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.25</sl4j.version>
 		<maven-git-code-format.version>1.20</maven-git-code-format.version>
 	</properties>
