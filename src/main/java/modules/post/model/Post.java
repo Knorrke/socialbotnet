@@ -12,7 +12,6 @@ public class Post {
   private String message = "";
   private User user;
   private User wall;
-  private String link = "";
   private Image image;
   private Timestamp publishingDate;
   private List<User> likedBy = new ArrayList<>();
@@ -25,16 +24,6 @@ public class Post {
   /** @param message the message to set */
   public void setMessage(String message) {
     this.message = message;
-  }
-
-  /** @return the link */
-  public String getLink() {
-    return link;
-  }
-
-  /** @param link the link to set */
-  public void setLink(String link) {
-    this.link = link;
   }
 
   /** @return the image */
