@@ -17,26 +17,28 @@
     <div id="root">
         <div class="header">
         	<div class="header-inner">
-            	<div id="gi-header">
-	            	<a href="http://fg-bil.de">
-	            		<div id="gi-fg-bil">
-	            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
-	            			<span id="gi-fg-bil-title">
-	            				Fachgruppe<br>BIL
-            				</span>
-            			</div>
-        			</a>
-    			</div>
-	            <nav id="menu-meta">
-	            	<ul>
-	                	<li>
-	                		<a href="/"><img id="header-image" src="/assets/images/favicon-16x16.png">SocialBotNet</a>
-	                	</li>
-	                	<li>
-		                	<a href="/material">Materialien</a>
-	                	</li>
-                	</ul>
-	            </nav>
+        		<div>
+	            	<div id="gi-header">
+		            	<a href="http://fg-bil.de">
+		            		<div id="gi-fg-bil">
+		            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
+		            			<span id="gi-fg-bil-title">
+		            				Fachgruppe<br>BIL
+	            				</span>
+	            			</div>
+	        			</a>
+	    			</div>
+		            <nav id="menu-meta">
+		            	<ul>
+		                	<li>
+		                		<a href="/"><img id="header-image" src="/assets/images/favicon-16x16.png">SocialBotNet</a>
+		                	</li>
+		                	<li>
+			                	<a href="/material">Materialien</a>
+		                	</li>
+	                	</ul>
+		            </nav>
+		        </div>
 	            <nav id="menu">
 	                <ul>
 	                    <li>
@@ -59,7 +61,6 @@
 		                </#if>
 		            </ul>
 		        </nav>
-	            <div style="clear: both;"></div>
             </div>
 		</div>
 		<div class="pageTitle">
