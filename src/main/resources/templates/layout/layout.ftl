@@ -2,9 +2,9 @@
         <!DOCTYPE html
                 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  	<meta charset="UTF-8" />
     <title>${title} | SocialBotNet</title>
     <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden." />
@@ -19,7 +19,7 @@
         	<div class="header-inner">
         		<div>
 	            	<div id="gi-header">
-		            	<a href="http://fg-bil.de">
+		            	<a href="https://fg-bil.gi.de/">
 		            		<div id="gi-fg-bil">
 		            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
 		            			<span id="gi-fg-bil-title">
@@ -35,6 +35,9 @@
 		                	</li>
 		                	<li>
 			                	<a href="/material">Materialien</a>
+		                	</li>
+		                	<li>
+			                	<a href="/didaktik">Informationen für Lehrkräfte</a>
 		                	</li>
 	                	</ul>
 		            </nav>
@@ -73,6 +76,7 @@
             <p>
                 SocialBotNet &mdash; Ein botfreundliches soziales Netzwerk
     			<span style="float: right;">
+    				<a href="/impressum">Impressum</a>
 					<a href="//github.com/Knorrke/socialbotnet">Quellcode</a>
 				</span>
             </p>

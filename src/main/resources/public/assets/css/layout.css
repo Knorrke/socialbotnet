@@ -80,9 +80,7 @@ button {
 #gi-header a {
 	padding-left: 0;
 }
-#gi-header a:after {
-	display:none;
-}
+
 #gi-image {
 	height: 50px;
 	vertical-align: middle;

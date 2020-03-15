@@ -68,6 +68,20 @@ public class Router {
           return Renderer.render(model, "meta/material.ftl");
         });
 
+    get(
+        "/didaktik",
+        (req, res) -> {
+          Map<String, Object> model = new HashMap<>();
+          return Renderer.render(model, "meta/didactic.ftl");
+        });
+
+    get(
+        "/impressum",
+        (req, res) -> {
+          Map<String, Object> model = new HashMap<>();
+          return Renderer.render(model, "meta/impress.ftl");
+        });
+
     path(
         "/api",
         () -> {

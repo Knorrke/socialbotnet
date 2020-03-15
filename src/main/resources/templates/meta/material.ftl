@@ -15,7 +15,7 @@
     
     <div class="media media-info">
         <div class="media-heading">
-        	<h3 class="media-title">Projektvorlagen f&uuml;r Java</h3>
+        	<h2 class="media-title">Projektvorlagen f&uuml;r Java</h2>
         </div>
         <div class="media-body">
         	Die Projektvorlagen stellen eine Klasse <code>NetzwerkVerbindung</code> zur Verf&uuml;gung, die den Verbindungsaufbau und die Verarbeitung von Datenstr&ouml;men abnimmt.
@@ -28,7 +28,7 @@
     
 	<div class="media media-info">
         <div class="media-heading">
-        	<h3 class="media-title">Handouts</h3>
+        	<h2 class="media-title">Handouts</h2>
         </div>
         <div class="media-body">
         	Die Handouts stellen die notwendige Theorie dar und f&uuml;hren Beispiele zur Anwendung im SocialBotNet vor.
