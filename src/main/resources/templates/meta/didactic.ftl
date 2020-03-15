@@ -34,7 +34,7 @@
         	<h2 class="media-title">Überblick der Didaktik</h2>
         </div>
         <div class="media-body">
-        	<i>Comming soon.</i>
+        	<i>Coming soon</i>
         </div>
     </div>
     <div class="media media-info">
