@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400");
 @import url("./layout.css");
 @import url("./content.css");
+@import url("./tabs.css");
 
 #loadOverlay {
 	display:none;

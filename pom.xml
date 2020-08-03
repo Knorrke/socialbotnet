@@ -21,7 +21,7 @@
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.25</sl4j.version>
-		<maven-git-code-format.version>1.20</maven-git-code-format.version>
+		<git-code-format-maven-plugin.version>2.1</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->
@@ -127,8 +127,8 @@
 		<plugins>
 		    <plugin>
 		      <groupId>com.cosium.code</groupId>
-		      <artifactId>maven-git-code-format</artifactId>
-		      <version>${maven-git-code-format.version}</version>
+		      <artifactId>git-code-format-maven-plugin</artifactId>
+		      <version>${git-code-format-maven-plugin.version}</version>
 		      <executions>
 		        <execution>
 		          <goals>
