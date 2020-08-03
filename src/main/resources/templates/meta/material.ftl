@@ -15,8 +15,8 @@
     
     <div class="media media-info">
 	    <div class="tabbed">
-			<input  id="java" type="radio" name="language" />
-			<input checked="checked" id="python" type="radio" name="language" />
+			<input checked="checked" id="java" type="radio" name="language" />
+			<input id="python" type="radio" name="language" />
 		
 			<nav>
 				<label for="java">Java</label>
