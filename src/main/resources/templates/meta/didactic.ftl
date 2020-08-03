@@ -33,7 +33,7 @@
         </div>
         <div class="media-body">
         	<h3>Java</h3>
-        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:
+        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:
         	 <ul>
         	 	<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
         	 	<li> der einfache Bot nur mit JSON zum Vergleich , </li>
@@ -41,7 +41,7 @@
         	 </ul>
     	 	</p>
     	 	<h3>Python</h3>
-    	 	<p> Hier kann ein <a href="/assets/material/python/socialbot-example">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
+    	 	<p> Hier kann ein <a href="/assets/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
     	 	
     	 	<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
     	 	<h3>JavaScript</h3>
