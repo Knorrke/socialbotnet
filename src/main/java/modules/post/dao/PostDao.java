@@ -50,11 +50,10 @@ public class PostDao implements PostDaoInterface {
         "SELECT post.*, u.username, u.user_id, w.username as wall_name "
             + "FROM (post JOIN users u ON post.author_id = u.user_id ) "
             + "LEFT OUTER JOIN users w ON post.wall_id = w.user_id "
+            + "JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id "
             + "WHERE post.wall_id = :user "
-            + "ORDER BY "
-            + "(SELECT COUNT(likes.user_id) FROM post p JOIN likes on p.post_id = likes.post_id "
-            + " WHERE p.post_id = post.post_id) desc, "
-            + "post.pub_date DESC LIMIT :limit";
+            + "ORDER BY o.likeCount desc, post.pub_date desc "
+            + "LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
     populateLikedBy(posts);
     return posts;
@@ -83,10 +82,9 @@ public class PostDao implements PostDaoInterface {
         "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name "
             + "FROM (post JOIN users u ON post.author_id = u.user_id ) "
             + "LEFT OUTER JOIN users w ON post.wall_id = w.user_id "
-            + "ORDER BY "
-            + "(SELECT COUNT(likes.user_id) FROM post p JOIN likes on p.post_id = likes.post_id "
-            + " WHERE p.post_id = post.post_id) desc, "
-            + "post.pub_date desc LIMIT :limit";
+            + "JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id "
+            + "ORDER BY o.likeCount desc, post.pub_date desc "
+            + "LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
     populateLikedBy(posts);
     return posts;
