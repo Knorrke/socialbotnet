@@ -94,7 +94,6 @@ button {
     padding: 10px 20px 10px;
     display: inline-block;
     color: rgb(74,74,74);
-    //border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
 	background-color: white;
     background-position: right bottom;

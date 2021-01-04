@@ -5,6 +5,23 @@
 	text-align: center;
 }
 
+.warning {
+	background-color: #ffcc66;
+	border-radius: 20px;
+	position: relative;
+	padding-left: 70px !important;
+}
+
+.warning::before {
+	content: "\26A0";
+	display: inline-block;
+	position: absolute;
+	left: 20px;
+	top: 0;
+	color: red;
+	font-size: 30pt;
+}
+
 .colored {
 	background: rgba(255, 255, 255, 0.95);
 	border-radius: 20px;
