@@ -1,6 +1,14 @@
 <#ftl output_format="XML">
 <#import "./post.ftl" as postLayout />
 <#import "../common/text-input.ftl" as textInput/>
+
+<#assign filters>
+	<div id="filters">
+		<a class="colored <#if (sortby!"")=="trending">selected</#if>" href="?sortby=trending">Trending</a>
+		<a class="colored <#if (sortby!"")!="trending" && (sortby!"")!="likes">selected</#if>" href="?sortby=time">Neueste</a>
+		<a class="colored <#if (sortby!"")=="likes">selected</#if>" href="?sortby=likes">Meiste Likes</a>
+	</div>
+</#assign>
 <#if message??>
 	<div class="success">
 		${message}
@@ -32,22 +40,8 @@
     </div>
 </#if>
 <div id="media-list" class="row">
-	<div style="float:right; margin-top:20px">
-		Sortieren nach:
-			<#if (sortby!"")=="likes">Meiste Likes<#else><a href="?sortby=likes">Meiste Likes</a></#if>,
-			<#if (sortby!"")=="time">Datum<#else><a href="?sortby=time">Datum</a></#if>,
-			<#if (sortby!"")=="trending">Trending<#else><a href="?sortby=trending">Trending</a></#if>
-	</div>
-	<#if mostliked??>
-		<h2>Meiste Likes</h2>
-		<#list mostliked as post>
-			<@postLayout.show post=post/>
-		<#else>
-			<hr/>
-			<div class="well">
-				Hier gibt es noch keine Posts mit Likes.
-			</div>
-		</#list>
+	<#if !(trending?? & posts??)>
+		${filters}
 	</#if>
 	<#if trending??>
 		<h2>Top Trends</h2>
@@ -62,6 +56,18 @@
 	</#if>
 	<#if trending?? & posts??>
 		<hr/>
+		${filters}
+	</#if>
+	<#if mostliked??>
+		<h2>Meiste Likes</h2>
+		<#list mostliked as post>
+			<@postLayout.show post=post/>
+		<#else>
+			<hr/>
+			<div class="well">
+				Hier gibt es noch keine Posts mit Likes.
+			</div>
+		</#list>
 	</#if>
     <#if posts??>
     	<h2>Neueste Posts</h2>

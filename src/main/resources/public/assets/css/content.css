@@ -55,6 +55,26 @@ a:hover {
 	text-decoration: underline;
 }
 
+#filters {
+	float: right;
+	margin-top: 20px;
+}
+
+#filters a {
+	padding: 10px;
+	border-radius: 50px;
+}
+#filters a.selected {
+	background-color: #0d4d80;
+	color: #fff;
+}
+
+#filters a:hover, #filters a:active {
+	background-color: #126fb9;
+	color: #fff;
+	text-decoration: none;
+}
+
 .text-element {
 	padding: 5px 0 5px 15px;
 	border: 1px solid #000;
