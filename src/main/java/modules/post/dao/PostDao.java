@@ -19,11 +19,11 @@ public class PostDao implements PostDaoInterface {
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
-  // Rank posts by:  likes / (1+days)^gravity
   private final String WITH_SCORE;
 
   @Autowired
   public PostDao(DataSource ds) {
+    // Rank posts by:  likes / (1+days)^gravity
     WITH_SCORE =
         DatabaseConfig.getDatabaseType().equalsIgnoreCase("postgresql")
             ? "(likeCount / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
