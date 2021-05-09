@@ -20,8 +20,8 @@
         </div>
         <div class="media-body">
         	Benjamin Knorr<br />
-        	Schopenhauerstraße 66 <br />
-        	80807 München <br />
+        	Woferlstraße 26 <br />
+        	81737 München <br />
         	<br />
         	E-Mail: <@mailObfuscator.generate coded="XHqii.z@eVh.xC" key="jXZzDcVKupIrCatAUP7dsR9fYi6wTovE4x2JNS1lyQOqGnghMkBbWFmL850He3" />
     	</div>

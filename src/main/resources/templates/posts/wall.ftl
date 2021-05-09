@@ -34,8 +34,9 @@
 <div id="media-list" class="row">
 	<div style="float:right; margin-top:20px">
 		Sortieren nach:
-			<#if (sortby!"")=="likes">Likes<#else><a href="?sortby=likes">Likes</a></#if>,
-			<#if (sortby!"")=="time">Datum<#else><a href="?sortby=time">Datum</a></#if>
+			<#if (sortby!"")=="likes">Meiste Likes<#else><a href="?sortby=likes">Meiste Likes</a></#if>,
+			<#if (sortby!"")=="time">Datum<#else><a href="?sortby=time">Datum</a></#if>,
+			<#if (sortby!"")=="trending">Trending<#else><a href="?sortby=trending">Trending</a></#if>
 	</div>
 	<#if mostliked??>
 		<h2>Meiste Likes</h2>
@@ -48,7 +49,18 @@
 			</div>
 		</#list>
 	</#if>
-	<#if mostliked?? & posts??>
+	<#if trending??>
+		<h2>Top Trends</h2>
+		<#list trending as post>
+			<@postLayout.show post=post />
+		<#else>
+			<hr/>
+			<div class="well">
+				Hier gibt es noch keine Posts in den Trends.
+			</div>
+		</#list>
+	</#if>
+	<#if trending?? & posts??>
 		<hr/>
 	</#if>
     <#if posts??>

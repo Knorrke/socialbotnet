@@ -117,6 +117,10 @@ public class UserController {
       List<Post> posts = postService.getMostLikedUserWallPosts(profileUser, 50);
       model.put("mostliked", posts);
       model.put("sortby", "likes");
+    } else if (sortBy != null && sortBy.equals("trending")) {
+      List<Post> posts = postService.getTrendingUserWallPosts(profileUser, 50);
+      model.put("trending", posts);
+      model.put("sortby", "trending");
     } else {
       List<Post> posts = postService.getLatestUserWallPosts(profileUser, 50);
       model.put("posts", posts);

@@ -9,9 +9,13 @@ public interface PostDaoInterface {
 
   List<Post> getMostLikedUserWallPosts(User user, int limit);
 
-  List<Post> getMostLikedWallPosts(int limit);
+  List<Post> getTrendingUserWallPosts(User user, int limit);
 
   List<Post> getLatestWallPosts(int limit);
+
+  List<Post> getMostLikedWallPosts(int limit);
+
+  List<Post> getTrendingWallPosts(int limit);
 
   void insertPost(Post m);
 
