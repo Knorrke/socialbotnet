@@ -1,5 +1,6 @@
 package modules.post.dao;
 
+import config.DatabaseConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,15 @@ public class PostDao implements PostDaoInterface {
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
+  private final String WITH_SCORE;
+
   @Autowired
   public PostDao(DataSource ds) {
+    // Rank posts by:  likes / (1+days)^gravity
+    WITH_SCORE =
+        DatabaseConfig.getDatabaseType().equalsIgnoreCase("postgresql")
+            ? "(likeCount / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
+            : "(likeCount / POWER(1 + DATEDIFF(NOW(), post.pub_date), 2)) as score ";
     template = new NamedParameterJdbcTemplate(ds);
     insertTemplate =
         new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns("post_id");
@@ -59,6 +67,26 @@ public class PostDao implements PostDaoInterface {
     return posts;
   }
 
+  @Override
+  public List<Post> getTrendingUserWallPosts(User user, int limit) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("user", user.getId());
+    params.put("limit", limit);
+
+    String sql =
+        "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name, "
+            + WITH_SCORE
+            + "FROM (post JOIN users u ON post.author_id = u.user_id ) "
+            + "LEFT OUTER JOIN users w ON post.wall_id = w.user_id "
+            + "JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id "
+            + "WHERE post.wall_id = :user "
+            + "ORDER BY score Desc, o.likeCount desc, post.pub_date desc "
+            + "LIMIT :limit";
+    List<Post> posts = template.query(sql, params, postsMapper);
+    populateLikedBy(posts);
+    return posts;
+  }
+
   private void populateLikedBy(List<Post> posts) {
     posts.stream().forEach(this::populateLikedBy);
   }
@@ -84,6 +112,25 @@ public class PostDao implements PostDaoInterface {
             + "LEFT OUTER JOIN users w ON post.wall_id = w.user_id "
             + "JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id "
             + "ORDER BY o.likeCount desc, post.pub_date desc "
+            + "LIMIT :limit";
+    List<Post> posts = template.query(sql, params, postsMapper);
+    populateLikedBy(posts);
+    return posts;
+  }
+
+  @Override
+  public List<Post> getTrendingWallPosts(int limit) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("limit", limit);
+
+    // Rank posts by:  likes / (1+days)^gravity
+    String sql =
+        "SELECT post.*, u.username, u.user_id, w.user_id as wall_id, w.username as wall_name, "
+            + WITH_SCORE
+            + "FROM (post JOIN users u ON post.author_id = u.user_id ) "
+            + "LEFT OUTER JOIN users w ON post.wall_id = w.user_id "
+            + "JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id "
+            + "ORDER BY score Desc, o.likeCount desc, post.pub_date desc "
             + "LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
     populateLikedBy(posts);

@@ -24,9 +24,11 @@ public class PostApiController {
 
   public Object getPosts(Request req, Response res) {
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
-
-    if (req.queryParams("sortby") != null && req.queryParams("sortby").equals("likes")) {
+    String sortby = req.queryParams("sortby");
+    if (sortby != null && sortby.equals("likes")) {
       return postService.getMostLikedWallPosts(limit);
+    } else if (sortby != null && sortby.equals("trending")) {
+      return postService.getTrendingWallPosts(limit);
     } else {
       return postService.getLatestWallPosts(limit);
     }
@@ -42,8 +44,11 @@ public class PostApiController {
     }
 
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
-    if (req.queryParams("sortby") != null && req.queryParams("sortby").equals("likes")) {
+    String sortby = req.queryParams("sortby");
+    if (sortby != null && sortby.equals("likes")) {
       return postService.getMostLikedUserWallPosts(profileUser, limit);
+    } else if (sortby != null && sortby.equals("trending")) {
+      return postService.getTrendingUserWallPosts(profileUser, limit);
     } else {
       return postService.getLatestUserWallPosts(profileUser, limit);
     }

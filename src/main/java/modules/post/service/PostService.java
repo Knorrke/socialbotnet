@@ -20,12 +20,20 @@ public class PostService {
     return postDaoInterface.getMostLikedUserWallPosts(user, limit);
   }
 
+  public List<Post> getTrendingUserWallPosts(User user, int limit) {
+    return postDaoInterface.getTrendingUserWallPosts(user, limit);
+  }
+
   public List<Post> getLatestWallPosts(int limit) {
     return postDaoInterface.getLatestWallPosts(limit);
   }
 
   public List<Post> getMostLikedWallPosts(int limit) {
     return postDaoInterface.getMostLikedWallPosts(limit);
+  }
+
+  public List<Post> getTrendingWallPosts(int limit) {
+    return postDaoInterface.getTrendingWallPosts(limit);
   }
 
   public void addPost(Post post) throws InputTooLongException {

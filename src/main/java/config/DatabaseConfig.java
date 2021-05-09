@@ -22,11 +22,13 @@ public class DatabaseConfig {
   /** Set to true to use in-memory database * */
   private static boolean DEBUG_MODE = false;
 
+  private static String databaseType;
   static final Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
   @Bean
   public DataSource dataSource() throws Exception {
     if (System.getenv("JDBC_DATABASE_URL") != null) {
+      databaseType = "postgresql";
       String dbUrl = System.getenv("JDBC_DATABASE_URL");
       String username = System.getenv("JDBC_DATABASE_USERNAME");
       String password = System.getenv("JDBC_DATABASE_PASSWORD");
@@ -40,6 +42,7 @@ public class DatabaseConfig {
       createSchemeIfNotExists(basicDataSource, "sql/create-db-postgresql.sql");
       return basicDataSource;
     } else {
+      databaseType = "hsqldb";
       if (DEBUG_MODE) {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase db =
@@ -89,5 +92,9 @@ public class DatabaseConfig {
    */
   public static void setDebugMode(boolean debug) {
     DEBUG_MODE = debug;
+  }
+
+  public static String getDatabaseType() {
+    return databaseType;
   }
 }
