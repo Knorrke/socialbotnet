@@ -71,8 +71,8 @@ a:hover {
 	color: var(--color-content);
 }
 .button.selected {
-	background-color: var(--bg-primary-selected);
-	color: var(--color-primary-selected);
+	background-color: var(--bg-primary);
+	color: var(--color-primary);
 }
 
 a.button:hover, a.button:active,

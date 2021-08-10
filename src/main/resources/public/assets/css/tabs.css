@@ -21,39 +21,42 @@
 }
 
 #java:checked ~ figure .javaTab,
-#python:checked ~ figure .pythonTab { display: block; }
+#python:checked ~ figure .pythonTab,
+#js:checked ~ figure .jsTab { display: block; }
 
 .tabbed nav label {
 	float: left;
 	padding: 15px 15px;
 	border-top: 1px solid silver;
 	border-right: 1px solid silver;
-	background: hsl(210,50%,50%);
-	color: #eee;
+	background: var(--bg-primary);
+	color: var(--color-primary);
 	width: 250px;
 	text-align: center;
 }
 
 .tabbed nav label:nth-child(1) { border-left: 1px solid silver; }
-.tabbed nav label:hover { background: hsl(210,50%,40%); }
+.tabbed nav label:hover { background: var(--bg-secondary); }
 
 .tabbed nav label:active,
 #java:checked ~ nav label[for="java"],
-#python:checked ~ nav label[for="python"] {
-	background: white;
-	color: #111;
+#python:checked ~ nav label[for="python"],
+#js:checked ~ nav label[for="js"] {
+	background: var(--bg-main);
+	color: var(--color-content);
 	position: relative;
 	border-bottom: none;
 }
 
 #java:checked ~ nav label[for="java"]:after,
-#python:checked ~ nav label[for="python"]:after {
+#python:checked ~ nav label[for="python"]:after,
+#js:checked ~ nav label[for="js"]:after {
 	content: "";
 	display: block;
 	position: absolute;
 	height: 2px;
 	width: 100%;
-	background: white;
+	background: var(--bg-main);
 	left: 0;
 	bottom: -1px;
 }

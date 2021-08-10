@@ -31,22 +31,43 @@
         <div class="media-heading">
         	<h2 class="media-title">Beispielprojekte</h2>
         </div>
-        <div class="media-body">
-        	<h3>Java</h3>
-        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:
-        	 <ul>
-        	 	<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
-        	 	<li> der einfache Bot nur mit JSON zum Vergleich , </li>
-        	 	<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org">api.openweathermap.org</a>.
-        	 </ul>
-    	 	</p>
-    	 	<h3>Python</h3>
-    	 	<p> Hier kann ein <a href="/assets/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
-    	 	
-    	 	<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
-    	 	<h3>JavaScript</h3>
-        	<p> Der Einsatz von JavaScript ist ebenfalls möglich, wie der <a href="https://glitch.com/~automatic-glimmer-albacore">exemplarische JavaScript-Client</a> von <a href="https://wi-wissen.de">Julian Dorn</a> zeigt.
-        </div>
+	    <div class="tabbed">
+			<input checked="checked" id="java" type="radio" name="language" />
+			<input id="python" type="radio" name="language" />
+			<input id="js" type="radio" name="language" />
+		
+			<nav>
+				<label for="java">Java</label>
+				<label for="python">Python</label>
+				<label for="js">JavaScript</label>
+			</nav>		   
+
+			<figure>
+				<div class="javaTab">
+			        <div class="media-body">
+			        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:
+			        	 <ul>
+			        	 	<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
+			        	 	<li> der einfache Bot nur mit JSON zum Vergleich , </li>
+			        	 	<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org">api.openweathermap.org</a>.
+			        	 </ul>
+			    	 	</p>
+			        </div>
+				</div>
+				<div class="pythonTab">
+			        <div class="media-body">
+			    	 	<p> Hier kann ein <a href="/assets/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
+			    	 	
+			    	 	<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
+			        </div>
+				</div>
+				<div class="jsTab">
+					<div class="media-body">
+			        	<p> Der Einsatz von JavaScript ist ebenfalls möglich, wie der <a href="https://glitch.com/~automatic-glimmer-albacore">exemplarische JavaScript-Client</a> von <a href="https://wi-wissen.de">Julian Dorn</a> zeigt.</p>
+					</div>
+				</div>
+			</figure>
+		</div>
     </div>    
     <div class="media media-info">
         <div class="media-heading">
