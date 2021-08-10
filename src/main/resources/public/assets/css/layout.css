@@ -1,22 +1,25 @@
 :root {
-    --bg-header: #000022;
-    --color-header: #fff;
-    --hover-header: #f26419;
-    --bg-main: #4EA6ED;
+	/** using color palette https://coolors.co/f0f7fa-8ecae6-219ebc-023047-ffb703-fb8500 */
+    --bg-layout: #023047;
+    --color-layout: #fff;
+    --hover-header: #fb8500;
+    --bg-main: #fff;
     --bg-content: #f2f2f2;
-    --color-content: #fff;
-    --bg-media: rgba(255, 255, 255, 0.95);
-    --bg-primary-selected: #0d4d80;
+    --color-content: #000;
+    --bg-media: #fff;
+    --bg-primary-selected: #219ebc;
     --color-primary-selected: #fff;
-    --bg-primary-hover: #126fb9;
-    --color-primary-hover: #fff;
+    --bg-secondary: #8ecae6;
+    --color-secondary: #fff;
+    --bg-light: #f0f7fa;
+    --color-light: #000;
 }
 
 body {
 	font-family: Roboto;
 	padding: 0;
 	margin: 0;
-	background: var(--bg-header);
+	background: var(--bg-layout);
 }
 
 #root {
@@ -28,17 +31,14 @@ body {
 	min-height: 500px;
 	margin: 0 auto 20px;
 	padding: 10px 30px;
+	color: var(--color-content);
 }
 
 #side-content {
 	float: right;
 	width: 230px;
 	padding-left: 20px;
-	border-left: 2px #000D54 solid;
-}
-
-#side-content .colored {
-	background-color: var(--bg-content);
+	border-left: 2px var(--bg-layout) solid;
 }
 
 .main .has-side-content {
@@ -54,13 +54,14 @@ dt {
 button {
 	cursor: pointer;
 }
+
 /********************
 * Header and Footer *
 ********************/
 
 .header {
-	background: var(--bg-header);
-	color: var(--color-header);
+	background: var(--bg-layout);
+	color: var(--color-layout);
 	position: relative;
 	margin: 0;
 }
@@ -75,7 +76,7 @@ button {
 
 .header a, .header a:visited, .header a:hover,
 .footer a, .footer a:visited, .footer a:hover {
-	color: var(--color-header);
+	color: var(--color-layout);
 	text-decoration: none;
 	padding: .25em .75em;
 	transition: color .3s ease;
@@ -107,10 +108,11 @@ button {
 #gi-fg-bil {
     padding: 10px 20px 10px;
     display: inline-block;
-    color: var(--bg-header);
+    color: var(--bg-layout);
     border-bottom-right-radius: 100px;
-	background-color: white;
+	background-color: var(--color-layout);
     background-position: right bottom;
+	border-bottom: 1px solid var(--bg-layout);
 }
 
 #gi-fg-bil:hover {
@@ -160,8 +162,8 @@ nav li {
 /** footer **/
 
 .footer {
-	background: var(--bg-header);;
-	color: var(--color-header);
+	background: var(--bg-layout);
+	color: var(--color-layout);
 	position: relative;
 	margin: 0;
 	padding: 25px 50px 5px;

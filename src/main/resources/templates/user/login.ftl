@@ -24,6 +24,6 @@
 			 	<input type="password" name="password" size="30">
 			 </span>
 	   </dl>
-	   <div class="actions"><button type="submit">Anmelden</button></div>
+	   <div class="actions"><button class="button colored" type="submit"><i class="far fa-user"></i> Anmelden</button></div>
 	 </form>
 </@layout.masterTemplate>
