@@ -1,16 +1,30 @@
+:root {
+    --bg-header: #000022;
+    --color-header: #fff;
+    --hover-header: #f26419;
+    --bg-main: #4EA6ED;
+    --bg-content: #f2f2f2;
+    --color-content: #fff;
+    --bg-media: rgba(255, 255, 255, 0.95);
+    --bg-primary-selected: #0d4d80;
+    --color-primary-selected: #fff;
+    --bg-primary-hover: #126fb9;
+    --color-primary-hover: #fff;
+}
+
 body {
 	font-family: Roboto;
 	padding: 0;
 	margin: 0;
-	background: #152c3f;
+	background: var(--bg-header);
 }
 
 #root {
-	background: #4EA6ED;
+	background: var(--bg-main);
 }
 
 .main {
-	width: 80%;
+	max-width: 1000px;
 	min-height: 500px;
 	margin: 0 auto 20px;
 	padding: 10px 30px;
@@ -24,7 +38,7 @@ body {
 }
 
 #side-content .colored {
-	background-color: #f2f2f2;
+	background-color: var(--bg-content);
 }
 
 .main .has-side-content {
@@ -45,8 +59,8 @@ button {
 ********************/
 
 .header {
-	background: #000b;
-	color: #fff;
+	background: var(--bg-header);
+	color: var(--color-header);
 	position: relative;
 	margin: 0;
 }
@@ -61,7 +75,7 @@ button {
 
 .header a, .header a:visited, .header a:hover,
 .footer a, .footer a:visited, .footer a:hover {
-	color: #fafafa;
+	color: var(--color-header);
 	text-decoration: none;
 	padding: .25em .75em;
 	transition: color .3s ease;
@@ -69,7 +83,7 @@ button {
 
 .header a:hover,
 .footer a:hover {
-	color: hsla(0,0%,100%,.65);
+	color: var(--hover-header);
 }
 
 /** GI logo **/
@@ -93,7 +107,7 @@ button {
 #gi-fg-bil {
     padding: 10px 20px 10px;
     display: inline-block;
-    color: rgb(74,74,74);
+    color: var(--bg-header);
     border-bottom-right-radius: 100px;
 	background-color: white;
     background-position: right bottom;
@@ -146,8 +160,8 @@ nav li {
 /** footer **/
 
 .footer {
-	background: #000b;
-	color: #fff;
+	background: var(--bg-header);;
+	color: var(--color-header);
 	position: relative;
 	margin: 0;
 	padding: 25px 50px 5px;

@@ -1,12 +1,5 @@
 package modules.user.model;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-import javax.imageio.ImageIO;
-import modules.util.Identicons;
-
 public class User {
 
   private int id;
@@ -64,19 +57,7 @@ public class User {
     this.about = about;
   }
 
-  public String getImageAsBase64() {
-    BufferedImage icon = Identicons.generateIdenticons(username, 100, 100);
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try {
-      ImageIO.write(icon, "png", baos);
-      baos.flush();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    byte[] data = baos.toByteArray();
-    byte[] encoded = Base64.getEncoder().encode(data);
-    String base64String = new String(encoded);
-    return "data:image/png;base64," + base64String;
+  public String getImage() {
+    return String.format("https://avatars.dicebear.com/api/bottts/%s.svg?width=%d", username, 100);
   }
 }

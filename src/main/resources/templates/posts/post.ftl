@@ -3,7 +3,7 @@
     <div id="post-${post.id?c}" class="media colored">
         <div class="media-body">
             <h4 class="media-heading">
-                <img src="${post.user.imageAsBase64}" width="30px" style="vertical-align:middle">
+                <img src="${post.user.image}" width="30px" style="vertical-align:middle">
                 <a href="/user/profile/${post.user.username}">
                 ${post.user.username}
                 </a>

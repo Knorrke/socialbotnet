@@ -23,7 +23,7 @@
 }
 
 .colored {
-	background: rgba(255, 255, 255, 0.95);
+	background: var(--bg-media);
 	border-radius: 20px;
 }
 
@@ -65,13 +65,13 @@ a:hover {
 	border-radius: 50px;
 }
 #filters a.selected {
-	background-color: #0d4d80;
-	color: #fff;
+	background-color: var(--bg-primary-selected);
+	color: var(--color-primary-selected);;
 }
 
 #filters a:hover, #filters a:active {
-	background-color: #126fb9;
-	color: #fff;
+	background-color: var(--bg-primary-hover);
+	color: var(--color-primary-hover);
 	text-decoration: none;
 }
 
