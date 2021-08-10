@@ -1,7 +1,7 @@
 <#ftl output_format="XML">
 <#import "../layout/layout.ftl" as layout />
 <#assign pageTitle>
-<div><img src="${user.imageAsBase64}"></div>
+<div><img class="profile-pic" src="${user.image}"></div>
 <div>${user.username}s Profil</span>
 </#assign>
 

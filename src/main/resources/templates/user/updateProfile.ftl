@@ -31,6 +31,6 @@
 			     <textarea name="about" cols="30" rows="4">${authenticatedUser.about!}</textarea>
 		     </span>
 	   </dl>
-	   <div class="actions"><button type="submit">Aktualisieren</button></div>
+	   <div class="actions"><button class="button colored" type="submit"><i class="far fa-save"></i> Aktualisieren</button></div>
 	 </form>
 </@layout.masterTemplate>

@@ -4,9 +4,21 @@
 
 <#assign filters>
 	<div id="filters">
-		<a class="colored <#if (sortby!"")=="trending">selected</#if>" href="?sortby=trending">Trending</a>
-		<a class="colored <#if (sortby!"")!="trending" && (sortby!"")!="likes">selected</#if>" href="?sortby=time">Neueste</a>
-		<a class="colored <#if (sortby!"")=="likes">selected</#if>" href="?sortby=likes">Meiste Likes</a>
+		<#if (sortby!"")=="trending">
+			<span class="button colored selected"><i class="fas fa-fire"></i> Trending</span>
+		<#else>
+			<a class="button colored" href="?sortby=trending"><i class="fas fa-fire"></i> Trending</a>
+		</#if>
+		<#if (sortby!"")!="trending" && (sortby!"")!="likes">
+			<span class="button colored selected"><i class="fas fa-history"></i> Neueste</span>
+		<#else>
+			<a class="button colored" href="?sortby=time"><i class="fas fa-history"></i> Neueste</a>
+		</#if>
+		<#if (sortby!"")=="likes">
+			<span class="button colored selected"><i class="fas fa-crown"></i> Meiste Likes</span>
+		<#else>
+			<a class="button colored" href="?sortby=likes"><i class="fas fa-crown"></i> Meiste Likes</a>
+		</#if>
 	</div>
 </#assign>
 <#if message??>
@@ -44,7 +56,7 @@
 		${filters}
 	</#if>
 	<#if trending??>
-		<h2>Top Trends</h2>
+		<h2><i class="fas fa-fire"></i> Top 3 Trends</h2>
 		<#list trending as post>
 			<@postLayout.show post=post />
 		<#else>
@@ -59,7 +71,7 @@
 		${filters}
 	</#if>
 	<#if mostliked??>
-		<h2>Meiste Likes</h2>
+		<h2><i class="fas fa-crown"></i> Meiste Likes</h2>
 		<#list mostliked as post>
 			<@postLayout.show post=post/>
 		<#else>
@@ -70,7 +82,7 @@
 		</#list>
 	</#if>
     <#if posts??>
-    	<h2>Neueste Posts</h2>
+    	<h2><i class="fas fa-history"></i> Neueste Posts</h2>
         <#list posts as post>
         	<@postLayout.show post=post/>
         <#else>

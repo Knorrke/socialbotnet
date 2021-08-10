@@ -11,9 +11,10 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32" />
 	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16" />
+	<script src="https://kit.fontawesome.com/ca5415b411.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div id="loadOverlay" style="background-color:#4EA6ED; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
+	<div id="loadOverlay" style="background-color:#fff; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
     <div id="root">
         <div class="header">
         	<div class="header-inner">
@@ -59,7 +60,7 @@
 		                        <a href="/registrieren">Registrieren</a>
 		                    </li>
 		                    <li>
-		                        <a href="/login">Anmelden</a>
+		                        <a href="/login"><i class="far fa-user"></i>  Anmelden</a>
 		                    </li>
 		                </#if>
 		            </ul>
