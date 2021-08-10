@@ -49,10 +49,11 @@ h1, h2, h3, h4, h5, h6 {
 a {
 	text-decoration: none;
 }
-.footer a[href^="//"]:after, 
-.footer a[href^="http://"]:after, 
-.footer a[href^="https://"]:after {
-	content: url("/assets/images/external_link.png");
+a:not(.prevent-external)[href^="//"]:after, 
+a:not(.prevent-external)[href^="http://"]:after, 
+a:not(.prevent-external)[href^="https://"]:after {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f35d";
+	font-size: 10pt;
 	margin: 0 0 0 5px;
 }
 
@@ -71,8 +72,8 @@ a:hover {
 	color: var(--color-content);
 }
 .button.selected {
-	background-color: var(--bg-primary-selected);
-	color: var(--color-primary-selected);
+	background-color: var(--bg-primary);
+	color: var(--color-primary);
 }
 
 a.button:hover, a.button:active,

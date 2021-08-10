@@ -7,12 +7,16 @@
     --bg-content: #f2f2f2;
     --color-content: #000;
     --bg-media: #fff;
-    --bg-primary-selected: #219ebc;
-    --color-primary-selected: #fff;
+    --bg-primary: #219ebc;
+    --color-primary: #fff;
     --bg-secondary: #8ecae6;
     --color-secondary: #fff;
     --bg-light: #f0f7fa;
     --color-light: #000;
+}
+
+html {
+	line-height: 1.5;
 }
 
 body {
