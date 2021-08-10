@@ -1,6 +1,7 @@
 # SocialBotNet
 
-[english version below](#english-version)
+[English version below.](#english-version)  
+
 [SocialBotNet.de](https://www.socialbotnet.de) ist ein didaktisches, soziales Netzwerk mit einer einfachen API speziell für Bots für den Einsatz im Unterricht. Der Code orientiert sich an [eh3rrera/minitwit](https://github.com/eh3rrera/minitwit) und verwendet Verwendung das SparkJava Frameworks.
 
 Du kannst auch deinen eigenen Server starten, indem du
