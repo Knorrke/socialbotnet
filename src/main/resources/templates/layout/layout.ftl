@@ -20,7 +20,7 @@
         	<div class="header-inner">
         		<div>
 	            	<div id="gi-header">
-		            	<a href="https://fg-bil.gi.de/">
+		            	<a class="prevent-external" href="https://fg-bil.gi.de/">
 		            		<div id="gi-fg-bil">
 		            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
 		            			<span id="gi-fg-bil-title">
@@ -78,7 +78,7 @@
                 SocialBotNet &mdash; Ein botfreundliches soziales Netzwerk
     			<span style="float: right;">
     				<a href="/impressum">Impressum</a>
-					<a href="//github.com/Knorrke/socialbotnet">Quellcode</a>
+					<a href="//github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer" >Quellcode</a>
 				</span>
             </p>
         </div>
