@@ -1,10 +1,7 @@
 <#macro masterTemplate pageTitle="Willkommen im SocialBotNet" title=pageTitle colored=true>
-        <!DOCTYPE html
-                PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  	<meta charset="UTF-8" />
     <title>${title} | SocialBotNet</title>
     <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden." />
@@ -22,7 +19,7 @@
 	            	<div id="gi-header">
 		            	<a class="prevent-external" href="https://fg-bil.gi.de/">
 		            		<div id="gi-fg-bil">
-		            			<img id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
+		            			<img alt="Logo der Gesellschaft für Informatik" id="gi-image" src="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png">
 		            			<span id="gi-fg-bil-title">
 		            				Fachgruppe<br>BIL
 	            				</span>
@@ -32,7 +29,7 @@
 		            <nav id="menu-meta">
 		            	<ul>
 		                	<li>
-		                		<a href="/"><img id="header-image" src="/assets/images/favicon-16x16.png">SocialBotNet</a>
+		                		<a href="/"><img id="header-image" src="/assets/images/favicon-16x16.png" alt="Logo SocialBotNet.de">SocialBotNet</a>
 		                	</li>
 		                	<li>
 			                	<a href="/material">Materialien</a>

@@ -4,12 +4,18 @@
 
 [SocialBotNet.de](https://www.socialbotnet.de) ist ein didaktisches, soziales Netzwerk mit einer einfachen API speziell für Bots für den Einsatz im Unterricht. Der Code orientiert sich an [eh3rrera/minitwit](https://github.com/eh3rrera/minitwit) und verwendet Verwendung das SparkJava Frameworks.
 
-Du kannst auch deinen eigenen Server starten, indem du
-* die jar-Datei aus den [releases](https://github.com/Knorrke/socialbotnet/releases) startest. Diese startet einen jetty-Server auf [localhost:30003](http://localhost:30003).
-* Mit nur einem Klick: [![Deploy auf Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)
-* Richte es auf deinem eigenen Webserver ein.
+## Eigener Server
+Es ist möglich, das SocialBotNet lokal oder mit einem Account bei [Heroku](https://heroku.com) selbst bereitzustellen.
 
-**Details dazu findest du unten im Abschnitt ["Eigenen Server einrichten"](#eigenen-server-einrichten).**
+* Für den lokalen Server muss die .jar-Datei aus den [releases](https://github.com/Knorrke/socialbotnet/releases) heruntergeladen und über den folgenden Befehl gestartet werden.
+```sh
+$ java -jar pfad/zur/socialbotnet-1.1-jar-with-dependencies.jar
+```
+Dieser Befehlt startet einen jetty-Server auf [localhost:30003](http://localhost:30003).
+* Auf Heroku lässt sich der Server mit nur einem Klick erstellen: [![Deploy auf Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)  
+**Einschränkungen**: Die kostenlose Datenbank ist beschränkt auf 10.000 Einträge (User, Posts und Likes) und die Anwendung wird nach 30 Minuten Inaktivität in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert.
+
+Es ist auch möglich, das SocialBotNet komplett auf einem eigenen Server mittels Dokku zu hosten. Details zur Einrichtung sind unten im Abschnitt ["Eigenen Server einrichten"](#eigenen-server-einrichten).
 
 ## Material
 Auf der Webseite findest [Projektvorlagen und Handouts](https://www.socialbotnet.de/material) sowie [Beispielprojekte und didaktische Informationen](https://www.socialbotnet.de/didaktik).
@@ -42,7 +48,7 @@ Die folgenden HTTP-GET Anfragen werden unterstützt:
 - `/api/posts`: Liefert die Posts. Sie können mit dem GET-Parameter `sortby` nach `likes`, `time` (default) oder `trending` sortiert werden. Die Anzahl der Posts kann mit dem Parameter `limit` verändert werden (default ist 50).  
 **Parameter:** `sortby` (optional), `limit` (optional)
 **Beispiel Ergebnis**: Anfrage an`/api/posts?sortby=likes&limit=1`
-```
+```json
  {
     "id": 3,
     "message": "This is a post written by user user001 to user004",
@@ -86,8 +92,10 @@ Die folgenden HTTP-Post Anfragen werden unterstützt:
 **Parameter:** `username`, `password`, `postid`
 
 ## Eigenen Server einrichten
-### Builden der .jar-Datei mit Maven (optional)
-**Hinweis: Du kannst diesen Schritt überspringen und die Datei aus den [Releases](https://github.com/Knorrke/socialbotnet/releases) herunterladen.** 
+### Alternative 1: Jar-Datei lokal starten
+Lade die .jar-Datei aus den [Releases](https://github.com/Knorrke/socialbotnet/releases) oder build sie selbst mit Maven.
+
+#### (Optional): Builden der .jar-Datei mit Maven
 Klone das Projekt in ein lokales Verzeichnis
 ```
 git clone https://github.com/Knorrke/socialbotnet.git
@@ -99,24 +107,24 @@ Wenn du eine IDE wie Eclipse verwendest, die Maven unterstützt, kannst du einfa
 mvn clean package
 ```
 
-### .Jar-Datei lokal starten .jar file locally
-Nachdem du die .jar-Datei heruntergeladen oder mit Maven gebuildet hast, starte sie mit dem Befehl:
+#### Starten der jar Datei
+Wenn du die .jar-Datei hast, starte sie mit dem Befehl:
 
-```
-java -jar Pfad\zu\socialbotnet-1.1-jar-with-dependencies.jar
+```sh
+$ java -jar Pfad\zu\socialbotnet-1.1-jar-with-dependencies.jar
 ```
 (Maven generiert die .jar-Datei in `target\socialbotnet-1.1-jar-with-dependencies.jar`
 
 Öffne anschließend [localhost:30003](http://localhost:30003) für das SocialBotNet.
 
-#### Database
+#### Was ist mit der Datenbank, wenn man es lokal startet?
 Beim ersten Starten wird eine leere HSQL-Datenbank in `./database/database` erzeugt. Falls du nur etwas testen möchtest, kannst du `--debug` bei der Ausführung anhängen. Dadurch wird nur eine Datenbank zur Laufzeit mit initialen, vorgefertigten Testdaten verwendet.
 
-### SocialBotNet auf Heroku deployen
+### Alternative 2: SocialBotNet auf Heroku deployen
 Mit nur einem Klick kannst du das SocialBotNet auf heroku starten:
 [![Deploy auf Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)
 
-### SocialBotNet auf einem anderen Server mit Dokku installieren.
+### Alternative 3: SocialBotNet auf einem anderen Server mit Dokku installieren.
 Du benötigst ssh-Zugriff zu dem Server.
 
 1. (SERVER) Installiere [dokku](https://github.com/dokku/dokku). Folge dabei der [Installationsanleitung](https://github.com/dokku/dokku#installation).  
@@ -145,17 +153,24 @@ $ git remote add dokku dokku@ip.or.domain:socialbotnet
 $ git push dokku
 ```
 
-## English Version
+# English Version
 This is a minimal social network with bot friendly API for educational purposes. The code is highly influenced by [eh3rrera/minitwit](https://github.com/eh3rrera/minitwit) using the SparkJava Framework.
 This social network is intended for students to create a social bot for.
 
 A running server can be visited on [https://www.socialbotnet.de](https://www.socialbotnet.de), check it out!
 
-You can also run your own server by either
-* running the jar file from the [releases](https://github.com/Knorrke/socialbotnet/releases) or building it using Maven. It will start a jetty server on [localhost:30003](http://localhost:30003).
-* deploying it to a webserver
+## Running own Server
+You can also run your own server either locally or with a free account at [heroku](https://heroku.com).
 
-**For detailed instructions see [build instructions](#build-instructions) below**
+* For the local server download the .jar file from [releases](https://github.com/Knorrke/socialbotnet/releases) and run it using the following command:
+```sh
+$ java -jar pfad/zur/socialbotnet-1.1-jar-with-dependencies.jar
+```
+This will start the Server at [localhost:30003](http://localhost:30003).
+* You can deploy the app to heroku with just one click: [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)  
+**Limitations**: The free plan for the database is limited to 10.000 entries (users, posts and likes) and the service will sleep after 30 minutes of inactivity. This will cause delays for the first visit after inactivity.
+
+You can also run SocialBotNet on your own server using Dokku. For detailed instructions see [build instructions](#build-instructions) below.
 
 ## Material
 You find some [materials](https://www.socialbotnet.de/material) on the website to help you get started with programming your Bot in Java.
@@ -169,7 +184,7 @@ The following GET requests are supported:
 
 - GET request to `/api/users`: Receive all users registered on the SocialBotNet  
 **Example output**: Request to `/api/users`  
-```
+```json
 [
   {
   	"id":1,
@@ -189,7 +204,7 @@ The following GET requests are supported:
 - GET request to `/api/posts`: Receive all posts created on the SocialBotNet. They can be sorted by `likes` or `time` (default) using the `sortby` handle. Also the number of results can be limited by `limit` (default 50).  
 **params:** optional: `sortby`, optional: `limit`  
 **Example output**: Request to `/api/posts?sortby=likes&limit=1`
-```
+```json
  {
     "id": 3,
     "message": "This is a post written by user user001 to user004",
@@ -238,7 +253,9 @@ The following POST requests are supported:
 
 ## Build instructions
 
-### Building .jar file with Maven (optional)
+### Alternative 1: Running the .jar file locally
+Download the .jar file from [releases](https://github.com/Knorrke/socialbotnet/releases) or build it yourself.
+#### (Optional): Building .jar file with Maven
 Clone the project into a local repository
 ```
 git clone https://github.com/Knorrke/socialbotnet.git
@@ -249,38 +266,23 @@ If you are using an IDE supporting Maven (e.g. Eclipse), you should be able to j
 ```
 mvn clean package
 ```
-
-### Running the .jar file locally
-After downloading the .jar file from the [releases](https://github.com/Knorrke/socialbotnet/releases) or building it using Maven run it:
+#### Running the .jar file
+Once you got the .jar file, run it:
 
 ```
 java -jar path\to\socialbotnet-1.1-jar-with-dependencies.jar
 ```
-(Maven will build to jar to `target\socialbotnet-1.1-jar-with-dependencies.jar`
+(Maven will build the jar to `target\socialbotnet-1.1-jar-with-dependencies.jar`
 
 Afterwards open [localhost:30003](http://localhost:30003) for the SocialBotNet.
 
-#### Database
+#### What about the Database when running locally?
 Running the SocialBotNet for the first time will create an empty HSQL database in `./database/database`. If you just want to test something, you can pass `--debug` to the jar execution. With this option the database is only created in memory and prefilled with some test data.
 
-### Deploying the SocialBotNet to Heroku
-1. Sign in to [Heroku](https://www.heroku.com/) and create a new App. 
-2. On the dashboard of your app go to resources and search for the Postgres addon and add it to your app.
-3. Clone the SocialBotNet by running
-```
-git clone https://github.com/Knorrke/socialbotnet.git
-```
-4. Follow the instructions of heroku for deployment (see Deploy tab on your dashboard). This should be something along those lines:
-```sh
-cd socialbotnet
-heroku login
+### Alternative 2: Deploying the SocialBotNet to Heroku
+You can deploy the app to heroku with just one click: [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)  
 
-heroku git:remote -a my-app-name
-git push heroku
-```
-5. Wait for the app to be deployed and then check on `my-app-name.heroku.com`
-
-### Deploying the SocialBotNet to a different server
+### Alternative 3: Deploying the SocialBotNet to a different server
 You need to have ssh access to that server.
 
 1. (SERVER) Install [dokku](https://github.com/dokku/dokku) by following the [installation instructions](https://github.com/dokku/dokku#installation).  

@@ -1,6 +1,6 @@
 <#ftl output_format="XML">
 <#macro generate coded key>
-<script type="text/javascript" language="javascript">
+<script>
 <!--
 // Email obfuscator script 2.1 by Tim Williams, University of Arizona
 // Random encryption key feature coded by Andrew Moulden

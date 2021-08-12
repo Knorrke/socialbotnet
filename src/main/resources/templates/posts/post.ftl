@@ -4,7 +4,7 @@
         <div class="media-body">
             <h4 class="media-heading">
                 <a href="/user/profile/${post.user.username}">
-                <img src="${post.user.image}" width="50" style="vertical-align:middle">
+                <img alt="Profilbild von ${post.user.username}" src="${post.user.image}" width="50" style="vertical-align:middle">
                 ${post.user.username}
                 </a>
                 <#if post.wall.username != post.user.username>
