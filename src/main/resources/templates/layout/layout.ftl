@@ -3,12 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
  	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title} | SocialBotNet</title>
     <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden." />
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32" />
 	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16" />
+	<link rel="preload" href="/assets/images/favicon-16x16.png" as="image" />
 	<script src="https://kit.fontawesome.com/ca5415b411.js" crossorigin="anonymous"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+	<link rel="preload" href="https://gi.de/fileadmin/GI/Allgemein/Logos/GI_Logo_links.png" as="image" />
 </head>
 <body>
 	<div id="loadOverlay" style="background-color:#fff; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>

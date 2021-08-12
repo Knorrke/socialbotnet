@@ -38,17 +38,19 @@ body {
 	color: var(--color-content);
 }
 
-#side-content {
-	float: right;
-	width: 230px;
-	padding-left: 20px;
-	border-left: 2px var(--bg-layout) solid;
-}
+@media only screen and (min-width: 1024px) {
+	#side-content {
+		float: right;
+		width: 230px;
+		padding-left: 20px;
+		border-left: 2px var(--bg-layout) solid;
+	}
 
-.main .has-side-content {
-	margin-right: 250px;
-	padding-right: 20px;
-	border-right: 2px #000D54 solid;
+	.main .has-side-content {
+		margin-right: 250px;
+		padding-right: 20px;
+		border-right: 2px #000D54 solid;
+	}
 }
 
 dt {
