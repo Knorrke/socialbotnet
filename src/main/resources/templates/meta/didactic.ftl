@@ -45,13 +45,12 @@
 			<figure>
 				<div class="javaTab">
 			        <div class="media-body">
-			        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:
-			        	 <ul>
-			        	 	<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
-			        	 	<li> der einfache Bot nur mit JSON zum Vergleich, </li>
-			        	 	<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">api.openweathermap.org</a>.
-			        	 </ul>
-			    	 	</p>
+			        	<p> Hier kann ein <a href="/assets/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:</p>
+						<ul>
+			        		<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
+			        		<li> der einfache Bot nur mit JSON zum Vergleich, </li>
+			        		<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">api.openweathermap.org</a>.
+			        	</ul>
 			        </div>
 				</div>
 				<div class="pythonTab">
@@ -109,9 +108,9 @@
         		<ol>
         			<li>Aktivierung: Sammeln von Vorerfahrungen oder zeigen eines Videos. Gut geeignet z.B. <a href="https://youtu.be/HVuB1QPxdT0" target="_blank" rel="noopener noreferrer">"Social Bots" von ZDF heuteplus</a> und <a href="https://youtu.be/j14s00N3clg" target="_blank" rel="noopener noreferrer">"Fake News & Social Bots in 3 Minuten erklärt" von explain-it</a></li>
         			<li>"Nutzersicht" der Webseite: Die Lernenden erstellen einen Account und analysieren, welche Möglichkeiten es auf der Webseite gibt und welche Stellen anfällig für Manipulationen sind.</li>
-        			<li>Erläuterung der "Programmierersicht": Gleiches Protokoll (HTTP), aber andere Schnittstelle. Wegen des gleichen Protokolls kann die API auch im Browser betrachtet werden. Die Lernenden rufen als Beispiel <a href="/api/posts?sortby=trending">/api/posts?sortby=trending</a> auf und vergleichen es mit der Benutzersicht der Startseite.</li>
-        				<iframe style="width: 100%" height="150" src="/api/posts?sortby=trending&limit=3"/>Top 3 der Trends in der API. Leider konnte das eingebettete Frame nicht geladen werden. Folgen Sie bitte dem Link oben.</iframe>
+        			<li>Erläuterung der "Programmierersicht": Gleiches Protokoll (HTTP), aber andere Schnittstelle. Wegen des gleichen Protokolls kann die API auch im Browser betrachtet werden. Die Lernenden rufen als Beispiel <a href="/api/posts?sortby=trending">/api/posts?sortby=trending</a> auf und vergleichen es mit der Benutzersicht der Startseite.</li>        				
         		</ol>
+        		<iframe style="width: 100%" height="150" src="/api/posts?sortby=trending&limit=3">Top 3 der Trends in der API. Leider konnte das eingebettete Frame nicht geladen werden. Folgen Sie bitte dem Link oben.</iframe>
         		<h4>Zweite und Dritte Stunde: Programmieren eines eigenen Social Bots</h4>
         		<p>Ausgehend von einfachen Programmen, die per POST-Anfrage vorgefertigte Nachrichten schreiben, werden immer komplexere Anwendungen geschrieben. Anregungen:
         		<ul>
@@ -120,7 +119,7 @@
         			<li>Posten von Texten, die aus mehreren Satzteilen zufällig kombiniert werden, z.B. wie der <a href="https://buzzomat.de" target="_blank" rel="noopener noreferrer">Buzz-o-Mat</a>.<em>(mittel)</em></li>
         			<li>Posts nach Schlüsselwörtern durchsuchen und dann liken.<em>(anspruchsvoll)</em></li>
         			<li>Nutzerprofile nach Schlüsselwörtern durchsuchen und dann vorgefertigte Texte an diese Nutzer schreiben. <em>(anspruchsvoll)</em></li>
-        			<li><p>Anbinden externer Webservices wie <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> oder <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a>. <em>(sehr anspruchsvoll)</em></p>
+        			<li>Anbinden externer Webservices wie <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> oder <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a>. <em>(sehr anspruchsvoll)</em>
         			<p>Eine Übersicht über zahlreiche offene APIs gibt es <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener noreferrer">im Github-Projekt public-apis</a>. Über Rückmeldungen zu gut verwendbaren APIs daraus würde ich mich freuen!</p>
         			</li>
         		</ul>
