@@ -77,7 +77,7 @@
     		<ul>
     			<li>
     				<p>Für den lokalen Server muss die .jar Datei aus den <a href="https://github.com/Knorrke/socialbotnet/releases" target="_blank" rel="noopener noreferrer">Github-Releases</a> heruntergeladen und über den folgenden Befehl gestartet werden.</p>
-    				<pre><code>java -jar pfad/zur/socialbotnet-1.1-jar-with-dependencies.jar</code></pre>
+    				<pre><code>java -jar pfad/zur/socialbotnet-2.0-jar-with-dependencies.jar</code></pre>
     			</li>
     			<li><p>Auf Heroku lässt sich der Server mit nur einem Klick erstellen:
 	    				<a class="prevent-external" href="https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer">

@@ -9,7 +9,7 @@ Es ist möglich, das SocialBotNet lokal oder mit einem Account bei [Heroku](http
 
 * Für den lokalen Server muss die .jar-Datei aus den [releases](https://github.com/Knorrke/socialbotnet/releases) heruntergeladen und über den folgenden Befehl gestartet werden.
 ```sh
-$ java -jar pfad/zur/socialbotnet-1.1-jar-with-dependencies.jar
+$ java -jar pfad/zur/socialbotnet-2.0-jar-with-dependencies.jar
 ```
 Dieser Befehlt startet einen jetty-Server auf [localhost:30003](http://localhost:30003).
 * Auf Heroku lässt sich der Server mit nur einem Klick erstellen: [![Deploy auf Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)  
@@ -111,9 +111,9 @@ mvn clean package
 Wenn du die .jar-Datei hast, starte sie mit dem Befehl:
 
 ```sh
-$ java -jar Pfad\zu\socialbotnet-1.1-jar-with-dependencies.jar
+$ java -jar Pfad\zu\socialbotnet-2.0-jar-with-dependencies.jar
 ```
-(Maven generiert die .jar-Datei in `target\socialbotnet-1.1-jar-with-dependencies.jar`
+(Maven generiert die .jar-Datei in `target\socialbotnet-2.0-jar-with-dependencies.jar`
 
 Öffne anschließend [localhost:30003](http://localhost:30003) für das SocialBotNet.
 
@@ -164,7 +164,7 @@ You can also run your own server either locally or with a free account at [herok
 
 * For the local server download the .jar file from [releases](https://github.com/Knorrke/socialbotnet/releases) and run it using the following command:
 ```sh
-$ java -jar pfad/zur/socialbotnet-1.1-jar-with-dependencies.jar
+$ java -jar pfad/zur/socialbotnet-2.0-jar-with-dependencies.jar
 ```
 This will start the Server at [localhost:30003](http://localhost:30003).
 * You can deploy the app to heroku with just one click: [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet)  
@@ -270,9 +270,9 @@ mvn clean package
 Once you got the .jar file, run it:
 
 ```
-java -jar path\to\socialbotnet-1.1-jar-with-dependencies.jar
+java -jar path\to\socialbotnet-2.0-jar-with-dependencies.jar
 ```
-(Maven will build the jar to `target\socialbotnet-1.1-jar-with-dependencies.jar`
+(Maven will build the jar to `target\socialbotnet-2.0-jar-with-dependencies.jar`
 
 Afterwards open [localhost:30003](http://localhost:30003) for the SocialBotNet.
 
