@@ -22,6 +22,24 @@ public class PostApiController {
     this.userService = userService;
   }
 
+  /**
+   * @api {get} /api/posts Übersicht aller Posts
+   * @apiDescription Liefert die Posts.
+   *     <p>Sie können nach Likes, Datum oder Trend sortiert werden. Die Anzahl kann mit dem
+   *     Parameter limit verändert werden
+   * @apiGroup Posts — GET
+   * @apiQuery {String="likes","time","trending"} [sortby] Sortierung
+   * @apiQuery {Number} [limit=50] Limit der angezeigten Posts.
+   * @apiSampleRequest /api/posts
+   * @apiSuccessExample {json} Beispiel: Aufruf von /api/posts?sortby=likes&limit=1 HTTP/1.1 200 OK
+   *     [ { "id": 3, "message": "This is a post written by user user001 to user004", "user": {
+   *     "id": 1, "username": "user001", "hobbies": "", "about": "" }, "wall": { "id": 4,
+   *     "username": "user004", "hobbies": "", "about": "" }, "publishingDate": "2014-07-14
+   *     09:46:28", "likedBy": [ { "id": 1, "username": "user001", "hobbies": "", "about": "" }, {
+   *     "id": 5, "username": "user005", "hobbies": "", "about": "" }, { "id": 6, "username":
+   *     "user006", "hobbies": "", "about": "" }, { "id": 7, "username": "user007", "hobbies": "",
+   *     "about": "" } ] } ]
+   */
   public Object getPosts(Request req, Response res) {
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
     String sortby = req.queryParams("sortby");

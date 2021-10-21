@@ -1,0 +1,15 @@
+{
+	"name": "SocialBotNet API Dokumentation",
+	"version": "0.2.0",
+	"description": "Dokumentation der SocialBotNet API",
+	"title": "SocialBotNet API Explorer",
+	"url": "https://www.socialbotnet.de",
+	"output": "src/main/resources/public/docs",
+	"input": [
+		"src/main/java"
+	],
+	"template": {
+		"withGenerator": true,
+		"aloneDisplay": false
+	}
+}
