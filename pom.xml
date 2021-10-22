@@ -13,7 +13,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<spark.version>2.9.1</spark.version>
 		<spark.freemarker.version>2.7.1</spark.freemarker.version>
-		<!-- If you change this, you might want to change Configuration version too -->
+		<!-- If you change this, you might want to change Configuration version 
+			too -->
 		<freemarker.version>2.3.30</freemarker.version>
 		<spring.version>5.2.16.RELEASE</spring.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
@@ -86,7 +87,6 @@
 			<version>42.2.18</version>
 		</dependency>
 
-
 		<!-- Connection pool -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -123,22 +123,27 @@
 		</dependency>
 	</dependencies>
 	<build>
-	<pluginManagement>
-		<plugins>
-		    <plugin>
-		      <groupId>com.cosium.code</groupId>
-		      <artifactId>git-code-format-maven-plugin</artifactId>
-		      <version>${git-code-format-maven-plugin.version}</version>
-		      <executions>
-		        <execution>
-		          <goals>
-		            <goal>install-hooks</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		    </plugin>
-	    </plugins>
-	</pluginManagement>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.cosium.code</groupId>
+					<artifactId>git-code-format-maven-plugin</artifactId>
+					<version>${git-code-format-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>install-hooks</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<googleJavaFormatOptions>
+							<skipJavadocFormatting>true</skipJavadocFormatting>
+						</googleJavaFormatOptions>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -148,7 +153,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>

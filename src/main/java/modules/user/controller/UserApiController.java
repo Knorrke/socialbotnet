@@ -39,8 +39,16 @@ public class UserApiController {
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
    * @apiGroup Users — GET
    * @apiSampleRequest /api/users
-   * @apiSuccessExample {json} Beispiel: /api/users HTTP/1.1 200 OK [ { "id":1, "username":"root",
-   *     "hobbies":"doing stuff", "about":"I am root" } ]
+   * @apiSuccessExample {json} Beispiel: /api/users
+   * HTTP/1.1 200 OK
+   * [
+   *  {
+   *   "id":1,
+   *   "username":"root",
+   *   "hobbies":"doing stuff",
+   *   "about":"I am root"
+   *  }
+   * ]
    */
   public Object getUsers(Request req, Response res) {
     return service.getAllUsers();
@@ -50,11 +58,11 @@ public class UserApiController {
    * @api {post} /api/user/update Profilinformationen aktualisieren
    * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Über mich"
    * @apiGroup Users — POST
-   * @apiBody {String} username Aktueller Benutzername
-   * @apiBody {String} password Passwort des Benutzers
-   * @apiBody {String} [newUsername] Optional. Ändert den Benutzernamen
-   * @apiBody {String} [hobbies] Optional. Ändert die Profilinformation "Hobbies"
-   * @apiBody {String} [about] Optional. Ändert die Profilinformation "Über mich"
+   * @apiBody (Anmeldedaten) {String} username Aktueller Benutzername
+   * @apiBody (Anmeldedaten) {String} password Passwort des Benutzers
+   * @apiBody (Änderungen) {String} [newUsername] Optional. Ändert den Benutzernamen
+   * @apiBody (Änderungen) {String} [hobbies] Optional. Ändert die Profilinformation "Hobbies"
+   * @apiBody (Änderungen) {String} [about] Optional. Ändert die Profilinformation "Über mich"
    * @apiSampleRequest /api/user/update
    */
   public Object updateProfile(Request req, Response res) {
