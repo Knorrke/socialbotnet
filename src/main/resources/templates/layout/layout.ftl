@@ -43,6 +43,9 @@
 		                	<li>
 			                	<a href="/didaktik">Informationen für Lehrkräfte</a>
 		                	</li>
+		                	<li>
+		                		<a href="/api">API Explorer</a>
+		                	</li>
 	                	</ul>
 		            </nav>
 		        </div>

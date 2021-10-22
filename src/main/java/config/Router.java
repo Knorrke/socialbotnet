@@ -85,6 +85,10 @@ public class Router {
     path(
         "/api",
         () -> {
+          get("", (req, res) -> {
+            res.redirect("/docs/index.html");
+            return res;            
+          });
           before("/*", (req, res) -> logger.info("Received api call to " + req.pathInfo()));
 
           // Activate CORS
