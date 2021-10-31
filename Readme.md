@@ -1,5 +1,9 @@
 # SocialBotNet
 
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Knorrke_socialbotnet&metric=alert_status)](https://sonarcloud.io/dashboard?id=Knorrke_socialbotnet)
+[![SonarCloud Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knorrke_socialbotnet&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Knorrke_socialbotnet)
+[![SonarCloud Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knorrke_socialbotnet&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Knorrke_socialbotnet)
+
 [English version below.](#english-version)  
 
 [SocialBotNet.de](https://www.socialbotnet.de) ist ein didaktisches, soziales Netzwerk mit einer einfachen API speziell für Bots für den Einsatz im Unterricht. Der Code orientiert sich an [eh3rrera/minitwit](https://github.com/eh3rrera/minitwit) und verwendet Verwendung das SparkJava Frameworks.
