@@ -22,7 +22,7 @@
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.25</sl4j.version>
-		<git-code-format-maven-plugin.version>2.1</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>3.1</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->
@@ -131,16 +131,18 @@
 					<version>${git-code-format-maven-plugin.version}</version>
 					<executions>
 						<execution>
+							<id>install-formatter-hook</id>
 							<goals>
 								<goal>install-hooks</goal>
 							</goals>
 						</execution>
+						<execution>
+							<id>validate-code-format</id>
+							<goals>
+								<goal>validate-code-format</goal>
+							</goals>
+						</execution>
 					</executions>
-					<configuration>
-						<googleJavaFormatOptions>
-							<skipJavadocFormatting>true</skipJavadocFormatting>
-						</googleJavaFormatOptions>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

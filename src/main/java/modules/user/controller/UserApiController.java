@@ -39,6 +39,7 @@ public class UserApiController {
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
    * @apiGroup Users — GET
    * @apiSampleRequest /api/users
+   * @apiComment <pre>
    * @apiSuccessExample {json} Beispiel: /api/users
    * HTTP/1.1 200 OK
    * [
@@ -49,6 +50,7 @@ public class UserApiController {
    *   "about":"I am root"
    *  }
    * ]
+   * @apiComment </pre>
    */
   public Object getUsers(Request req, Response res) {
     return service.getAllUsers();

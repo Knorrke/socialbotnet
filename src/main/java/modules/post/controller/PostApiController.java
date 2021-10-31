@@ -25,12 +25,14 @@ public class PostApiController {
   /**
    * @api {get} /api/posts Übersicht aller Posts
    * @apiDescription Liefert die Posts.
-   *     <p>Sie können nach Likes, Datum oder Trend sortiert werden. Die Anzahl kann mit dem
-   *     Parameter limit verändert werden
+   *
+   * Sie können nach Likes, Datum oder Trend sortiert werden. Die Anzahl kann mit dem
+   * Parameter limit verändert werden
    * @apiGroup Posts — GET
    * @apiQuery {String="likes","time","trending"} [sortby=time] Sortierung
    * @apiQuery {Number} [limit=50] Limit der angezeigten Posts.
    * @apiSampleRequest /api/posts
+   * @apiComment <pre>
    * @apiSuccessExample {json} Beispiel: Aufruf von /api/posts?sortby=likes&limit=1
    * HTTP/1.1 200 OK
    * [
@@ -48,6 +50,7 @@ public class PostApiController {
    *     ]
    *   }
    * ]
+   * @apiComment </pre>
    */
   public Object getPosts(Request req, Response res) {
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
@@ -63,7 +66,7 @@ public class PostApiController {
 
   /**
    * @api {get} /api/pinnwand/:username Pinnwand eines Users
-   * @apiQuery (URL Parameter) {String} username Der Benutzername eines Users
+   * @apiParam (URL Parameter) {String} username Der Benutzername eines Users
    * @apiDescription Liefert alle Posts der Pinnwand eines Users. Das sind zum einen Posts <strong>von diesem User</strong>
    * und zum anderen Posts, die <strong>von anderen an diesen User</strong> geschrieben wurden.
    *
@@ -72,6 +75,7 @@ public class PostApiController {
    * @apiQuery {String="likes","time","trending"} [sortby=time] Sortierung
    * @apiQuery {Number} [limit=50] Limit der angezeigten Posts.
    * @apiSampleRequest /api/pinnwand/:username
+   * @apiComment <pre>
    * @apiSuccessExample {json} Beispiel: Aufruf von /api/pinnwand/root?limit=2
    * HTTP/1.1 200 OK
    * [
@@ -92,6 +96,7 @@ public class PostApiController {
    *     "likedBy": []
    *   }
    * ]
+   * @apiComment </pre>
    */
   public Object getUserPosts(Request req, Response res) {
     String username = req.params("username");
@@ -185,7 +190,8 @@ public class PostApiController {
    * @apiDescription Poste einen Beitrag mit der angegebenen Nachricht an die Pinnwand eines
    *     bestimmten Users.
    * @apiGroup Posts — POST
-   * @apiQuery (URL Parameter) {String} username Der Benutzername, an den die Nachricht geschrieben wird.
+   * @apiParam (URL Parameter) {String} username Der Benutzername, an den die Nachricht geschrieben
+   *     wird.
    * @apiBody (Anmeldedaten) {String} username Eigener Benutzername
    * @apiBody (Anmeldedaten) {String} password Eigenes Passwort
    * @apiBody (Post) {String} message Die Nachricht, die gepostet werden soll.
