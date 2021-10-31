@@ -1,4 +1,5 @@
 target
 database
+node
 !*.zip
 !*.sql
