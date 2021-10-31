@@ -1,0 +1,27 @@
+{
+	"name": "SocialBotNet API Dokumentation",
+	"version": "0.2.0",
+	"description": "Dokumentation der SocialBotNet API",
+	"title": "SocialBotNet API Explorer",
+	"url": "https://www.socialbotnet.de",
+	"template": {
+		"forceLanguage": "de",
+		"withCompare": false,
+		"withGenerator": true,
+		"aloneDisplay": false
+	},
+	"order": [
+		"Users — GET",
+		"Übersicht aller Nutzer",
+		"Posts — GET",
+		"Übersicht aller Posts",
+		"Pinnwand eines Users",
+		"Users — POST",
+		"Profilinformationen aktualisieren",
+		"Posts — POST",
+		"Beitrag schreiben",
+		"Beitrag an bestimmten User schreiben",
+		"Beitrag liken",
+		"Beitrag entliken"
+	]
+}

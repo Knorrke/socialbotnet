@@ -13,7 +13,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<spark.version>2.9.1</spark.version>
 		<spark.freemarker.version>2.7.1</spark.freemarker.version>
-		<!-- If you change this, you might want to change Configuration version too -->
+		<!-- If you change this, you might want to change Configuration version 
+			too -->
 		<freemarker.version>2.3.30</freemarker.version>
 		<spring.version>5.2.16.RELEASE</spring.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
@@ -21,7 +22,7 @@
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.25</sl4j.version>
-		<git-code-format-maven-plugin.version>2.1</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>3.1</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->
@@ -86,7 +87,6 @@
 			<version>42.2.18</version>
 		</dependency>
 
-
 		<!-- Connection pool -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -123,23 +123,60 @@
 		</dependency>
 	</dependencies>
 	<build>
-	<pluginManagement>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.cosium.code</groupId>
+					<artifactId>git-code-format-maven-plugin</artifactId>
+					<version>${git-code-format-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>install-formatter-hook</id>
+							<goals>
+								<goal>install-hooks</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>validate-code-format</id>
+							<goals>
+								<goal>validate-code-format</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
-		    <plugin>
-		      <groupId>com.cosium.code</groupId>
-		      <artifactId>git-code-format-maven-plugin</artifactId>
-		      <version>${git-code-format-maven-plugin.version}</version>
-		      <executions>
-		        <execution>
-		          <goals>
-		            <goal>install-hooks</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		    </plugin>
-	    </plugins>
-	</pluginManagement>
-		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.12.0</version>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+
+						<configuration>
+							<nodeVersion>v16.13.0</nodeVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Build ApiDoc</id>
+						<goals>
+							<goal>npx</goal>
+						</goals>
+
+						<phase>generate-resources</phase>
+
+						<configuration>
+							<arguments>apidoc@0.50.1 -c ./apidoc.json -o ./src/main/resources/public/docs</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -148,7 +185,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
