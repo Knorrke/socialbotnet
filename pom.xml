@@ -18,7 +18,7 @@
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
-		<spring.version>5.2.16.RELEASE</spring.version>
+		<spring.version>5.2.19.RELEASE</spring.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<dbcp.version>2.9.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
