@@ -242,8 +242,10 @@ public class PostDao implements PostDaoInterface {
           break;
         case "user":
           sortingExpression = "post.author_id";
+          break;
         case "wall":
           sortingExpression = "post.wall_id";
+          break;
         case "publishingDate":
           sortingExpression = "post.pub_date";
           break;

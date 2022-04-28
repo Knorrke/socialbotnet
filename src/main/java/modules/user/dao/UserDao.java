@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import modules.user.model.User;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -68,9 +69,12 @@ public class UserDao implements UserDaoInterface {
       };
 
   @Override
-  public List<User> getAllUsers() {
+  public List<User> getAllUsersSorted(String sortBy, boolean asc, int limit) {
     String sql =
-        "SELECT user_id, username, null as password, hobbies, about FROM users ORDER BY user_id DESC LIMIT 100";
+        String.format(
+            "SELECT user_id, username, null as password, hobbies, about FROM users ORDER BY %s LIMIT %d",
+            generateOrderByFromParams(sortBy, asc), limit);
+    LoggerFactory.getLogger(UserDao.class).info(sql);
     List<User> users = template.query(sql, userMapper);
     return users;
   }
@@ -107,5 +111,25 @@ public class UserDao implements UserDaoInterface {
     oldUser.setUsername(newUser.getUsername());
     oldUser.setHobbies(newUser.getHobbies());
     oldUser.setAbout(newUser.getAbout());
+  }
+
+  private Object generateOrderByFromParams(String sortBy, boolean asc) {
+    String order = asc ? "ASC" : "DESC";
+
+    String sortingExpression = "user_id"; // default
+    if (sortBy != null) {
+      switch (sortBy) {
+        case "username":
+          sortingExpression = "username";
+          break;
+        case "hobbies":
+          sortingExpression = "hobbies";
+          break;
+        case "about":
+          sortingExpression = "about";
+          break;
+      }
+    }
+    return sortingExpression + " " + order;
   }
 }
