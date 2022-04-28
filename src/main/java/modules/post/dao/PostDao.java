@@ -249,6 +249,8 @@ public class PostDao implements PostDaoInterface {
         case "publishingDate":
           sortingExpression = "post.pub_date";
           break;
+        default:
+          break;
       }
     }
     return sortingExpression + " " + order;

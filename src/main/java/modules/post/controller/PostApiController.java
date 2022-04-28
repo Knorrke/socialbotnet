@@ -54,16 +54,15 @@ public class PostApiController {
    * @apiComment </pre>
    */
   public Object getPosts(Request req, Response res) {
-    int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
-    String sortby = req.queryParams("sortby");
-    String order = req.queryParams("order");
-    boolean asc = order != null && order.equalsIgnoreCase("asc");
-    if (sortby != null && sortby.equalsIgnoreCase("likes")) {
+    int limit = getLimitParam(req);
+    String sortby = getSortByParam(req);
+    boolean asc = getAscendingParam(req);
+    if (sortby.equals("likes")) {
       return postService.getWallPostsSortedByLikes(asc, limit);
-    } else if (sortby != null && sortby.equalsIgnoreCase("trending")) {
+    } else if (sortby.equals("trending")) {
       return postService.getTrendingWallPosts(asc, limit);
     } else {
-      return postService.getWallPostsSorted(sortby.toLowerCase(), asc, limit);
+      return postService.getWallPostsSorted(sortby, asc, limit);
     }
   }
 
@@ -111,16 +110,15 @@ public class PostApiController {
       return new ResponseError("Der User %s existiert nicht", username);
     }
 
-    int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
-    String sortby = req.queryParams("sortby");
-    String order = req.queryParams("order");
-    boolean asc = order != null && order.equalsIgnoreCase("asc");
-    if (sortby != null && sortby.equalsIgnoreCase("likes")) {
+    int limit = getLimitParam(req);
+    String sortby = getSortByParam(req);
+    boolean asc = getAscendingParam(req);
+    if (sortby.equals("likes")) {
       return postService.getUserWallPostsSortedByLikes(profileUser, asc, limit);
-    } else if (sortby != null && sortby.equalsIgnoreCase("trending")) {
+    } else if (sortby.equals("trending")) {
       return postService.getTrendingUserWallPosts(profileUser, asc, limit);
     } else {
-      return postService.getUserWallPostsSorted(profileUser, sortby.toLowerCase(), asc, limit);
+      return postService.getUserWallPostsSorted(profileUser, sortby, asc, limit);
     }
   }
 
@@ -236,5 +234,17 @@ public class PostApiController {
       return new ResponseError(e);
     }
     return post;
+  }
+
+  private int getLimitParam(Request req) {
+    return Integer.parseInt(req.queryParamOrDefault("limit", "50"));
+  }
+
+  private String getSortByParam(Request req) {
+    return req.queryParamOrDefault("sortby", "id").toLowerCase();
+  }
+
+  private boolean getAscendingParam(Request req) {
+    return req.queryParamOrDefault("order", "desc").equalsIgnoreCase("asc");
   }
 }

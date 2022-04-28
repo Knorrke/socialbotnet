@@ -128,6 +128,8 @@ public class UserDao implements UserDaoInterface {
         case "about":
           sortingExpression = "about";
           break;
+        default:
+          break;
       }
     }
     return sortingExpression + " " + order;
