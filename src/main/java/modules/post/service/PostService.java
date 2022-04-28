@@ -12,28 +12,28 @@ import org.springframework.stereotype.Service;
 public class PostService {
   @Autowired private PostDaoInterface postDaoInterface;
 
-  public List<Post> getLatestUserWallPosts(User user, int limit) {
-    return postDaoInterface.getLatestUserWallPosts(user, limit);
+  public List<Post> getUserWallPostsSorted(User user, String sortBy, boolean asc, int limit) {
+    return postDaoInterface.getUserWallPostsSorted(user, sortBy, asc, limit);
   }
 
-  public List<Post> getMostLikedUserWallPosts(User user, int limit) {
-    return postDaoInterface.getMostLikedUserWallPosts(user, limit);
+  public List<Post> getUserWallPostsSortedByLikes(User user, boolean asc, int limit) {
+    return postDaoInterface.getUserWallPostsSortedByLikes(user, asc, limit);
   }
 
-  public List<Post> getTrendingUserWallPosts(User user, int limit) {
-    return postDaoInterface.getTrendingUserWallPosts(user, limit);
+  public List<Post> getTrendingUserWallPosts(User user, boolean asc, int limit) {
+    return postDaoInterface.getTrendingUserWallPosts(user, asc, limit);
   }
 
-  public List<Post> getLatestWallPosts(int limit) {
-    return postDaoInterface.getLatestWallPosts(limit);
+  public List<Post> getWallPostsSorted(String sortBy, boolean asc, int limit) {
+    return postDaoInterface.getWallPostsSorted(sortBy, asc, limit);
   }
 
-  public List<Post> getMostLikedWallPosts(int limit) {
-    return postDaoInterface.getMostLikedWallPosts(limit);
+  public List<Post> getWallPostsSortedByLikes(boolean asc, int limit) {
+    return postDaoInterface.getWallPostsSortedByLikes(asc, limit);
   }
 
-  public List<Post> getTrendingWallPosts(int limit) {
-    return postDaoInterface.getTrendingWallPosts(limit);
+  public List<Post> getTrendingWallPosts(boolean asc, int limit) {
+    return postDaoInterface.getTrendingWallPosts(asc, limit);
   }
 
   public void addPost(Post post) throws InputTooLongException {

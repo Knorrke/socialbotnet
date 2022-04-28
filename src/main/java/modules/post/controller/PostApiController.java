@@ -29,7 +29,8 @@ public class PostApiController {
    * Sie können nach Likes, Datum oder Trend sortiert werden. Die Anzahl kann mit dem
    * Parameter limit verändert werden
    * @apiGroup Posts — GET
-   * @apiQuery {String="likes","time","trending"} [sortby=time] Sortierung
+   * @apiQuery {String="likes", "trending", "id", "message", "user", "wall", "publishingDate"} [sortby=id] Sortierung
+   * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=50] Limit der angezeigten Posts.
    * @apiSampleRequest /api/posts
    * @apiComment <pre>
@@ -55,12 +56,14 @@ public class PostApiController {
   public Object getPosts(Request req, Response res) {
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
     String sortby = req.queryParams("sortby");
-    if (sortby != null && sortby.equals("likes")) {
-      return postService.getMostLikedWallPosts(limit);
-    } else if (sortby != null && sortby.equals("trending")) {
-      return postService.getTrendingWallPosts(limit);
+    String order = req.queryParams("order");
+    boolean asc = order != null && order.equalsIgnoreCase("asc");
+    if (sortby != null && sortby.equalsIgnoreCase("likes")) {
+      return postService.getWallPostsSortedByLikes(asc, limit);
+    } else if (sortby != null && sortby.equalsIgnoreCase("trending")) {
+      return postService.getTrendingWallPosts(asc, limit);
     } else {
-      return postService.getLatestWallPosts(limit);
+      return postService.getWallPostsSorted(sortby.toLowerCase(), asc, limit);
     }
   }
 
@@ -72,7 +75,8 @@ public class PostApiController {
    *
    * Sie können nach Likes, Datum oder Trend sortiert werden. Die Anzahl kann mit dem Parameter limit verändert werden.
    * @apiGroup Posts — GET
-   * @apiQuery {String="likes","time","trending"} [sortby=time] Sortierung
+   * @apiQuery {String="likes", "trending", "id", "message", "user", "wall", "publishingDate"} [sortby=id] Sortierung
+   * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=50] Limit der angezeigten Posts.
    * @apiSampleRequest /api/pinnwand/:username
    * @apiComment <pre>
@@ -109,12 +113,14 @@ public class PostApiController {
 
     int limit = req.queryParams("limit") != null ? Integer.parseInt(req.queryParams("limit")) : 50;
     String sortby = req.queryParams("sortby");
-    if (sortby != null && sortby.equals("likes")) {
-      return postService.getMostLikedUserWallPosts(profileUser, limit);
-    } else if (sortby != null && sortby.equals("trending")) {
-      return postService.getTrendingUserWallPosts(profileUser, limit);
+    String order = req.queryParams("order");
+    boolean asc = order != null && order.equalsIgnoreCase("asc");
+    if (sortby != null && sortby.equalsIgnoreCase("likes")) {
+      return postService.getUserWallPostsSortedByLikes(profileUser, asc, limit);
+    } else if (sortby != null && sortby.equalsIgnoreCase("trending")) {
+      return postService.getTrendingUserWallPosts(profileUser, asc, limit);
     } else {
-      return postService.getLatestUserWallPosts(profileUser, limit);
+      return postService.getUserWallPostsSorted(profileUser, sortby.toLowerCase(), asc, limit);
     }
   }
 
@@ -124,7 +130,7 @@ public class PostApiController {
    * @apiGroup Posts — POST
    * @apiBody (Anmeldedaten) {String} username Eigener Benutzername
    * @apiBody (Anmeldedaten) {String} password Eigenes Passwort
-   * @apiBody (Post) {Number} postid Die id des Posts, der gelikt werden soll.
+   * @apiBody (Post) {Number} postid Die id des Posts, der geliket werden soll.
    * @apiSampleRequest /api/like
    */
   public Object likePost(Request req, Response res) {
