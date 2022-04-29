@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import modules.user.model.User;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -74,7 +73,6 @@ public class UserDao implements UserDaoInterface {
         String.format(
             "SELECT user_id, username, null as password, hobbies, about FROM users ORDER BY %s LIMIT %d",
             generateOrderByFromParams(sortBy, asc), limit);
-    LoggerFactory.getLogger(UserDao.class).info(sql);
     List<User> users = template.query(sql, userMapper);
     return users;
   }
@@ -116,17 +114,17 @@ public class UserDao implements UserDaoInterface {
   private Object generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 
-    String sortingExpression = "user_id"; // default
+    String sortingExpression = "users.user_id"; // default
     if (sortBy != null) {
       switch (sortBy) {
         case "username":
-          sortingExpression = "username";
+          sortingExpression = "users.username";
           break;
         case "hobbies":
-          sortingExpression = "hobbies";
+          sortingExpression = "users.hobbies";
           break;
         case "about":
-          sortingExpression = "about";
+          sortingExpression = "users.about";
           break;
         default:
           break;
