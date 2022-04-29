@@ -231,7 +231,7 @@ public class PostDao implements PostDaoInterface {
     return foundPost;
   }
 
-  private Object generateOrderByFromParams(String sortBy, boolean asc) {
+  private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 
     String sortingExpression = "post.post_id"; // default

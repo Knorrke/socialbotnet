@@ -111,7 +111,7 @@ public class UserDao implements UserDaoInterface {
     oldUser.setAbout(newUser.getAbout());
   }
 
-  private Object generateOrderByFromParams(String sortBy, boolean asc) {
+  private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 
     String sortingExpression = "users.user_id"; // default

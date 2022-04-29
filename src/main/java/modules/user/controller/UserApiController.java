@@ -55,7 +55,7 @@ public class UserApiController {
    * ]
    * @apiComment </pre>
    */
-  public Object getUsers(Request req, Response res) {
+  public List<User> getUsers(Request req, Response res) {
     int limit = Integer.parseInt(req.queryParamOrDefault("limit", "100"));
     String sortby = req.queryParamOrDefault("sortby", "id");
     boolean asc = req.queryParamOrDefault("order", "desc").equals("asc");

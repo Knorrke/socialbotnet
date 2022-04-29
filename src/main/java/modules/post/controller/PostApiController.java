@@ -1,6 +1,7 @@
 package modules.post.controller;
 
 import java.sql.Timestamp;
+import java.util.List;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.post.model.Post;
@@ -53,7 +54,7 @@ public class PostApiController {
    * ]
    * @apiComment </pre>
    */
-  public Object getPosts(Request req, Response res) {
+  public List<Post> getPosts(Request req, Response res) {
     int limit = getLimitParam(req);
     String sortby = getSortByParam(req);
     boolean asc = getAscendingParam(req);
