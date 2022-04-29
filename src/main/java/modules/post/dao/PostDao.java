@@ -16,6 +16,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PostDao implements PostDaoInterface {
 
+  private static final String PUBLISHING_DATE = "pub_date";
+  private static final String MESSAGE = "text";
+  private static final String ID = "post_id";
+  private static final String AUTHOR_ID = "author_id";
+  private static final String WALL_ID = "wall_id";
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
@@ -29,8 +34,7 @@ public class PostDao implements PostDaoInterface {
             ? "(likeCount / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
             : "(likeCount / POWER(1 + DATEDIFF(NOW(), post.pub_date), 2)) as score ";
     template = new NamedParameterJdbcTemplate(ds);
-    insertTemplate =
-        new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns("post_id");
+    insertTemplate = new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns(ID);
   }
 
   @Override
@@ -104,7 +108,7 @@ public class PostDao implements PostDaoInterface {
         "SELECT users.username, users.user_id"
             + " FROM likes NATURAL JOIN users"
             + " WHERE likes.post_id = :post_id";
-    params.put("post_id", post.getId());
+    params.put(ID, post.getId());
     post.setLikedBy(template.query(sql, params, likesMapper));
   }
 
@@ -171,10 +175,10 @@ public class PostDao implements PostDaoInterface {
   @Override
   public void insertPost(Post post) {
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("author_id", post.getUserId());
-    params.put("wall_id", post.getWall().getId());
-    params.put("text", post.getMessage());
-    params.put("pub_date", post.getPublishingDate());
+    params.put(AUTHOR_ID, post.getUserId());
+    params.put(WALL_ID, post.getWall().getId());
+    params.put(MESSAGE, post.getMessage());
+    params.put(PUBLISHING_DATE, post.getPublishingDate());
     String findExisting =
         "SELECT * FROM post WHERE author_id=:author_id and wall_id=:wall_id and text=:text";
     boolean maximumReached = template.query(findExisting, params, (rs, num) -> true).size() > 4;
@@ -188,7 +192,7 @@ public class PostDao implements PostDaoInterface {
   @Override
   public void likePost(Post post, User user) {
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("post_id", post.getId());
+    params.put(ID, post.getId());
     params.put("user_id", user.getId());
     String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
     boolean newLike = template.query(findExisting, params, (rs, num) -> true).isEmpty();
@@ -203,7 +207,7 @@ public class PostDao implements PostDaoInterface {
   @Override
   public void unlikePost(Post post, User user) {
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("post_id", post.getId());
+    params.put(ID, post.getId());
     params.put("user_id", user.getId());
     String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
 
@@ -215,7 +219,7 @@ public class PostDao implements PostDaoInterface {
   public Post getPostById(int id) {
     Post foundPost = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("post_id", id);
+    params.put(ID, id);
 
     String sql =
         "SELECT post.*, u.username, u.user_id, w.username as wall_name"
@@ -234,26 +238,26 @@ public class PostDao implements PostDaoInterface {
   private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 
-    String sortingExpression = "post.post_id"; // default
+    String sortingExpression = ID; // default
     if (sortBy != null) {
       switch (sortBy) {
         case "message":
-          sortingExpression = "post.text";
+          sortingExpression = MESSAGE;
           break;
         case "user":
-          sortingExpression = "post.author_id";
+          sortingExpression = AUTHOR_ID;
           break;
         case "wall":
-          sortingExpression = "post.wall_id";
+          sortingExpression = WALL_ID;
           break;
         case "publishingDate":
-          sortingExpression = "post.pub_date";
+          sortingExpression = PUBLISHING_DATE;
           break;
         default:
           break;
       }
     }
-    return sortingExpression + " " + order;
+    return "post." + sortingExpression + " " + order;
   }
 
   private RowMapper<User> likesMapper =
@@ -267,17 +271,17 @@ public class PostDao implements PostDaoInterface {
   private RowMapper<Post> postsMapper =
       (rs, rowNum) -> {
         Post post = new Post();
-        post.setId(rs.getInt("post_id"));
-        post.setMessage(rs.getString("text"));
-        post.setPublishingDate(rs.getTimestamp("pub_date"));
+        post.setId(rs.getInt(ID));
+        post.setMessage(rs.getString(MESSAGE));
+        post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
 
         User user = new User();
-        user.setId(rs.getInt("author_id"));
+        user.setId(rs.getInt(AUTHOR_ID));
         user.setUsername(rs.getString("username"));
         post.setUser(user);
 
         User wall = new User();
-        wall.setId(rs.getInt("wall_id"));
+        wall.setId(rs.getInt(WALL_ID));
         wall.setUsername(rs.getString("wall_name"));
         post.setWall(wall);
 

@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDao implements UserDaoInterface {
+  private static final String ABOUT = "about";
+  private static final String HOBBIES = "hobbies";
+  private static final String ID = "user_id";
+  private static final String PASSWORD = "password";
+  private static final String USERNAME = "username";
   private NamedParameterJdbcTemplate template;
 
   @Autowired
@@ -23,7 +28,7 @@ public class UserDao implements UserDaoInterface {
   public User getUserbyUsername(String username) {
     User foundUser = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("username", username);
+    params.put(USERNAME, username);
 
     String sql = "SELECT * FROM users WHERE users.username=:username";
     List<User> users = template.query(sql, params, userMapper);
@@ -37,8 +42,8 @@ public class UserDao implements UserDaoInterface {
   @Override
   public void registerUser(User user) {
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("username", user.getUsername());
-    params.put("password", user.getPassword());
+    params.put(USERNAME, user.getUsername());
+    params.put(PASSWORD, user.getPassword());
     String sql = "insert into users (username, password) values (:username, :password)";
     template.update(sql, params);
 
@@ -49,7 +54,7 @@ public class UserDao implements UserDaoInterface {
         query,
         params,
         (row, rowNum) -> {
-          user.setId(row.getInt("user_id"));
+          user.setId(row.getInt(ID));
           return user;
         });
   }
@@ -58,11 +63,11 @@ public class UserDao implements UserDaoInterface {
       (row, rowNum) -> {
         User user = new User();
 
-        user.setId(row.getInt("user_id"));
-        user.setUsername(row.getString("username"));
-        user.setPassword(row.getString("password"));
-        user.setHobbies(row.getString("hobbies"));
-        user.setAbout(row.getString("about"));
+        user.setId(row.getInt(ID));
+        user.setUsername(row.getString(USERNAME));
+        user.setPassword(row.getString(PASSWORD));
+        user.setHobbies(row.getString(HOBBIES));
+        user.setAbout(row.getString(ABOUT));
 
         return user;
       };
@@ -81,7 +86,7 @@ public class UserDao implements UserDaoInterface {
   public User getUserbyUsernameWithoutPassword(String username) {
     User foundUser = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("username", username);
+    params.put(USERNAME, username);
 
     String sql =
         "SELECT user_id, username, null as password, hobbies, about FROM users WHERE users.username=:username";
@@ -96,10 +101,10 @@ public class UserDao implements UserDaoInterface {
   @Override
   public void updateUser(User oldUser, User newUser) {
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("user_id", oldUser.getId());
-    params.put("username", newUser.getUsername());
-    params.put("hobbies", newUser.getHobbies());
-    params.put("about", newUser.getAbout());
+    params.put(ID, oldUser.getId());
+    params.put(USERNAME, newUser.getUsername());
+    params.put(HOBBIES, newUser.getHobbies());
+    params.put(ABOUT, newUser.getAbout());
     String sql =
         "UPDATE users "
             + "SET username=:username, hobbies=:hobbies, about=:about "
@@ -114,17 +119,17 @@ public class UserDao implements UserDaoInterface {
   private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 
-    String sortingExpression = "users.user_id"; // default
+    String sortingExpression = ID; // default
     if (sortBy != null) {
       switch (sortBy) {
-        case "username":
-          sortingExpression = "users.username";
+        case USERNAME:
+          sortingExpression = USERNAME;
           break;
-        case "hobbies":
-          sortingExpression = "users.hobbies";
+        case HOBBIES:
+          sortingExpression = HOBBIES;
           break;
-        case "about":
-          sortingExpression = "users.about";
+        case ABOUT:
+          sortingExpression = ABOUT;
           break;
         default:
           break;
