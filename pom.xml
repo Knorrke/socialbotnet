@@ -10,9 +10,9 @@
 	<properties>
 		<sonar.organization>knorrke-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<java.version>1.8</java.version>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>17</maven.compiler.source>
+		<java.version>1.17</java.version>
+		<maven.compiler.target>1.11</maven.compiler.target>
+		<maven.compiler.source>1.17</maven.compiler.source>
 		<spark.version>2.9.3</spark.version>
 		<spark.freemarker.version>2.7.1</spark.freemarker.version>
 		<!-- If you change this, you might want to change Configuration version 
