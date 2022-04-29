@@ -38,6 +38,9 @@ public class UserApiController {
    * @api {get} /api/users Übersicht aller Nutzer
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
    * @apiGroup Users — GET
+   * @apiQuery {String="id", "username", "hobbies", "about"} [sortby=id] Sortierung
+   * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
+   * @apiQuery {Number} [limit=100] Limit der angezeigten Posts.
    * @apiSampleRequest /api/users
    * @apiComment <pre>
    * @apiSuccessExample {json} Beispiel: /api/users
@@ -52,8 +55,11 @@ public class UserApiController {
    * ]
    * @apiComment </pre>
    */
-  public Object getUsers(Request req, Response res) {
-    return service.getAllUsers();
+  public List<User> getUsers(Request req, Response res) {
+    int limit = Integer.parseInt(req.queryParamOrDefault("limit", "100"));
+    String sortby = req.queryParamOrDefault("sortby", "id");
+    boolean asc = req.queryParamOrDefault("order", "desc").equals("asc");
+    return service.getAllUsersSorted(sortby.toLowerCase(), asc, limit);
   }
 
   /**

@@ -13,7 +13,7 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<spark.version>2.9.1</spark.version>
+		<spark.version>2.9.3</spark.version>
 		<spark.freemarker.version>2.7.1</spark.freemarker.version>
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
@@ -24,7 +24,7 @@
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.25</sl4j.version>
-		<git-code-format-maven-plugin.version>3.1</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>3.3</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- Spark Java -->

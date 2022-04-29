@@ -1,7 +1,6 @@
 package config;
 
-import static spark.Spark.port;
-import static spark.Spark.staticFiles;
+import static spark.Spark.*;
 
 import modules.post.service.PostService;
 import modules.user.service.UserService;

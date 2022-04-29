@@ -40,20 +40,20 @@ public class PostController {
     }
     String sortBy = req.queryParams("sortby");
     if (sortBy == null || sortBy.equals("")) {
-      List<Post> recentPosts = postService.getLatestWallPosts(50);
-      List<Post> trending = postService.getTrendingWallPosts(3);
+      List<Post> recentPosts = postService.getWallPostsSorted(null, false, 50);
+      List<Post> trending = postService.getTrendingWallPosts(false, 3);
       model.put("trending", trending);
       model.put("posts", recentPosts);
     } else if (sortBy.equals("likes")) {
-      List<Post> posts = postService.getMostLikedWallPosts(50);
+      List<Post> posts = postService.getWallPostsSortedByLikes(false, 50);
       model.put("mostliked", posts);
       model.put("sortby", "likes");
     } else if (sortBy.equals("trending")) {
-      List<Post> posts = postService.getTrendingWallPosts(50);
+      List<Post> posts = postService.getTrendingWallPosts(false, 50);
       model.put("trending", posts);
       model.put("sortby", "trending");
     } else {
-      List<Post> posts = postService.getLatestWallPosts(50);
+      List<Post> posts = postService.getWallPostsSorted(null, false, 50);
       model.put("posts", posts);
       model.put("sortby", "time");
     }

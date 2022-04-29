@@ -11,7 +11,7 @@ public interface UserDaoInterface {
 
   void registerUser(User user);
 
-  List<User> getAllUsers();
+  List<User> getAllUsersSorted(String sortBy, boolean asc, int limit);
 
   void updateUser(User oldUser, User newUser);
 }

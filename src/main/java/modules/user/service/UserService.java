@@ -36,8 +36,8 @@ public class UserService {
     userDaoInterface.registerUser(user);
   }
 
-  public List<User> getAllUsers() {
-    return userDaoInterface.getAllUsers();
+  public List<User> getAllUsersSorted(String sortBy, boolean asc, int limit) {
+    return userDaoInterface.getAllUsersSorted(sortBy, asc, limit);
   }
 
   public void setUserDao(UserDaoInterface userDaoInterface) {
