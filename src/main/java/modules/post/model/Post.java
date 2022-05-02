@@ -15,6 +15,7 @@ public class Post {
   private Image image;
   private Timestamp publishingDate;
   private List<User> likedBy = new ArrayList<>();
+  private int likesCount;
 
   /** @return the message */
   public String getMessage() {
@@ -84,6 +85,16 @@ public class Post {
   /** @param likedBy the likedBy to set */
   public void setLikedBy(List<User> likedBy) {
     this.likedBy = likedBy;
+  }
+
+  /** @return the likesCount */
+  public int getLikesCount() {
+    return likesCount;
+  }
+
+  /** @param likesCount the likesCount to set */
+  public void setLikesCount(int likesCount) {
+    this.likesCount = likesCount;
   }
 
   /** @return the wall */

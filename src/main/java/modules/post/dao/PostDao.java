@@ -21,6 +21,8 @@ public class PostDao implements PostDaoInterface {
   private static final String ID = "post_id";
   private static final String AUTHOR_ID = "author_id";
   private static final String WALL_ID = "wall_id";
+  private static final String LIKES_COUNT = "likes_count";
+
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
@@ -31,8 +33,8 @@ public class PostDao implements PostDaoInterface {
     // Rank posts by:  likes / (1+days)^gravity
     WITH_SCORE =
         DatabaseConfig.getDatabaseType().equalsIgnoreCase("postgresql")
-            ? "(likeCount / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
-            : "(likeCount / POWER(1 + DATEDIFF(NOW(), post.pub_date), 2)) as score ";
+            ? "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
+            : "(likes_count / POWER(1 + DATEDIFF(NOW(), post.pub_date), 2)) as score ";
     template = new NamedParameterJdbcTemplate(ds);
     insertTemplate = new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns(ID);
   }
@@ -89,7 +91,6 @@ public class PostDao implements PostDaoInterface {
             + WITH_SCORE
             + " FROM (post JOIN users u ON post.author_id = u.user_id )"
             + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id"
             + " WHERE post.wall_id = :user"
             + orderBy
             + " LIMIT :limit";
@@ -146,7 +147,6 @@ public class PostDao implements PostDaoInterface {
             + WITH_SCORE
             + " FROM (post JOIN users u ON post.author_id = u.user_id )"
             + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " JOIN (SELECT l.post_id, COUNT(l.user_id) as likeCount FROM likes l GROUP BY l.post_id) o ON o.post_id = post.post_id"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -274,6 +274,7 @@ public class PostDao implements PostDaoInterface {
         post.setId(rs.getInt(ID));
         post.setMessage(rs.getString(MESSAGE));
         post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
+        post.setLikesCount(rs.getInt(LIKES_COUNT));
 
         User user = new User();
         user.setId(rs.getInt(AUTHOR_ID));

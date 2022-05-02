@@ -27,7 +27,7 @@
 					</#if>
 					<#assign likedByAuthenticatedUser = likedByAuthenticatedUser || authenticatedUser?? && likingUser.id == authenticatedUser.id>
 				</#list>
-				<#if post.likedBy?size gt likesShown> und ${post.likedBy?size - likesShown} weiteren.</#if>
+				<#if post.likesCount gt likesShown> und ${post.likesCount - likesShown} weiteren.</#if>
 			</#assign>
 			<#if authenticatedUser??>
 				<#if likedByAuthenticatedUser>
