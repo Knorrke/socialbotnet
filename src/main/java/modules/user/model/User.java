@@ -3,7 +3,8 @@ package modules.user.model;
 public class User {
 
   private int id;
-  private String username = "", password = null;
+  private String username = "";
+  private transient String password = null;
   private String hobbies = "";
   private String about = "";
 

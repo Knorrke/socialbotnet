@@ -29,21 +29,19 @@ public class PostDao implements PostDaoInterface {
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
-  private final String DEEP_SELECT;
+  private static final String DEEP_SELECT =
+      String.format(
+          "SELECT p.*, u.%s, u.%s, u.%s, u.%s, w.%1$s as wall_%1$s, w.%2$s as wall_%2$s, w.%3$s as wall_%3$s, w.%4$s as wall_%4$s",
+          UserDao.ID, UserDao.USERNAME, UserDao.HOBBIES, UserDao.ABOUT);
   private final String WITH_SCORE;
 
   @Autowired
   public PostDao(DataSource ds) {
-    DEEP_SELECT =
-        String.format(
-            "SELECT post.*, u.%s, u.%s, u.%s, u.%s, w.%1$s as wall_%1$s, w.%2$s as wall_%2$s, w.%3$s as wall_%3$s, w.%4$s as wall_%4$s",
-            UserDao.ID, UserDao.USERNAME, UserDao.HOBBIES, UserDao.ABOUT);
-
     // Rank posts by:  likes / (1+days)^gravity
     WITH_SCORE =
         DatabaseConfig.getDatabaseType().equalsIgnoreCase("postgresql")
-            ? "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), post.pub_date)) / 86400, 2)) as score "
-            : "(likes_count / POWER(1 + DATEDIFF(NOW(), post.pub_date), 2)) as score ";
+            ? "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), p.pub_date)) / 86400, 2)) as score "
+            : "(likes_count / POWER(1 + DATEDIFF(NOW(), p.pub_date), 2)) as score ";
     template = new NamedParameterJdbcTemplate(ds);
     insertTemplate = new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns(ID);
   }
@@ -56,9 +54,9 @@ public class PostDao implements PostDaoInterface {
     String orderBy = " ORDER BY " + generateOrderByFromParams(sortBy, asc);
     String sql =
         DEEP_SELECT
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " WHERE post.wall_id = :user"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
+            + " WHERE p.wall_id = :user"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -72,12 +70,12 @@ public class PostDao implements PostDaoInterface {
     params.put("user", user.getId());
     params.put("limit", limit);
     String orderBy =
-        String.format(" ORDER BY post.likes_count %s, post.pub_date %<s", asc ? "ASC" : "DESC");
+        String.format(" ORDER BY p.likes_count %s, p.pub_date %<s", asc ? "ASC" : "DESC");
     String sql =
         DEEP_SELECT
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " WHERE post.wall_id = :user"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
+            + " WHERE p.wall_id = :user"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -92,15 +90,15 @@ public class PostDao implements PostDaoInterface {
     params.put("limit", limit);
     String orderBy =
         String.format(
-            " ORDER BY score %s, post.likes_count %<s, post.pub_date %<s", asc ? "ASC" : "DESC");
+            " ORDER BY score %s, p.likes_count %<s, p.pub_date %<s", asc ? "ASC" : "DESC");
 
     String sql =
         DEEP_SELECT
             + ","
             + WITH_SCORE
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " WHERE post.wall_id = :user"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
+            + " WHERE p.wall_id = :user"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -113,12 +111,12 @@ public class PostDao implements PostDaoInterface {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("limit", limit);
     String orderBy =
-        String.format(" ORDER BY post.likes_count %s, post.pub_date %<s", asc ? "ASC" : "DESC");
+        String.format(" ORDER BY p.likes_count %s, p.pub_date %<s", asc ? "ASC" : "DESC");
 
     String sql =
         DEEP_SELECT
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -133,15 +131,15 @@ public class PostDao implements PostDaoInterface {
 
     String orderBy =
         String.format(
-            " ORDER BY score %s, post.likes_count %<s, post.pub_date %<s", asc ? "ASC" : "DESC");
+            " ORDER BY score %s, p.likes_count %<s, p.pub_date %<s", asc ? "ASC" : "DESC");
 
     // Rank posts by:  likes / (1+days)^gravity
     String sql =
         DEEP_SELECT
             + ","
             + WITH_SCORE
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -158,8 +156,8 @@ public class PostDao implements PostDaoInterface {
 
     String sql =
         DEEP_SELECT
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -194,6 +192,7 @@ public class PostDao implements PostDaoInterface {
     if (!newLike) {
       return;
     }
+
     String sql = "INSERT INTO likes (post_id, user_id) VALUES (:post_id, :user_id)";
     template.update(sql, params);
     populateLikedBy(post);
@@ -218,9 +217,9 @@ public class PostDao implements PostDaoInterface {
 
     String sql =
         DEEP_SELECT
-            + " FROM (post JOIN users u ON post.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON post.wall_id = w.user_id"
-            + " WHERE post.post_id = :post_id";
+            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
+            + " WHERE p.post_id = :post_id";
     List<Post> posts = template.query(sql, params, postsMapper);
     if (posts != null && !posts.isEmpty()) {
       populateLikedBy(posts);
@@ -228,6 +227,21 @@ public class PostDao implements PostDaoInterface {
     }
 
     return foundPost;
+  }
+
+  @Override
+  public List<Post> getPostsLikedByUser(User user) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("user_id", user.getId());
+
+    String sql =
+        DEEP_SELECT
+            + " FROM (( SELECT post_id FROM likes WHERE user_id = :user_id) l"
+            + " JOIN post p ON l.post_id = p.post_id "
+            + " JOIN users u ON p.author_id = u.user_id )"
+            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id";
+    List<Post> posts = template.query(sql, params, postsMapper);
+    return posts;
   }
 
   private String generateOrderByFromParams(String sortBy, boolean asc) {
@@ -252,7 +266,7 @@ public class PostDao implements PostDaoInterface {
           break;
       }
     }
-    return "post." + sortingExpression + " " + order;
+    return "p." + sortingExpression + " " + order;
   }
 
   private void populateLikedBy(List<Post> posts) {

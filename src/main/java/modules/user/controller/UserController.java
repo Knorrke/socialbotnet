@@ -110,6 +110,7 @@ public class UserController {
     User authenticatedUser = userService.getAuthenticatedUser(req);
     if (authenticatedUser != null) {
       model.put("authenticatedUser", authenticatedUser);
+      model.put("postsLikedByUser", postService.getPostsLikedByUser(authenticatedUser));
     }
 
     String sortBy = req.queryParams("sortby");

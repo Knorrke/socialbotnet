@@ -24,4 +24,6 @@ public interface PostDaoInterface {
   void unlikePost(Post post, User user);
 
   Post getPostById(int id);
+
+  List<Post> getPostsLikedByUser(User user);
 }
