@@ -1,12 +1,14 @@
 package modules.post.model;
 
 import java.awt.Image;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import modules.user.model.User;
 
-public class Post {
+@SuppressWarnings("serial")
+public class Post implements Serializable {
 
   private int id;
   private String message = "";

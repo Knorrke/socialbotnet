@@ -240,8 +240,7 @@ public class PostDao implements PostDaoInterface {
             + " JOIN post p ON l.post_id = p.post_id "
             + " JOIN users u ON p.author_id = u.user_id )"
             + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id";
-    List<Post> posts = template.query(sql, params, postsMapper);
-    return posts;
+    return template.query(sql, params, postsMapper);
   }
 
   private String generateOrderByFromParams(String sortBy, boolean asc) {
