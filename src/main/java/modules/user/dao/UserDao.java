@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDao implements UserDaoInterface {
-  private static final String ABOUT = "about";
-  private static final String HOBBIES = "hobbies";
-  private static final String ID = "user_id";
-  private static final String PASSWORD = "password";
-  private static final String USERNAME = "username";
+  public static final String ABOUT = "about";
+  public static final String HOBBIES = "hobbies";
+  public static final String ID = "user_id";
+  public static final String PASSWORD = "password";
+  public static final String USERNAME = "username";
   private NamedParameterJdbcTemplate template;
 
   @Autowired

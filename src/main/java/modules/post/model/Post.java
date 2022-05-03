@@ -14,8 +14,8 @@ public class Post {
   private User wall;
   private Image image;
   private Timestamp publishingDate;
-  private List<User> likedBy = new ArrayList<>();
-  private int likesCount;
+  private int likes;
+  private List<User> recentLikes = new ArrayList<>();
 
   /** @return the message */
   public String getMessage() {
@@ -77,24 +77,24 @@ public class Post {
     this.user = user;
   }
 
-  /** @return the likedBy */
-  public List<User> getLikedBy() {
-    return likedBy;
+  /** @return the recentLikes */
+  public List<User> getRecentLikes() {
+    return recentLikes;
   }
 
-  /** @param likedBy the likedBy to set */
-  public void setLikedBy(List<User> likedBy) {
-    this.likedBy = likedBy;
+  /** @param recentLikes the recentLikes to set */
+  public void setRecentLikes(List<User> recentLikes) {
+    this.recentLikes = recentLikes;
   }
 
   /** @return the likesCount */
   public int getLikesCount() {
-    return likesCount;
+    return likes;
   }
 
   /** @param likesCount the likesCount to set */
   public void setLikesCount(int likesCount) {
-    this.likesCount = likesCount;
+    this.likes = likesCount;
   }
 
   /** @return the wall */

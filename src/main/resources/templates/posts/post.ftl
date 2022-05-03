@@ -20,7 +20,7 @@
 			<#assign likedByAuthenticatedUser=false>
 			<#assign likes>
 				<#assign likesShown=3>
-				<#list post.likedBy as likingUser>
+				<#list post.recentLikes as likingUser>
 					<#if likingUser?index lt likesShown>
 						<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
 						 <a href="/user/profile/${likingUser.username}">${likingUser.username}</a>
