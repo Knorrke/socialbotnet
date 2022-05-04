@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32" />
 	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16" />
 	<link rel="preload" href="/assets/images/favicon-16x16.png" as="image" />
-	<script src="https://kit.fontawesome.com/ca5415b411.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="https://kit-free.fontawesome.com/releases/v5.13.0/css/free.min.css" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">

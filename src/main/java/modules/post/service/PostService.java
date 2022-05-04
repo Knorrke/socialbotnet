@@ -57,6 +57,10 @@ public class PostService {
     return postDaoInterface.getPostById(id);
   }
 
+  public List<Post> getPostsLikedByUser(User user) {
+    return postDaoInterface.getPostsLikedByUser(user);
+  }
+
   private boolean checkPostDataTooLong(Post post) throws InputTooLongException {
     if (post.getMessage().length() > 240)
       throw new InputTooLongException("Nachricht", 240, post.getMessage().length());

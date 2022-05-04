@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.socialbotnet</groupId>
 	<artifactId>socialbotnet</artifactId>
@@ -10,16 +8,19 @@
 	<properties>
 		<sonar.organization>knorrke-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<java.version>1.17</java.version>
-		<maven.compiler.target>1.11</maven.compiler.target>
-		<maven.compiler.source>1.17</maven.compiler.source>
+		<java.version>17</java.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.version>3.10.1</maven.compiler.version>
 		<spark.version>2.9.3</spark.version>
 		<spark.freemarker.version>2.7.1</spark.freemarker.version>
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
 		<spring.version>5.3.19</spring.version>
+		<flyway.version>8.5.10</flyway.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
+		<postgresql.version>42.3.3</postgresql.version>
 		<dbcp.version>2.9.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
@@ -86,7 +87,14 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.3.3</version>
+			<version>${postgresql.version}</version>
+		</dependency>
+
+		<!-- Flyway DB Migrations -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
 		</dependency>
 
 		<!-- Connection pool -->
@@ -183,10 +191,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -210,6 +218,23 @@
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway.version}</version>
+				<configuration>
+					<configFiles>
+						<configFile>flyway.conf</configFile>
+					</configFiles>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${postgresql.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

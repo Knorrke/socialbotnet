@@ -1,12 +1,14 @@
 package modules.post.model;
 
 import java.awt.Image;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import modules.user.model.User;
 
-public class Post {
+@SuppressWarnings("serial")
+public class Post implements Serializable {
 
   private int id;
   private String message = "";
@@ -14,6 +16,7 @@ public class Post {
   private User wall;
   private Image image;
   private Timestamp publishingDate;
+  private int likes;
   private List<User> likedBy = new ArrayList<>();
 
   /** @return the message */
@@ -76,14 +79,24 @@ public class Post {
     this.user = user;
   }
 
-  /** @return the likedBy */
-  public List<User> getLikedBy() {
+  /** @return the recentLikes */
+  public List<User> getRecentLikes() {
     return likedBy;
   }
 
-  /** @param likedBy the likedBy to set */
-  public void setLikedBy(List<User> likedBy) {
-    this.likedBy = likedBy;
+  /** @param recentLikes the recentLikes to set */
+  public void setRecentLikes(List<User> recentLikes) {
+    this.likedBy = recentLikes;
+  }
+
+  /** @return the likesCount */
+  public int getLikesCount() {
+    return likes;
+  }
+
+  /** @param likesCount the likesCount to set */
+  public void setLikesCount(int likesCount) {
+    this.likes = likesCount;
   }
 
   /** @return the wall */

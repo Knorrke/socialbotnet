@@ -1,9 +1,13 @@
 package modules.user.model;
 
-public class User {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class User implements Serializable {
 
   private int id;
-  private String username = "", password = null;
+  private String username = "";
+  private transient String password = null;
   private String hobbies = "";
   private String about = "";
 

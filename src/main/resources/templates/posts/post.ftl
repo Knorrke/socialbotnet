@@ -18,25 +18,21 @@
 			<br/>
 			<br/>
 			<#assign likedByAuthenticatedUser=false>
-			<#assign likes>
-				<#assign likesShown=3>
-				<#list post.likedBy as likingUser>
-					<#if likingUser?index lt likesShown>
-						<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
-						 <a href="/user/profile/${likingUser.username}">${likingUser.username}</a>
-					</#if>
-					<#assign likedByAuthenticatedUser = likedByAuthenticatedUser || authenticatedUser?? && likingUser.id == authenticatedUser.id>
-				</#list>
-				<#if post.likedBy?size gt likesShown> und ${post.likedBy?size - likesShown} weiteren.</#if>
-			</#assign>
+			<#assign likesShown=(post.likesCount < 3)?then(post.likesCount, 3)>
 			<#if authenticatedUser??>
-				<#if likedByAuthenticatedUser>
+				<#if postsLikedByUser?map(p->p.getId())?seq_contains(post.getId())>
 					<a href="/unlike/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir nicht mehr</a>
 				<#else>
 					<a href="/like/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir</a>
 				</#if>
 			</#if>
-			${likes}
+			<#if post.likesCount gt 0>
+				<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
+					<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
+					 <a href="/user/profile/${likingUser.username}">${likingUser.username}</a>
+				</#list>
+			</#if>
+			<#if post.likesCount gt likesShown> und ${post.likesCount - likesShown} weiteren.</#if>
         </div>
     </div>
 </#macro>
