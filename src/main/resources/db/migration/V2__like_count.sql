@@ -22,10 +22,10 @@ BEGIN
 END;
 $dec$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER inc_likes_count AFTER INSERT ON public.likes
+CREATE TRIGGER inc_likes_count AFTER INSERT ON public.likes
 FOR EACH ROW
 EXECUTE FUNCTION inc_likes_count();
 
-CREATE OR REPLACE TRIGGER dec_likes_count AFTER DELETE ON public.likes
+CREATE TRIGGER dec_likes_count AFTER DELETE ON public.likes
 FOR EACH ROW
 EXECUTE FUNCTION dec_likes_count();
