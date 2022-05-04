@@ -27,7 +27,7 @@
 				</#if>
 			</#if>
 			<#if post.likesCount gt 0>
-				<#list post.recentLikes[0..(likesShown-1)] as likingUser>
+				<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
 					<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
 					 <a href="/user/profile/${likingUser.username}">${likingUser.username}</a>
 				</#list>

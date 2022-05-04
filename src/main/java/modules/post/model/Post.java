@@ -17,7 +17,7 @@ public class Post implements Serializable {
   private Image image;
   private Timestamp publishingDate;
   private int likes;
-  private List<User> recentLikes = new ArrayList<>();
+  private List<User> likedBy = new ArrayList<>();
 
   /** @return the message */
   public String getMessage() {
@@ -81,12 +81,12 @@ public class Post implements Serializable {
 
   /** @return the recentLikes */
   public List<User> getRecentLikes() {
-    return recentLikes;
+    return likedBy;
   }
 
   /** @param recentLikes the recentLikes to set */
   public void setRecentLikes(List<User> recentLikes) {
-    this.recentLikes = recentLikes;
+    this.likedBy = recentLikes;
   }
 
   /** @return the likesCount */
