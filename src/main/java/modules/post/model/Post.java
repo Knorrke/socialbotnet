@@ -16,7 +16,7 @@ public class Post implements Serializable {
   private User wall;
   private Image image;
   private Timestamp publishingDate;
-  private int likes;
+  private int likes = 0;
   private List<User> likedBy = new ArrayList<>();
 
   /** @return the message */

@@ -172,6 +172,7 @@ public class PostDao implements PostDaoInterface {
     params.put(WALL_ID, post.getWall().getId());
     params.put(MESSAGE, post.getMessage());
     params.put(PUBLISHING_DATE, post.getPublishingDate());
+    params.put(LIKES_COUNT, 0);
     String findExisting =
         "SELECT * FROM post WHERE author_id=:author_id and wall_id=:wall_id and text=:text";
     boolean maximumReached = template.query(findExisting, params, (rs, num) -> true).size() > 4;
