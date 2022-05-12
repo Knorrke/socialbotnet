@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.2
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 11.6 (Debian 11.6-1.pgdg90+1)
+-- Dumped by pg_dump version 11.6 (Debian 11.6-1.pgdg90+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,27 +16,14 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE IF EXISTS ONLY public.post DROP CONSTRAINT post_wall_id_fkey;
-ALTER TABLE IF EXISTS ONLY public.post DROP CONSTRAINT post_author_id_fkey;
-ALTER TABLE IF EXISTS ONLY public.likes DROP CONSTRAINT likes_user_id_fkey;
-ALTER TABLE IF EXISTS ONLY public.likes DROP CONSTRAINT likes_post_id_fkey;
-ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT users_username_key;
-ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT users_pkey;
-ALTER TABLE IF EXISTS ONLY public.post DROP CONSTRAINT post_pkey;
-ALTER TABLE IF EXISTS ONLY public.likes DROP CONSTRAINT likes_pkey;
-ALTER TABLE IF EXISTS public.users ALTER COLUMN user_id DROP DEFAULT;
-ALTER TABLE IF EXISTS public.post ALTER COLUMN post_id DROP DEFAULT;
-ALTER TABLE IF EXISTS public.likes ALTER COLUMN like_id DROP DEFAULT;
-DROP SEQUENCE IF EXISTS public.users_user_id_seq;
-DROP TABLE IF EXISTS public.users;
-DROP SEQUENCE IF EXISTS public.post_post_id_seq;
-DROP TABLE IF EXISTS public.post;
-DROP SEQUENCE IF EXISTS public.likes_like_id_seq;
-DROP TABLE IF EXISTS public.likes;
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
 
 SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- Name: likes; Type: TABLE; Schema: public; Owner: postgres
@@ -47,6 +34,7 @@ CREATE TABLE public.likes (
     post_id integer NOT NULL,
     user_id integer NOT NULL
 );
+
 
 --
 -- Name: likes_like_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -59,6 +47,7 @@ CREATE SEQUENCE public.likes_like_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
 
 --
 -- Name: likes_like_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -93,7 +82,6 @@ CREATE SEQUENCE public.post_post_id_seq
     CACHE 1;
 
 
-
 --
 -- Name: post_post_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -112,6 +100,7 @@ CREATE TABLE public.users (
     hobbies character varying(255) DEFAULT ''::character varying,
     about character varying(255) DEFAULT ''::character varying
 );
+
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
