@@ -114,12 +114,13 @@ public class UserController {
     }
 
     String sortBy = req.queryParams("sortby");
+
     if (sortBy != null && sortBy.equals("likes")) {
-      List<Post> posts = postService.getUserWallPostsSortedByLikes(profileUser, false, 50);
+      List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
       model.put("mostliked", posts);
       model.put("sortby", "likes");
     } else if (sortBy != null && sortBy.equals("trending")) {
-      List<Post> posts = postService.getTrendingUserWallPosts(profileUser, false, 50);
+      List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
       model.put("trending", posts);
       model.put("sortby", "trending");
     } else {
