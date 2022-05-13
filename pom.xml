@@ -90,11 +90,6 @@
 			<version>${postgresql.version}</version>
 		</dependency>
 		<!-- EmbeddedPostgreSQL for local server -->
-		<!--<dependency>
-		    <groupId>io.zonky.test</groupId>
-		    <artifactId>embedded-database-spring-test</artifactId>
-		    <version>2.1.1</version>
-		</dependency> -->
 		<dependency>
 			<groupId>io.zonky.test</groupId>
 			<artifactId>embedded-postgres</artifactId>

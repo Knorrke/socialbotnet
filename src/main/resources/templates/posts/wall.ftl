@@ -52,7 +52,7 @@
     </div>
 </#if>
 <div id="media-list" class="row">
-	<#if !(trending?? & posts??)>
+	<#if !(trending?? & recent??)>
 		${filters}
 	</#if>
 	<#if trending??>
@@ -66,7 +66,7 @@
 			</div>
 		</#list>
 	</#if>
-	<#if trending?? & posts??>
+	<#if trending?? & recent??>
 		<hr/>
 		${filters}
 	</#if>
@@ -81,9 +81,9 @@
 			</div>
 		</#list>
 	</#if>
-    <#if posts??>
+    <#if recent??>
     	<h2><i class="fas fa-history"></i> Neueste Posts</h2>
-        <#list posts as post>
+        <#list recent as post>
         	<@postLayout.show post=post/>
         <#else>
             <hr/>
@@ -92,7 +92,7 @@
             </div>
         </#list>
     </#if>
-    <#if !(mostliked??) & !(posts??)>
+    <#if !(mostliked??) & !(recent??)>
     	<hr/>
         <div class="well">
 			Hier gibt es noch keine Posts.

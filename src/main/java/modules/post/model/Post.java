@@ -16,7 +16,7 @@ public class Post implements Serializable {
   private User user;
   private User wall;
   private Image image;
-  private double trending_score;
+  private double trendingScore;
   private int likes = 0;
   private List<User> likedBy = new ArrayList<>();
 
@@ -100,14 +100,14 @@ public class Post implements Serializable {
     this.likes = likesCount;
   }
 
-  /** @return the trending_score */
-  public double getTrending_score() {
-    return trending_score;
+  /** @return the trendingScore */
+  public double getTrendingScore() {
+    return trendingScore;
   }
 
-  /** @param trending_score the trending_score to set */
-  public void setTrending_score(double trending_score) {
-    this.trending_score = trending_score;
+  /** @param trendingScore the trendingScore to set */
+  public void setTrendingScore(double trendingScore) {
+    this.trendingScore = trendingScore;
   }
 
   /** @return the wall */

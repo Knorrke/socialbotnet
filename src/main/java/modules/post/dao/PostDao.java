@@ -179,7 +179,7 @@ public class PostDao implements PostDaoInterface {
           sortingExpression = LIKES_COUNT;
           break;
         case "trending":
-        case "trending_score":
+        case "trendingScore":
           sortingExpression = SCORE;
           break;
         default:
@@ -215,7 +215,7 @@ public class PostDao implements PostDaoInterface {
         post.setMessage(rs.getString(MESSAGE));
         post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
         post.setLikesCount(rs.getInt(LIKES_COUNT));
-        post.setTrending_score(rs.getDouble(SCORE));
+        post.setTrendingScore(rs.getDouble(SCORE));
 
         post.setUser(getUserFromResult(rs, ""));
         post.setWall(getUserFromResult(rs, "wall_"));
