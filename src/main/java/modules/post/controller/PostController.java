@@ -157,4 +157,9 @@ public class PostController {
     }
     return null;
   }
+
+  /** @return the acceptedsorts */
+  public static Map<String, String> getAcceptedSorts() {
+    return acceptedSorts;
+  }
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import modules.error.InputTooLongException;
+import modules.post.controller.PostController;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -114,20 +115,11 @@ public class UserController {
     }
 
     String sortBy = req.queryParams("sortby");
+    Map<String, String> acceptedSorts = PostController.getAcceptedSorts();
 
-    if (sortBy != null && sortBy.equals("likes")) {
-      List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
-      model.put("mostliked", posts);
-      model.put("sortby", "likes");
-    } else if (sortBy != null && sortBy.equals("trending")) {
-      List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
-      model.put("trending", posts);
-      model.put("sortby", "trending");
-    } else {
-      List<Post> posts = postService.getUserWallPostsSorted(profileUser, null, false, 50);
-      model.put("posts", posts);
-      model.put("sortby", "time");
-    }
+    List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
+    model.put(acceptedSorts.getOrDefault(sortBy, "recent"), posts);
+    model.put("sortby", sortBy);
 
     return Renderer.render(model, "user/profile.ftl");
   }
