@@ -12,12 +12,12 @@ public class Post implements Serializable {
 
   private int id;
   private String message = "";
+  private Timestamp publishingDate;
   private User user;
   private User wall;
   private Image image;
-  private Timestamp publishingDate;
+  private double trending_score;
   private int likes = 0;
-  private int trending_score;
   private List<User> likedBy = new ArrayList<>();
 
   /** @return the message */
@@ -101,12 +101,12 @@ public class Post implements Serializable {
   }
 
   /** @return the trending_score */
-  public int getTrending_score() {
+  public double getTrending_score() {
     return trending_score;
   }
 
   /** @param trending_score the trending_score to set */
-  public void setTrending_score(int trending_score) {
+  public void setTrending_score(double trending_score) {
     this.trending_score = trending_score;
   }
 

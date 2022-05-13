@@ -215,7 +215,7 @@ public class PostDao implements PostDaoInterface {
         post.setMessage(rs.getString(MESSAGE));
         post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
         post.setLikesCount(rs.getInt(LIKES_COUNT));
-        post.setTrending_score(rs.getInt(SCORE));
+        post.setTrending_score(rs.getDouble(SCORE));
 
         post.setUser(getUserFromResult(rs, ""));
         post.setWall(getUserFromResult(rs, "wall_"));
