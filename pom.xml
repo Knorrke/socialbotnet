@@ -17,7 +17,7 @@
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
-		<spring.version>5.3.19</spring.version>
+		<spring.version>5.3.20</spring.version>
 		<flyway.version>8.5.10</flyway.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<postgresql.version>42.3.3</postgresql.version>
