@@ -170,7 +170,6 @@ public class PostDao implements PostDaoInterface {
 
   private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
-    System.out.println(sortBy);
 
     String sortingExpression = ID; // default
     if (sortBy != null) {
