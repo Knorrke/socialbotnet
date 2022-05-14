@@ -58,13 +58,7 @@ public class PostApiController {
     int limit = getLimitParam(req);
     String sortby = getSortByParam(req);
     boolean asc = getAscendingParam(req);
-    if (sortby.equals("likes")) {
-      return postService.getWallPostsSortedByLikes(asc, limit);
-    } else if (sortby.equals("trending")) {
-      return postService.getTrendingWallPosts(asc, limit);
-    } else {
-      return postService.getWallPostsSorted(sortby, asc, limit);
-    }
+    return postService.getWallPostsSorted(sortby, asc, limit);
   }
 
   /**
@@ -114,13 +108,7 @@ public class PostApiController {
     int limit = getLimitParam(req);
     String sortby = getSortByParam(req);
     boolean asc = getAscendingParam(req);
-    if (sortby.equals("likes")) {
-      return postService.getUserWallPostsSortedByLikes(profileUser, asc, limit);
-    } else if (sortby.equals("trending")) {
-      return postService.getTrendingUserWallPosts(profileUser, asc, limit);
-    } else {
-      return postService.getUserWallPostsSorted(profileUser, sortby, asc, limit);
-    }
+    return postService.getUserWallPostsSorted(profileUser, sortby, asc, limit);
   }
 
   /**

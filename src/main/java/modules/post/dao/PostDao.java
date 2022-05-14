@@ -1,6 +1,5 @@
 package modules.post.dao;
 
-import config.DatabaseConfig;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,23 +24,20 @@ public class PostDao implements PostDaoInterface {
   private static final String AUTHOR_ID = "author_id";
   private static final String WALL_ID = "wall_id";
   private static final String LIKES_COUNT = "likes_count";
+  private static final String SCORE = "score";
 
   private NamedParameterJdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
 
   private static final String DEEP_SELECT =
       String.format(
-          "SELECT p.*, u.%s, u.%s, u.%s, u.%s, w.%1$s as wall_%1$s, w.%2$s as wall_%2$s, w.%3$s as wall_%3$s, w.%4$s as wall_%4$s",
+          "SELECT p.*, u.%s, u.%s, u.%s, u.%s, w.%1$s as wall_%1$s, w.%2$s as wall_%2$s, w.%3$s as wall_%3$s, w.%4$s as wall_%4$s,"
+              // Rank posts by:  likes / (1+days)^gravity
+              + "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), p.pub_date)) / 86400, 2)) as score",
           UserDao.ID, UserDao.USERNAME, UserDao.HOBBIES, UserDao.ABOUT);
-  private final String WITH_SCORE;
 
   @Autowired
   public PostDao(DataSource ds) {
-    // Rank posts by:  likes / (1+days)^gravity
-    WITH_SCORE =
-        DatabaseConfig.getDatabaseType().equalsIgnoreCase("postgresql")
-            ? "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), p.pub_date)) / 86400, 2)) as score "
-            : "(likes_count / POWER(1 + DATEDIFF(NOW(), p.pub_date), 2)) as score ";
     template = new NamedParameterJdbcTemplate(ds);
     insertTemplate = new SimpleJdbcInsert(ds).withTableName("post").usingGeneratedKeyColumns(ID);
   }
@@ -57,89 +53,6 @@ public class PostDao implements PostDaoInterface {
             + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
             + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
             + " WHERE p.wall_id = :user"
-            + orderBy
-            + " LIMIT :limit";
-    List<Post> posts = template.query(sql, params, postsMapper);
-    populateLikedBy(posts);
-    return posts;
-  }
-
-  @Override
-  public List<Post> getUserWallPostsSortedByLikes(User user, boolean asc, int limit) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("user", user.getId());
-    params.put("limit", limit);
-    String orderBy =
-        String.format(" ORDER BY p.likes_count %s, p.pub_date %<s", asc ? "ASC" : "DESC");
-    String sql =
-        DEEP_SELECT
-            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
-            + " WHERE p.wall_id = :user"
-            + orderBy
-            + " LIMIT :limit";
-    List<Post> posts = template.query(sql, params, postsMapper);
-    populateLikedBy(posts);
-    return posts;
-  }
-
-  @Override
-  public List<Post> getTrendingUserWallPosts(User user, boolean asc, int limit) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("user", user.getId());
-    params.put("limit", limit);
-    String orderBy =
-        String.format(
-            " ORDER BY score %s, p.likes_count %<s, p.pub_date %<s", asc ? "ASC" : "DESC");
-
-    String sql =
-        DEEP_SELECT
-            + ","
-            + WITH_SCORE
-            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
-            + " WHERE p.wall_id = :user"
-            + orderBy
-            + " LIMIT :limit";
-    List<Post> posts = template.query(sql, params, postsMapper);
-    populateLikedBy(posts);
-    return posts;
-  }
-
-  @Override
-  public List<Post> getWallPostsSortedByLikes(boolean asc, int limit) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("limit", limit);
-    String orderBy =
-        String.format(" ORDER BY p.likes_count %s, p.pub_date %<s", asc ? "ASC" : "DESC");
-
-    String sql =
-        DEEP_SELECT
-            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
-            + orderBy
-            + " LIMIT :limit";
-    List<Post> posts = template.query(sql, params, postsMapper);
-    populateLikedBy(posts);
-    return posts;
-  }
-
-  @Override
-  public List<Post> getTrendingWallPosts(boolean asc, int limit) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("limit", limit);
-
-    String orderBy =
-        String.format(
-            " ORDER BY score %s, p.likes_count %<s, p.pub_date %<s", asc ? "ASC" : "DESC");
-
-    // Rank posts by:  likes / (1+days)^gravity
-    String sql =
-        DEEP_SELECT
-            + ","
-            + WITH_SCORE
-            + " FROM (post p JOIN users u ON p.author_id = u.user_id )"
-            + " LEFT OUTER JOIN users w ON p.wall_id = w.user_id"
             + orderBy
             + " LIMIT :limit";
     List<Post> posts = template.query(sql, params, postsMapper);
@@ -185,29 +98,40 @@ public class PostDao implements PostDaoInterface {
 
   @Override
   public void likePost(Post post, User user) {
+    if (isPostLikedByUser(post, user)) {
+      return;
+    }
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(ID, post.getId());
     params.put("user_id", user.getId());
-    String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
-    boolean newLike = template.query(findExisting, params, (rs, num) -> true).isEmpty();
-    if (!newLike) {
-      return;
-    }
 
     String sql = "INSERT INTO likes (post_id, user_id) VALUES (:post_id, :user_id)";
     template.update(sql, params);
     populateLikedBy(post);
+    post.setLikesCount(post.getLikesCount() + 1);
+  }
+
+  private boolean isPostLikedByUser(Post post, User user) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(ID, post.getId());
+    params.put("user_id", user.getId());
+    String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
+    return !template.query(findExisting, params, (rs, num) -> true).isEmpty();
   }
 
   @Override
   public void unlikePost(Post post, User user) {
+    if (!isPostLikedByUser(post, user)) {
+      return;
+    }
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(ID, post.getId());
     params.put("user_id", user.getId());
-    String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
 
+    String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
     template.update(sql, params);
     populateLikedBy(post);
+    post.setLikesCount(post.getLikesCount() - 1);
   }
 
   @Override
@@ -249,7 +173,7 @@ public class PostDao implements PostDaoInterface {
 
     String sortingExpression = ID; // default
     if (sortBy != null) {
-      switch (sortBy) {
+      switch (sortBy.toLowerCase()) {
         case "message":
           sortingExpression = MESSAGE;
           break;
@@ -259,14 +183,21 @@ public class PostDao implements PostDaoInterface {
         case "wall":
           sortingExpression = WALL_ID;
           break;
-        case "publishingDate":
+        case "publishingdate":
           sortingExpression = PUBLISHING_DATE;
+          break;
+        case "likes":
+          sortingExpression = LIKES_COUNT;
+          break;
+        case "trending":
+        case "trendingscore":
+          sortingExpression = SCORE;
           break;
         default:
           break;
       }
     }
-    return "p." + sortingExpression + " " + order;
+    return sortingExpression + " " + order;
   }
 
   private void populateLikedBy(List<Post> posts) {
@@ -295,6 +226,7 @@ public class PostDao implements PostDaoInterface {
         post.setMessage(rs.getString(MESSAGE));
         post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
         post.setLikesCount(rs.getInt(LIKES_COUNT));
+        post.setTrendingScore(rs.getDouble(SCORE));
 
         post.setUser(getUserFromResult(rs, ""));
         post.setWall(getUserFromResult(rs, "wall_"));

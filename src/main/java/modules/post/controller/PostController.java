@@ -23,6 +23,13 @@ import spark.Spark;
 
 public class PostController {
   static final Logger logger = LoggerFactory.getLogger(PostController.class);
+  private static final Map<String, String> acceptedSorts = new HashMap<>();
+
+  static {
+    acceptedSorts.put("likes", "mostliked");
+    acceptedSorts.put("trending", "trending");
+    acceptedSorts.put("time", "recent");
+  }
 
   private PostService postService;
   private UserService userService;
@@ -39,24 +46,24 @@ public class PostController {
       model.put("authenticatedUser", user);
       model.put("postsLikedByUser", postService.getPostsLikedByUser(user));
     }
+
     String sortBy = req.queryParams("sortby");
-    if (sortBy == null || sortBy.equals("")) {
-      List<Post> recentPosts = postService.getWallPostsSorted(null, false, 50);
-      List<Post> trending = postService.getTrendingWallPosts(false, 3);
-      model.put("trending", trending);
-      model.put("posts", recentPosts);
-    } else if (sortBy.equals("likes")) {
-      List<Post> posts = postService.getWallPostsSortedByLikes(false, 50);
-      model.put("mostliked", posts);
-      model.put("sortby", "likes");
-    } else if (sortBy.equals("trending")) {
-      List<Post> posts = postService.getTrendingWallPosts(false, 50);
-      model.put("trending", posts);
-      model.put("sortby", "trending");
+
+    if (acceptedSorts.containsKey(sortBy)) {
+
+      // explicit sort param
+      List<Post> posts = postService.getWallPostsSorted(sortBy, false, 50);
+
+      model.put(acceptedSorts.get(sortBy), posts);
+      model.put("sortby", sortBy);
     } else {
+
+      // fallback: 3 trending posts, then newest
+      List<Post> trending = postService.getWallPostsSorted("trending", false, 3);
       List<Post> posts = postService.getWallPostsSorted(null, false, 50);
-      model.put("posts", posts);
-      model.put("sortby", "time");
+
+      model.put("trending", trending);
+      model.put("recent", posts);
     }
 
     return Renderer.render(model, "posts/wall.page.ftl");
@@ -149,5 +156,10 @@ public class PostController {
 
     }
     return null;
+  }
+
+  /** @return the acceptedsorts */
+  public static Map<String, String> getAcceptedSorts() {
+    return acceptedSorts;
   }
 }

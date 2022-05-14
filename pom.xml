@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.socialbotnet</groupId>
 	<artifactId>socialbotnet</artifactId>
-	<version>2.0</version>
+	<version>3.0</version>
 	<name>social-bot-net</name>
 
 	<properties>
@@ -17,17 +17,23 @@
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
-		<spring.version>5.3.19</spring.version>
+		<spring.version>5.3.20</spring.version>
 		<flyway.version>8.5.10</flyway.version>
-		<hsqldb.version>2.4.1</hsqldb.version>
-		<postgresql.version>42.3.3</postgresql.version>
+		<postgresql.version>42.3.5</postgresql.version>
+		<embedded-postgres.version>1.3.1</embedded-postgres.version>
 		<dbcp.version>2.9.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
-		<sl4j.version>1.7.25</sl4j.version>
+		<sl4j.version>1.7.36</sl4j.version>
 		<git-code-format-maven-plugin.version>3.3</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
 		<!-- Spark Java -->
 		<dependency>
 			<groupId>com.sparkjava</groupId>
@@ -77,17 +83,17 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- HyperSQL DB -->
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>${hsqldb.version}</version>
-		</dependency>
-
+		<!-- PostgreSQL -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
+		</dependency>
+		<!-- EmbeddedPostgreSQL for local server -->
+		<dependency>
+			<groupId>io.zonky.test</groupId>
+			<artifactId>embedded-postgres</artifactId>
+			<version>${embedded-postgres.version}</version>
 		</dependency>
 
 		<!-- Flyway DB Migrations -->
@@ -132,6 +138,17 @@
 			<version>2.8.9</version>
 		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.zonky.test.postgres</groupId>
+				<artifactId>embedded-postgres-binaries-bom</artifactId>
+				<version>11.15.0</version>
+				<type>pom</type>
+                <scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -182,7 +199,7 @@
 						<phase>generate-resources</phase>
 
 						<configuration>
-							<arguments>apidoc@0.50.1 -c ./apidoc.json -o
+							<arguments>apidoc@0.51.1 -c ./apidoc.json -o
 								./src/main/resources/public/docs</arguments>
 						</configuration>
 					</execution>
