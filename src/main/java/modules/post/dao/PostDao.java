@@ -98,29 +98,40 @@ public class PostDao implements PostDaoInterface {
 
   @Override
   public void likePost(Post post, User user) {
+    if (isPostLikedByUser(post, user)) {
+      return;
+    }
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(ID, post.getId());
     params.put("user_id", user.getId());
-    String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
-    boolean newLike = template.query(findExisting, params, (rs, num) -> true).isEmpty();
-    if (!newLike) {
-      return;
-    }
 
     String sql = "INSERT INTO likes (post_id, user_id) VALUES (:post_id, :user_id)";
     template.update(sql, params);
     populateLikedBy(post);
+    post.setLikesCount(post.getLikesCount() + 1);
+  }
+
+  private boolean isPostLikedByUser(Post post, User user) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(ID, post.getId());
+    params.put("user_id", user.getId());
+    String findExisting = "SELECT * from likes WHERE post_id=:post_id and user_id=:user_id";
+    return !template.query(findExisting, params, (rs, num) -> true).isEmpty();
   }
 
   @Override
   public void unlikePost(Post post, User user) {
+    if (!isPostLikedByUser(post, user)) {
+      return;
+    }
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(ID, post.getId());
     params.put("user_id", user.getId());
-    String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
 
+    String sql = "DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id";
     template.update(sql, params);
     populateLikedBy(post);
+    post.setLikesCount(post.getLikesCount() - 1);
   }
 
   @Override
@@ -159,10 +170,11 @@ public class PostDao implements PostDaoInterface {
 
   private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
+    System.out.println(sortBy);
 
     String sortingExpression = ID; // default
     if (sortBy != null) {
-      switch (sortBy) {
+      switch (sortBy.toLowerCase()) {
         case "message":
           sortingExpression = MESSAGE;
           break;
@@ -172,14 +184,14 @@ public class PostDao implements PostDaoInterface {
         case "wall":
           sortingExpression = WALL_ID;
           break;
-        case "publishingDate":
+        case "publishingdate":
           sortingExpression = PUBLISHING_DATE;
           break;
         case "likes":
           sortingExpression = LIKES_COUNT;
           break;
         case "trending":
-        case "trendingScore":
+        case "trendingscore":
           sortingExpression = SCORE;
           break;
         default:
