@@ -55,10 +55,8 @@ public class Router {
     post("/post", postController::createPost);
     post("/post/:username", postController::createPost);
 
-    get("like/:post", postController::likePost);
-    post("like/:post", postController::likePost);
-    get("unlike/:post", postController::unlikePost);
-    post("unlike/:post", postController::unlikePost);
+    post("like", postController::likePost);
+    post("unlike", postController::unlikePost);
 
     get(
         "/material",

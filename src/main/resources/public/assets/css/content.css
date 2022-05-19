@@ -87,8 +87,7 @@ a:hover {
 a.button:hover, a.button:active,
 button.button:hover, button.button:active {
 	background-color: var(--bg-secondary);
-	color: var(--color-secondary);
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .button:active {
@@ -120,6 +119,14 @@ button.button:hover, button.button:active {
 	margin: -5px 0;
 }
 
+.action-button .icon-action,
+.action-button:hover .icon-current {
+	display: none;
+}
+
+.action-button:hover .icon-action {
+	display: inline;
+}
 
 code {
     font-family: Menlo,Monaco,Consolas,Courier New,monospace;
@@ -137,9 +144,29 @@ code {
 	-webkit-box-shadow: 2px 2px 5px 0px #ccc;
     -moz-box-shadow: 2px 2px 5px 0px #ccc;
 }
+.profile-pic.small {
+	padding: 2px;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	text-align: center;
+	box-shadow: 0 0 0 4px #fff;
+	-webkit-box-shadow: 0 0 0 4px #fff;
+    -moz-box-shadow: 0 0 0 4px #fff;
+}
+.overlapping {
+	transition: margin 0.3s;
+}
+.overlapping:not(:first-child) {
+	margin-left: -10px;
+}
+.overlapping:hover {
+	margin-left: 0;
+	margin-right: 10px;
+}
 
 i {
-	margin-right: 2px;
+	margin-right: 5px;
 }
 
 hr {
@@ -151,4 +178,62 @@ hr {
 	color: var(--color-light);
 	padding: 5px;
 	border-radius: 10px;
+}
+
+/**
+ * Tooltip Styles https://codepen.io/cbracco/pen/nXEQLw 
+ */
+
+/* Add this attribute to the element that needs a tooltip */
+[data-tooltip] {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hide the tooltip content by default */
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+/* Position tooltip above the element */
+[data-tooltip]:before {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-bottom: 5px;
+  margin-left: -50%;
+  padding: 7px;
+  border-radius: 3px;
+  background-color: var(--bg-layout);
+  color: var(--color-layout);
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* Triangle hack to make tooltip look like a speech bubble */
+[data-tooltip]:after {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-top: 5px solid var(--bg-layout);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  opacity: 1;
 }

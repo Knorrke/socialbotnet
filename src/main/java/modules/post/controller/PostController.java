@@ -75,7 +75,10 @@ public class PostController {
       Spark.halt(401, "Du bist nicht angemeldet!");
       return null;
     }
-    Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+
+    MultiMap<String> params = new MultiMap<String>();
+    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+    Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
       Spark.halt(400, "Post existiert nicht");
       return null;
@@ -102,7 +105,10 @@ public class PostController {
       Spark.halt(401, "Du bist nicht angemeldet!");
       return null;
     }
-    Post post = postService.getPostById(Integer.parseInt(req.params("post")));
+
+    MultiMap<String> params = new MultiMap<String>();
+    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+    Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
       Spark.halt(400, "Post existiert nicht");
       return null;

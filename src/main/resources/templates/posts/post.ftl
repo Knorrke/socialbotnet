@@ -18,21 +18,38 @@
 			<br/>
 			<br/>
 			<#assign likedByAuthenticatedUser=false>
-			<#assign likesShown=(post.likesCount < 3)?then(post.likesCount, 3)>
+			<#assign likesShown=(post.likesCount < 5)?then(post.likesCount, 5)>
 			<#if authenticatedUser??>
 				<#if postsLikedByUser?map(p->p.getId())?seq_contains(post.getId())>
-					<a href="/unlike/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir nicht mehr</a>
+					<form method="POST" action="/unlike" style="margin-right:10px; display:inline;">
+						<input type="hidden" name="post" value="${post.id?c}">
+						<button class="button action-button colored" type="submit" title="Gefällt mir nicht mehr">
+							<i class="icon-current fas fa-heart"></i>
+							<i class="icon-action fas fa-heart-broken"></i>
+							<span>${post.likesCount}</span>
+						</button>
+					</form>
 				<#else>
-					<a href="/like/${post.id?c}" style="margin-right:10px">Gef&auml;llt mir</a>
+					<form method="POST" action="/like" style="margin-right:10px; display:inline;">
+						<input type="hidden" name="post" value="${post.id?c}">
+						<button class="button action-button colored" type="submit" title="Gefällt mir">
+							<i class="icon-current far fa-heart"></i>
+							<i class="icon-action fas fa-heart"></i>
+							<span>${post.likesCount}</span>
+						</button>
+					</form>
 				</#if>
+			<#else>
+				<span style="margin-right: 10px; vertical-align: middle;"><i class="far fa-heart"></i><span>${post.likesCount}</span></span>
 			</#if>
-			<#if post.likesCount gt 0>
-				<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
-					<#if likingUser?index ==0>Gef&auml;llt: <#else>,</#if>
-					 <a href="/user/profile/${likingUser.username}">${likingUser.username}</a>
-				</#list>
-			</#if>
-			<#if post.likesCount gt likesShown> und ${post.likesCount - likesShown} weiteren.</#if>
+			<span class="likes">
+				<#if post.likesCount gt 0>
+					<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
+						 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>
+					</#list>
+				</#if>
+				<#if post.likesCount gt likesShown> <span class="profile-pic small overlapping" data-tooltip="${post.likesCount - likesShown} weitere">...</span></#if>
+			</span>
         </div>
     </div>
 </#macro>
