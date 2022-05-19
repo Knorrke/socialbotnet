@@ -70,50 +70,32 @@ public class PostController {
   }
 
   public String likePost(Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
-    if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
-    }
-
-    MultiMap<String> params = new MultiMap<String>();
-    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-    Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
-    if (post == null) {
-      Spark.halt(400, "Post existiert nicht");
-      return null;
-    }
-    postService.likePost(post, authenticatedUser);
-    if (req.headers("referer") != null) {
-      res.redirect(req.headers("referer") + "#post-" + post.getId());
-    } else {
-      try {
-        res.redirect(
-            String.format(
-                "/pinnwand/%s#post-%s",
-                URLEncoder.encode(post.getUsername(), "UTF-8"), post.getId()));
-      } catch (UnsupportedEncodingException e) {
-        logger.error("unsupported encoding UTF-8", e);
-      }
-    }
-    return null;
+    return handleLikeAndUnlike(true, req, res);
   }
 
   public String unlikePost(Request req, Response res) {
+    return handleLikeAndUnlike(false, req, res);
+  }
+
+  private String handleLikeAndUnlike(boolean liked, Request req, Response res) {
     User authenticatedUser = userService.getAuthenticatedUser(req);
     if (authenticatedUser == null) {
       Spark.halt(401, "Du bist nicht angemeldet!");
       return null;
     }
 
-    MultiMap<String> params = new MultiMap<String>();
+    MultiMap<String> params = new MultiMap<>();
     UrlEncoded.decodeTo(req.body(), params, "UTF-8");
     Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
       Spark.halt(400, "Post existiert nicht");
       return null;
     }
-    postService.unlikePost(post, authenticatedUser);
+    if (liked) {
+      postService.likePost(post, authenticatedUser);
+    } else {
+      postService.unlikePost(post, authenticatedUser);
+    }
     if (req.headers("referer") != null) {
       res.redirect(req.headers("referer") + "#post-" + post.getId());
     } else {
@@ -140,7 +122,7 @@ public class PostController {
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      MultiMap<String> params = new MultiMap<String>();
+      MultiMap<String> params = new MultiMap<>();
       UrlEncoded.decodeTo(req.body(), params, "UTF-8");
       BeanUtils.populate(post, params);
       String username = req.params("username");
