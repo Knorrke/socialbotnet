@@ -25,7 +25,7 @@
 		     <span class="text-element">
 		     	<textarea name="hobbies" cols="30" rows="4">${authenticatedUser.hobbies!}</textarea>
 	     	</span>
-	     <dt>&Uuml;ber mich:
+	     <dt>Über mich:
 	     <dd>
 		     <span class="text-element">
 			     <textarea name="about" cols="30" rows="4">${authenticatedUser.about!}</textarea>

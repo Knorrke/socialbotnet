@@ -115,7 +115,7 @@
         </div>
         <div class="media-body">
         	<p>
-        	Dieses Projekt ist im Rahmen einer Zulassungsarbeit am Lehrstuhl f&uuml;r Didaktik der Informatik der Ludwig-Maximilians-Universit&auml;t M&uuml;nchen entstanden. 
+        	Dieses Projekt ist im Rahmen einer Zulassungsarbeit am Lehrstuhl für Didaktik der Informatik der Ludwig-Maximilians-Universität München entstanden. 
         	<a href="/assets/material/zulassungsarbeit.pdf" title="Zulassungsarbeit Social Bots herunterladen" download>Download der Zulassungsarbeit</a>
         	</p>
         	<p>

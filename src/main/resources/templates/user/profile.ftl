@@ -21,12 +21,12 @@
     	<div class="media colored">
             <div class="media-body">
                 <h3 class="media-heading">
-                    &Uuml;ber mich
+                    Über mich
                 </h3>
                 <#if user.about!="">
                 	${user.about}
                 <#else>
-                	Leider hat ${user.username} noch keine Informationen &uuml;ber sich angegeben.
+                	Leider hat ${user.username} noch keine Informationen über sich angegeben.
                 </#if>
             </div>
         </div>

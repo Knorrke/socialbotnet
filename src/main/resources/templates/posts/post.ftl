@@ -3,12 +3,12 @@
     <div id="post-${post.id?c}" class="media colored">
         <div class="media-body">
             <h4 class="media-heading">
-                <a href="/user/profile/${post.user.username}">
+                <a href="/user/profile/${post.user.username?url}">
                 <img alt="Profilbild von ${post.user.username}" src="${post.user.image}" width="50" style="vertical-align:middle">
                 ${post.user.username}
                 </a>
                 <#if post.wall.username != post.user.username>
-                    an <a href="/user/profile/${post.wall.username}">
+                    an <a href="/user/profile/${post.wall.username?url}">
                 	${post.wall.username}
                 	</a> 
                 </#if>
@@ -45,7 +45,7 @@
 			<span class="likes">
 				<#if post.likesCount gt 0>
 					<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
-						 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>
+						 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username?url}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>
 					</#list>
 				</#if>
 				<#if post.likesCount gt likesShown> <span class="profile-pic small overlapping" data-tooltip="${post.likesCount - likesShown} weitere">...</span></#if>

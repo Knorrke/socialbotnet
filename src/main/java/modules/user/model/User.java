@@ -1,6 +1,7 @@
 package modules.user.model;
 
 import java.io.Serializable;
+import org.eclipse.jetty.util.UrlEncoded;
 
 @SuppressWarnings("serial")
 public class User implements Serializable {
@@ -62,6 +63,8 @@ public class User implements Serializable {
   }
 
   public String getImage() {
-    return String.format("https://avatars.dicebear.com/api/bottts/%s.svg?width=%d", username, 100);
+    return String.format(
+        "https://avatars.dicebear.com/api/bottts/%s.svg?width=%d",
+        UrlEncoded.encodeString(username), 100);
   }
 }

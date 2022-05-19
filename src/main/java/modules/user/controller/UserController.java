@@ -83,7 +83,7 @@ public class UserController {
           model.put("username", user.getUsername());
           model.put("success", "Registrierung erfolgreich");
         } else {
-          model.put("error", "Passw&ouml;rter stimmen nicht &uuml;berein");
+          model.put("error", "Passwörter stimmen nicht überein");
         }
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());

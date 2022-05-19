@@ -5,7 +5,7 @@
  	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title} | SocialBotNet</title>
-    <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist f&uuml;r den Einsatz im Unterricht entwickelt worden." />
+    <meta name="description" content="SocialBotNet - Ein botfreundliches soziales Netzwerk. Dieses Netzwerk ist für den Einsatz im Unterricht entwickelt worden." />
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32" />
 	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16" />
@@ -56,7 +56,7 @@
 	                    </li>
 	                    <#if authenticatedUser??>
 		                    <li>
-		                        <a href="/user/profile/${authenticatedUser.username}">Eigenes Profil</a>
+		                        <a href="/user/profile/${authenticatedUser.username?url}">Eigenes Profil</a>
 		                    </li>
 		                    <li>
 		                        <a href="/logout">Abmelden</a>

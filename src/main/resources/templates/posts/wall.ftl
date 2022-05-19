@@ -35,8 +35,8 @@
 	<div class="media colored media-info">
         <div class="media-heading">
         	<#if user?? && user.username != authenticatedUser.username>
-		    	<h3 class="media-title">Was m&ouml;chtest du ${user.username} erz&auml;hlen, ${authenticatedUser.username}?</h3>
-        		<#assign action="/post/${user.username}">
+		    	<h3 class="media-title">Was möchtest du ${user.username} erzählen, ${authenticatedUser.username}?</h3>
+        		<#assign action="/post/${user.username?url}">
         	<#else>    
 		    	<h3 class="media-title">Was denkst du gerade, ${authenticatedUser.username}?</h3>
         		<#assign action="/post">
