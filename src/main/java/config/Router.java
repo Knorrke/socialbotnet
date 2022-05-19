@@ -12,10 +12,10 @@ import modules.user.controller.UserApiController;
 import modules.user.controller.UserController;
 import modules.user.model.User;
 import modules.user.service.UserService;
+import modules.util.DecodeParams;
 import modules.util.JSONUtil;
 import modules.util.Renderer;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -117,8 +117,7 @@ public class Router {
               "/*",
               (req, res) -> {
                 if (req.requestMethod().equals("POST")) {
-                  MultiMap<String> params = new MultiMap<String>();
-                  UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+                  MultiMap<String> params = DecodeParams.decode(req);
                   String username = params.getString("username");
                   String password = params.getString("password");
 

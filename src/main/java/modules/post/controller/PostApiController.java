@@ -8,9 +8,9 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
+import modules.util.DecodeParams;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import spark.Request;
 import spark.Response;
 
@@ -121,8 +121,7 @@ public class PostApiController {
    * @apiSampleRequest /api/like
    */
   public Object likePost(Request req, Response res) {
-    MultiMap<String> params = new MultiMap<String>();
-    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+    MultiMap<String> params = DecodeParams.decode(req);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
@@ -149,8 +148,7 @@ public class PostApiController {
    * @apiSampleRequest /api/unlike
    */
   public Object unlikePost(Request req, Response res) {
-    MultiMap<String> params = new MultiMap<String>();
-    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+    MultiMap<String> params = DecodeParams.decode(req);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
@@ -194,8 +192,7 @@ public class PostApiController {
     Post post = new Post();
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      MultiMap<String> params = new MultiMap<String>();
-      UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+      MultiMap<String> params = DecodeParams.decode(req);
       if (!params.containsKey("message")) {
         res.status(400);
         return new ResponseError("Parameter message fehlt in der Anfrage.");

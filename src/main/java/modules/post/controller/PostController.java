@@ -11,10 +11,10 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
+import modules.util.DecodeParams;
 import modules.util.Renderer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -84,8 +84,7 @@ public class PostController {
       return null;
     }
 
-    MultiMap<String> params = new MultiMap<>();
-    UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+    MultiMap<String> params = DecodeParams.decode(req);
     Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
       Spark.halt(400, "Post existiert nicht");
@@ -103,7 +102,7 @@ public class PostController {
         res.redirect(
             String.format(
                 "/pinnwand/%s#post-%s",
-                URLEncoder.encode(post.getUsername(), "UTF-8"), post.getId()));
+                URLEncoder.encode(post.getUsername(), DecodeParams.ENCODING), post.getId()));
       } catch (UnsupportedEncodingException e) {
         logger.error("unsupported encoding UTF-8", e);
       }
@@ -122,16 +121,16 @@ public class PostController {
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      MultiMap<String> params = new MultiMap<>();
-      UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-      BeanUtils.populate(post, params);
+      BeanUtils.populate(post, DecodeParams.decode(req));
       String username = req.params("username");
       if (username != null) {
         post.setWall(userService.getUserbyUsername(username));
-        res.redirect("/pinnwand/" + URLEncoder.encode(username, "UTF-8"));
+        res.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
       } else {
         post.setWall(authenticatedUser);
-        res.redirect("/pinnwand/" + URLEncoder.encode(authenticatedUser.getUsername(), "UTF-8"));
+        res.redirect(
+            "/pinnwand/"
+                + URLEncoder.encode(authenticatedUser.getUsername(), DecodeParams.ENCODING));
       }
     } catch (Exception e) {
       Spark.halt(500);

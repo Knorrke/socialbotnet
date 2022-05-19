@@ -10,10 +10,10 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
+import modules.util.DecodeParams;
 import modules.util.Renderer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -36,9 +36,7 @@ public class UserController {
     if (req.requestMethod().equals("POST")) {
       User user = new User();
       try { // populate user attributes by login params
-        MultiMap<String> params = new MultiMap<String>();
-        UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-        BeanUtils.populate(user, params);
+        BeanUtils.populate(user, DecodeParams.decode(req));
       } catch (Exception e) {
         Spark.halt(500);
         return null;
@@ -70,8 +68,7 @@ public class UserController {
     if (req.requestMethod().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        MultiMap<String> params = new MultiMap<String>();
-        UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+        MultiMap<String> params = DecodeParams.decode(req);
         if (params.get("password").equals(params.get("password2"))) {
           logger.debug("registration passwords match");
           BeanUtils.populate(user, params);
@@ -134,13 +131,12 @@ public class UserController {
     if (req.requestMethod().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        MultiMap<String> params = new MultiMap<String>();
-        UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-        BeanUtils.populate(user, params);
+        BeanUtils.populate(user, DecodeParams.decode(req));
         userService.updateUser(authenticatedUser, user);
         userService.addAuthenticatedUser(req, user);
         model.put("success", "Profil erfolgreich aktualisiert");
-        res.redirect("/user/profile/" + URLEncoder.encode(user.getUsername(), "UTF-8"));
+        res.redirect(
+            "/user/profile/" + URLEncoder.encode(user.getUsername(), DecodeParams.ENCODING));
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {

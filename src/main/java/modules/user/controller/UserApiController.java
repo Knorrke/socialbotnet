@@ -5,9 +5,9 @@ import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
+import modules.util.DecodeParams;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -23,8 +23,7 @@ public class UserApiController {
   public User login(Request req, Response res) {
     User user = new User();
     try {
-      MultiMap<String> params = new MultiMap<String>();
-      UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+      MultiMap<String> params = DecodeParams.decode(req);
       List<String> password = params.getOrDefault("password", params.getValues("passwort"));
       params.put("password", password);
       BeanUtils.populate(user, params);
@@ -77,8 +76,7 @@ public class UserApiController {
     User newUser = new User();
     User oldUser = new User();
     try {
-      MultiMap<String> params = new MultiMap<String>();
-      UrlEncoded.decodeTo(req.body(), params, "UTF-8");
+      MultiMap<String> params = DecodeParams.decode(req);
 
       oldUser = service.getUserbyUsername(params.getString("username"));
 
