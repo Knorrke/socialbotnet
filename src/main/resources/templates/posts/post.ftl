@@ -17,39 +17,41 @@
 			<small>&mdash; ${post.publishingDate}</small>
 			<br/>
 			<br/>
-			<#assign likedByAuthenticatedUser=false>
-			<#assign likesShown=(post.likesCount < 5)?then(post.likesCount, 5)>
-			<#if authenticatedUser??>
-				<#if postsLikedByUser?map(p->p.getId())?seq_contains(post.getId())>
-					<form method="POST" action="/unlike" style="margin-right:10px; display:inline;">
-						<input type="hidden" name="post" value="${post.id?c}">
-						<button class="button action-button colored" type="submit" title="Gefällt mir nicht mehr">
-							<i class="icon-current fas fa-heart"></i>
-							<i class="icon-action fas fa-heart-broken"></i>
-							<span>${post.likesCount}</span>
-						</button>
-					</form>
+			<div class="likes-box">
+				<#assign likedByAuthenticatedUser=false>
+				<#assign likesShown=(post.likesCount < 5)?then(post.likesCount, 5)>
+				<#if authenticatedUser??>
+					<#if postsLikedByUser?map(p->p.getId())?seq_contains(post.getId())>
+						<form method="POST" action="/unlike" class="likes-count">
+							<input type="hidden" name="post" value="${post.id?c}">
+							<button class="button action-button colored" type="submit" title="Gefällt mir nicht mehr">
+								<i class="icon-current fas fa-heart"></i>
+								<i class="icon-action fas fa-heart-broken"></i>
+								<span>${post.likesCount}</span>
+							</button>
+						</form>
+					<#else>
+						<form method="POST" action="/like" class="likes-count">
+							<input type="hidden" name="post" value="${post.id?c}">
+							<button class="button action-button colored" type="submit" title="Gefällt mir">
+								<i class="icon-current far fa-heart"></i>
+								<i class="icon-action fas fa-heart"></i>
+								<span>${post.likesCount}</span>
+							</button>
+						</form>
+					</#if>
 				<#else>
-					<form method="POST" action="/like" style="margin-right:10px; display:inline;">
-						<input type="hidden" name="post" value="${post.id?c}">
-						<button class="button action-button colored" type="submit" title="Gefällt mir">
-							<i class="icon-current far fa-heart"></i>
-							<i class="icon-action fas fa-heart"></i>
-							<span>${post.likesCount}</span>
-						</button>
-					</form>
+					<span class="likes-count"><i class="far fa-heart"></i><span>${post.likesCount}</span></span>
 				</#if>
-			<#else>
-				<span style="margin-right: 10px; vertical-align: middle;"><i class="far fa-heart"></i><span>${post.likesCount}</span></span>
-			</#if>
-			<span class="likes">
-				<#if post.likesCount gt 0>
-					<#list post.getRecentLikes()[0..(likesShown-1)] as likingUser>
-						 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username?url}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>
-					</#list>
-				</#if>
-				<#if post.likesCount gt likesShown> <span class="profile-pic small overlapping" data-tooltip="${post.likesCount - likesShown} weitere">...</span></#if>
-			</span>
+				<span class="likes">
+					<#if post.likesCount gt likesShown><span class="overlapping"><span class="profile-pic small" data-tooltip="${post.likesCount - likesShown} weitere">...</span></span></#if>
+					<#if post.likesCount gt 0>
+						<#list post.getRecentLikes()[(likesShown-1)..0] as likingUser>
+							 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username?url}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>
+						</#list>
+					</#if>
+				</span>
+			</div>
         </div>
     </div>
 </#macro>
