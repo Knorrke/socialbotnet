@@ -6,20 +6,17 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import modules.error.InputTooLongException;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
-import modules.util.Renderer;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 public class PostController {
   static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -39,15 +36,15 @@ public class PostController {
     this.userService = userService;
   }
 
-  public String getPosts(Request req, Response res) {
+  public void getPosts(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    User user = userService.getAuthenticatedUser(req);
+    User user = userService.getAuthenticatedUser(ctx);
     if (user != null) {
       model.put("authenticatedUser", user);
       model.put("postsLikedByUser", postService.getPostsLikedByUser(user));
     }
 
-    String sortBy = req.queryParams("sortby");
+    String sortBy = ctx.queryParam("sortby");
 
     if (acceptedSorts.containsKey(sortBy)) {
 
@@ -66,40 +63,40 @@ public class PostController {
       model.put("recent", posts);
     }
 
-    return Renderer.render(model, "posts/wall.page.ftl");
+    ctx.render("posts/wall.page.ftl", model);
   }
 
-  public String likePost(Request req, Response res) {
-    return handleLikeAndUnlike(true, req, res);
+  public void likePost(Context ctx) {
+    handleLikeAndUnlike(true, ctx);
   }
 
-  public String unlikePost(Request req, Response res) {
-    return handleLikeAndUnlike(false, req, res);
+  public void unlikePost(Context ctx) {
+    handleLikeAndUnlike(false, ctx);
   }
 
-  private String handleLikeAndUnlike(boolean liked, Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+  private void handleLikeAndUnlike(boolean liked, Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
+      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
+      return;
     }
 
-    MultiMap<String> params = DecodeParams.decode(req);
+    MultiMap<String> params = DecodeParams.decode(ctx);
     Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
-      Spark.halt(400, "Post existiert nicht");
-      return null;
+      ctx.status(HttpCode.UNAUTHORIZED).result("Post existiert nicht");
+      return;
     }
     if (liked) {
       postService.likePost(post, authenticatedUser);
     } else {
       postService.unlikePost(post, authenticatedUser);
     }
-    if (req.headers("referer") != null) {
-      res.redirect(req.headers("referer") + "#post-" + post.getId());
+    if (ctx.header("referer") != null) {
+      ctx.redirect(ctx.header("referer") + "#post-" + post.getId());
     } else {
       try {
-        res.redirect(
+        ctx.redirect(
             String.format(
                 "/pinnwand/%s#post-%s",
                 URLEncoder.encode(post.getUsername(), DecodeParams.ENCODING), post.getId()));
@@ -107,42 +104,37 @@ public class PostController {
         logger.error("unsupported encoding UTF-8", e);
       }
     }
-    return null;
   }
 
-  public String createPost(Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+  public void createPost(Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
+      ctx.status(HttpCode.BAD_REQUEST).result("Du bist nicht angemeldet!");
+      return;
     }
 
     Post post = new Post();
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      BeanUtils.populate(post, DecodeParams.decode(req));
-      String username = req.params("username");
+      BeanUtils.populate(post, DecodeParams.decode(ctx));
+      String username = ctx.pathParamMap().containsKey("username") ? ctx.pathParam("username") : authenticatedUser.getUsername();
       if (username != null) {
         post.setWall(userService.getUserbyUsername(username));
-        res.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
+        ctx.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
       } else {
         post.setWall(authenticatedUser);
-        res.redirect(
+        ctx.redirect(
             "/pinnwand/"
                 + URLEncoder.encode(authenticatedUser.getUsername(), DecodeParams.ENCODING));
       }
-    } catch (Exception e) {
-      Spark.halt(500);
-      return null;
-    }
-
-    try {
+      
       postService.addPost(post);
-    } catch (InputTooLongException e) {
-
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result(HttpCode.BAD_REQUEST.getMessage());
+      return;
     }
-    return null;
   }
 
   /** @return the acceptedsorts */

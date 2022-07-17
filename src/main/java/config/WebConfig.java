@@ -1,16 +1,23 @@
 package config;
 
-import static spark.Spark.*;
-
+import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
+import io.javalin.plugin.rendering.template.JavalinFreemarker;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
+import modules.util.JSONUtil;
 
 public class WebConfig {
   public WebConfig(PostService postService, UserService userService) {
-    staticFiles.location("/public");
-    staticFiles.expireTime(60 * 60 * 24 * 7);
-    port(getAssignedPort());
-    new Router(postService, userService).setupRoutes();
+    Javalin app = Javalin.create(config -> {
+      config.addStaticFiles("/public", Location.CLASSPATH);
+      config.jsonMapper(JSONUtil.create());
+    });
+
+    JavalinFreemarker.configure(FreeMarkerEngineConfig.getConfig());
+
+    app.start(getAssignedPort());
+    new Router(app, postService, userService).setupRoutes();
   }
 
   static int getAssignedPort() {

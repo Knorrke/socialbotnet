@@ -1,7 +1,10 @@
 package modules.post.controller;
 
 import java.sql.Timestamp;
-import java.util.List;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.post.model.Post;
@@ -9,10 +12,6 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import spark.Request;
-import spark.Response;
 
 public class PostApiController {
   private PostService postService;
@@ -54,11 +53,11 @@ public class PostApiController {
    * ]
    * @apiComment </pre>
    */
-  public List<Post> getPosts(Request req, Response res) {
-    int limit = getLimitParam(req);
-    String sortby = getSortByParam(req);
-    boolean asc = getAscendingParam(req);
-    return postService.getWallPostsSorted(sortby, asc, limit);
+  public void getPosts(Context ctx) {
+    int limit = getLimitParam(ctx);
+    String sortby = getSortByParam(ctx);
+    boolean asc = getAscendingParam(ctx);
+    ctx.json(postService.getWallPostsSorted(sortby, asc, limit));
   }
 
   /**
@@ -96,19 +95,19 @@ public class PostApiController {
    * ]
    * @apiComment </pre>
    */
-  public Object getUserPosts(Request req, Response res) {
-    String username = req.params("username");
+  public void getUserPosts(Context ctx) {
+    String username = ctx.pathParam("username");
     User profileUser = userService.getUserbyUsername(username);
 
     if (profileUser == null) {
-      res.status(400);
-      return new ResponseError("Der User %s existiert nicht", username);
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der User %s existiert nicht", username));
+      return ;
     }
 
-    int limit = getLimitParam(req);
-    String sortby = getSortByParam(req);
-    boolean asc = getAscendingParam(req);
-    return postService.getUserWallPostsSorted(profileUser, sortby, asc, limit);
+    int limit = getLimitParam(ctx);
+    String sortby = getSortByParam(ctx);
+    boolean asc = getAscendingParam(ctx);
+    ctx.json(postService.getUserWallPostsSorted(profileUser, sortby, asc, limit));
   }
 
   /**
@@ -120,22 +119,22 @@ public class PostApiController {
    * @apiBody (Post) {Number} postid Die id des Posts, der geliket werden soll.
    * @apiSampleRequest /api/like
    */
-  public Object likePost(Request req, Response res) {
-    MultiMap<String> params = DecodeParams.decode(req);
+  public void likePost(Context ctx) {
+    MultiMap<String> params = DecodeParams.decode(ctx);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
-      res.status(400);
-      return new ResponseError("Parameter postid fehlt in der Anfrage.");
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter postid fehlt in der Anfrage."));
+      return;
     }
     int id = Integer.parseInt(params.getString("postid"));
     Post post = postService.getPostById(id);
     if (post == null) {
-      res.status(400);
-      return new ResponseError("Der Post mit id %s existiert nicht", id);
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der Post mit id %s existiert nicht", id));
+      return;
     }
     postService.likePost(post, authenticatedUser);
-    return post;
+    ctx.json(post);
   }
 
   /**
@@ -147,23 +146,23 @@ public class PostApiController {
    * @apiBody (Post) {Number} postid Die id des Posts, dessen Like entfernt werden soll.
    * @apiSampleRequest /api/unlike
    */
-  public Object unlikePost(Request req, Response res) {
-    MultiMap<String> params = DecodeParams.decode(req);
+  public void unlikePost(Context ctx) {
+    MultiMap<String> params = DecodeParams.decode(ctx);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
-      res.status(400);
-      return new ResponseError("Parameter postid fehlt in der Anfrage.");
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter postid fehlt in der Anfrage."));
+      return;
     }
     int id = Integer.parseInt(params.getString("postid"));
     Post post = postService.getPostById(id);
     if (post == null) {
-      res.status(400);
-      return new ResponseError("Der Post mit id %s existiert nicht", id);
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der Post mit id %s existiert nicht", id));
+      return;
     }
 
     postService.unlikePost(post, authenticatedUser);
-    return post;
+    ctx.json(post);
   }
 
   /**
@@ -188,49 +187,50 @@ public class PostApiController {
    * @apiBody (Post) {String} message Die Nachricht, die gepostet werden soll.
    * @apiSampleRequest /api/post/:username
    */
-  public Object createPost(Request req, Response res) {
+  public void createPost(Context ctx) {
     Post post = new Post();
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      MultiMap<String> params = DecodeParams.decode(req);
+      MultiMap<String> params = DecodeParams.decode(ctx);
       if (!params.containsKey("message")) {
-        res.status(400);
-        return new ResponseError("Parameter message fehlt in der Anfrage.");
+        ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter message fehlt in der Anfrage."));
+        return;
       }
       BeanUtils.populate(post, params);
 
       User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
       post.setUser(authenticatedUser);
 
-      String username = req.params("username");
+      String username = ctx.pathParam("username");
       if (username != null) {
         post.setWall(userService.getUserbyUsername(username));
       } else {
         post.setWall(authenticatedUser);
       }
     } catch (Exception e) {
-      res.status(500);
-      return new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!");
+      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
+      return;
     }
 
     try {
       postService.addPost(post);
     } catch (InputTooLongException e) {
-      res.status(400);
-      return new ResponseError(e);
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError(e));
+      return;
     }
-    return post;
+    ctx.json(post);
   }
 
-  private int getLimitParam(Request req) {
-    return Integer.parseInt(req.queryParamOrDefault("limit", "50"));
+  private int getLimitParam(Context ctx) {
+    return ctx.queryParamAsClass("limit", Integer.class).getOrDefault(50);
   }
 
-  private String getSortByParam(Request req) {
-    return req.queryParamOrDefault("sortby", "id").toLowerCase();
+  private String getSortByParam(Context ctx) {
+    return ctx.queryParamAsClass("sortby", String.class).getOrDefault("id").toLowerCase();
   }
 
-  private boolean getAscendingParam(Request req) {
-    return req.queryParamOrDefault("order", "desc").equalsIgnoreCase("asc");
+  private boolean getAscendingParam(Context ctx) {
+    String order = ctx.queryParamAsClass("order", String.class).getOrDefault("desc");
+    return order.equalsIgnoreCase("asc");
   }
 }

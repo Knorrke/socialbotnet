@@ -1,16 +1,15 @@
 package modules.user.controller;
 
 import java.util.List;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 public class UserApiController {
 
@@ -20,23 +19,24 @@ public class UserApiController {
     this.service = service;
   }
 
-  public User login(Request req, Response res) {
+  public User login(Context ctx) {
     User user = new User();
     try {
-      MultiMap<String> params = DecodeParams.decode(req);
+      MultiMap<String> params = DecodeParams.decode(ctx);
       List<String> password = params.getOrDefault("password", params.getValues("passwort"));
       params.put("password", password);
       BeanUtils.populate(user, params);
+      return service.checkUser(user);
     } catch (Exception e) {
-      Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
+      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result("Interner Fehler aufgetreten. Bitte melde das Problem!");
+      return null;
     }
-    return service.checkUser(user);
   }
 
   /**
-   * @api {get} /api/users Übersicht aller Nutzer
+   * @api {get} /api/users Ãœbersicht aller Nutzer
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
-   * @apiGroup Users — GET
+   * @apiGroup Users â€” GET
    * @apiQuery {String="id", "username", "hobbies", "about"} [sortby=id] Sortierung
    * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=100] Limit der angezeigten Posts.
@@ -54,29 +54,31 @@ public class UserApiController {
    * ]
    * @apiComment </pre>
    */
-  public List<User> getUsers(Request req, Response res) {
-    int limit = Integer.parseInt(req.queryParamOrDefault("limit", "100"));
-    String sortby = req.queryParamOrDefault("sortby", "id");
-    boolean asc = req.queryParamOrDefault("order", "desc").equals("asc");
-    return service.getAllUsersSorted(sortby.toLowerCase(), asc, limit);
+  public void getUsers(Context ctx) {
+    int limit = ctx.queryParamAsClass("limit", Integer.class).getOrDefault(100);
+    String sortby = ctx.queryParamAsClass("sortby", String.class).getOrDefault("id");
+    String order = ctx.queryParamAsClass("order", String.class).getOrDefault("desc");
+    boolean asc = order.equalsIgnoreCase("asc");
+    
+    ctx.json(service.getAllUsersSorted(sortby.toLowerCase(), asc, limit));
   }
 
   /**
    * @api {post} /api/user/update Profilinformationen aktualisieren
-   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Über mich"
-   * @apiGroup Users — POST
+   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Ãœber mich"
+   * @apiGroup Users â€” POST
    * @apiBody (Anmeldedaten) {String} username Aktueller Benutzername
    * @apiBody (Anmeldedaten) {String} password Passwort des Benutzers
-   * @apiBody (Änderungen) {String} [newUsername] Optional. Ändert den Benutzernamen
-   * @apiBody (Änderungen) {String} [hobbies] Optional. Ändert die Profilinformation "Hobbies"
-   * @apiBody (Änderungen) {String} [about] Optional. Ändert die Profilinformation "Über mich"
+   * @apiBody (Ã„nderungen) {String} [newUsername] Optional. Ã„ndert den Benutzernamen
+   * @apiBody (Ã„nderungen) {String} [hobbies] Optional. Ã„ndert die Profilinformation "Hobbies"
+   * @apiBody (Ã„nderungen) {String} [about] Optional. Ã„ndert die Profilinformation "Ãœber mich"
    * @apiSampleRequest /api/user/update
    */
-  public Object updateProfile(Request req, Response res) {
+  public void updateProfile(Context ctx) {
     User newUser = new User();
     User oldUser = new User();
     try {
-      MultiMap<String> params = DecodeParams.decode(req);
+      MultiMap<String> params = DecodeParams.decode(ctx);
 
       oldUser = service.getUserbyUsername(params.getString("username"));
 
@@ -91,15 +93,13 @@ public class UserApiController {
       newUser.setId(oldUser.getId());
 
     } catch (Exception e) {
-      res.status(500);
-      return new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!");
+      ctx.status(500).json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
     }
     try {
       service.updateUser(oldUser, newUser);
     } catch (InputTooLongException e) {
-      res.status(400);
-      return new ResponseError(e);
+      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError(e));
     }
-    return oldUser;
+    ctx.json(oldUser);
   }
 }

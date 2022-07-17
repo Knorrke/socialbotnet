@@ -1,13 +1,13 @@
 package modules.user.service;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 import modules.error.InputTooLongException;
 import modules.user.dao.UserDaoInterface;
 import modules.user.model.User;
 import modules.util.PasswordUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import spark.Request;
 
 @Service
 public class UserService {
@@ -44,16 +44,16 @@ public class UserService {
     this.userDaoInterface = userDaoInterface;
   }
 
-  public void addAuthenticatedUser(Request req, User user) {
-    req.session().attribute(USER_SESSION_ID, user);
+  public void addAuthenticatedUser(Context ctx, User user) {
+    ctx.sessionAttribute(USER_SESSION_ID, user);
   }
 
-  public void removeAuthenticatedUser(Request request) {
-    request.session().removeAttribute(USER_SESSION_ID);
+  public void removeAuthenticatedUser(Context ctx) {
+    ctx.req.getSession().removeAttribute(USER_SESSION_ID);
   }
 
-  public User getAuthenticatedUser(Request request) {
-    return request.session().attribute(USER_SESSION_ID);
+  public User getAuthenticatedUser(Context ctx) {
+    return ctx.sessionAttribute(USER_SESSION_ID);
   }
 
   public void updateUser(User oldUser, User newUser) throws InputTooLongException {

@@ -1,15 +1,12 @@
 package modules.util;
 
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
-import spark.Request;
+import io.javalin.http.Context;
 
 public class DecodeParams {
   public static final String ENCODING = "UTF-8";
 
-  public static MultiMap<String> decode(Request req) {
-    MultiMap<String> params = new MultiMap<String>();
-    UrlEncoded.decodeTo(req.body(), params, ENCODING);
-    return params;
+  public static MultiMap<String> decode(Context ctx) {
+    return new MultiMap<String>(ctx.formParamMap());
   }
 }

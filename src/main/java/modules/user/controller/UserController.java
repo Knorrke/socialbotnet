@@ -4,6 +4,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import modules.error.InputTooLongException;
 import modules.post.controller.PostController;
 import modules.post.model.Post;
@@ -11,14 +17,6 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
-import modules.util.Renderer;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 public class UserController {
 
@@ -31,121 +29,120 @@ public class UserController {
     this.postService = postService;
   }
 
-  public String login(Request req, Response res) {
+  public void login(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    if (req.requestMethod().equals("POST")) {
+    if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by login params
-        BeanUtils.populate(user, DecodeParams.decode(req));
+        BeanUtils.populate(user, DecodeParams.decode(ctx));
       } catch (Exception e) {
-        Spark.halt(500);
-        return null;
+        ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
+        return;
       }
       User authenticated = userService.checkUser(user);
       if (authenticated != null) {
-        userService.addAuthenticatedUser(req, authenticated);
-        res.redirect("/");
-        Spark.halt();
+        userService.addAuthenticatedUser(ctx, authenticated);
+        ctx.redirect("/");
         model.put("username", user.getUsername());
         model.put("success", "Login erfolgreich. Herzlich Willkommen! :-)");
+        return;
       } else {
         model.put("error", "Login fehlgeschlagen.");
       }
     }
 
-    return Renderer.render(model, "user/login.ftl");
+    ctx.render("user/login.ftl", model);
   }
 
-  public String logout(Request req, Response res) {
-    userService.removeAuthenticatedUser(req);
-    res.redirect("/");
-    Spark.halt();
-    return null;
+  public void logout(Context ctx) {
+    userService.removeAuthenticatedUser(ctx);
+    ctx.redirect("/");
   }
 
-  public String register(Request req, Response res) {
+  public void register(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    if (req.requestMethod().equals("POST")) {
+    if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        MultiMap<String> params = DecodeParams.decode(req);
+        MultiMap<String> params = DecodeParams.decode(ctx);
         if (params.get("password").equals(params.get("password2"))) {
           logger.debug("registration passwords match");
           BeanUtils.populate(user, params);
           userService.registerUser(user);
           logger.debug("registration succeeded");
-          userService.addAuthenticatedUser(req, user);
-          res.redirect("/");
-          Spark.halt();
+          userService.addAuthenticatedUser(ctx, user);
+          ctx.redirect("/");
           model.put("username", user.getUsername());
           model.put("success", "Registrierung erfolgreich");
+          return;
         } else {
           model.put("error", "Passwörter stimmen nicht überein");
         }
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {
-        Spark.halt(500);
+        ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result("Bei der Registrierung ist ein Fehler aufgetreten");
         logger.error("Internal server error on registration");
-        return null;
+        return;
       }
     }
 
-    return Renderer.render(model, "user/register.ftl");
+    ctx.render("user/register.ftl", model);
   }
 
-  public String showProfile(Request req, Response res) {
+  public void showProfile(Context ctx) {
     Map<String, Object> model = new HashMap<>();
 
-    String username = req.params("username");
+    String username = ctx.pathParam("username");
     User profileUser = userService.getUserbyUsername(username);
     if (profileUser == null) {
-      Spark.halt(400, "User unbekannt");
-      return null;
+      ctx.status(HttpCode.BAD_REQUEST).result("User unbekannt");
+      return;
     }
     model.put("user", profileUser);
 
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser != null) {
       model.put("authenticatedUser", authenticatedUser);
       model.put("postsLikedByUser", postService.getPostsLikedByUser(authenticatedUser));
     }
 
-    String sortBy = req.queryParams("sortby");
+    String sortBy = ctx.queryParam("sortby");
     Map<String, String> acceptedSorts = PostController.getAcceptedSorts();
 
     List<Post> posts = postService.getUserWallPostsSorted(profileUser, sortBy, false, 50);
     model.put(acceptedSorts.getOrDefault(sortBy, "recent"), posts);
     model.put("sortby", sortBy);
 
-    return Renderer.render(model, "user/profile.ftl");
+    ctx.render("user/profile.ftl", model);
   }
 
-  public String updateProfile(Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+  public void updateProfile(Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
+      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
+      return;
     }
     Map<String, Object> model = new HashMap<>();
-    if (req.requestMethod().equals("POST")) {
+    if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        BeanUtils.populate(user, DecodeParams.decode(req));
+        BeanUtils.populate(user, DecodeParams.decode(ctx));
         userService.updateUser(authenticatedUser, user);
-        userService.addAuthenticatedUser(req, user);
+        userService.addAuthenticatedUser(ctx, user);
         model.put("success", "Profil erfolgreich aktualisiert");
-        res.redirect(
+        ctx.redirect(
             "/user/profile/" + URLEncoder.encode(user.getUsername(), DecodeParams.ENCODING));
+        return;
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {
-        Spark.halt(500);
-        return null;
+        ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
+        return;
       }
     }
 
     model.put("authenticatedUser", authenticatedUser);
-    return Renderer.render(model, "user/updateProfile.ftl");
+    ctx.render("user/updateProfile.ftl", model);
   }
 }
