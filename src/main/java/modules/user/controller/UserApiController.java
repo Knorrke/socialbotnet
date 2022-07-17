@@ -1,15 +1,15 @@
 package modules.user.controller;
 
-import java.util.List;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
+import java.util.List;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
 
 public class UserApiController {
 
@@ -28,7 +28,8 @@ public class UserApiController {
       BeanUtils.populate(user, params);
       return service.checkUser(user);
     } catch (Exception e) {
-      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result("Interner Fehler aufgetreten. Bitte melde das Problem!");
+      ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
+          .result("Interner Fehler aufgetreten. Bitte melde das Problem!");
       return null;
     }
   }
@@ -36,7 +37,7 @@ public class UserApiController {
   /**
    * @api {get} /api/users Ãœbersicht aller Nutzer
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
-   * @apiGroup Users â€” GET
+   * @apiGroup Users â€�? GET
    * @apiQuery {String="id", "username", "hobbies", "about"} [sortby=id] Sortierung
    * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=100] Limit der angezeigten Posts.
@@ -59,19 +60,22 @@ public class UserApiController {
     String sortby = ctx.queryParamAsClass("sortby", String.class).getOrDefault("id");
     String order = ctx.queryParamAsClass("order", String.class).getOrDefault("desc");
     boolean asc = order.equalsIgnoreCase("asc");
-    
+
     ctx.json(service.getAllUsersSorted(sortby.toLowerCase(), asc, limit));
   }
 
   /**
    * @api {post} /api/user/update Profilinformationen aktualisieren
-   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Ãœber mich"
-   * @apiGroup Users â€” POST
+   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Ãœber
+   *     mich"
+   * @apiGroup Users â€�? POST
    * @apiBody (Anmeldedaten) {String} username Aktueller Benutzername
    * @apiBody (Anmeldedaten) {String} password Passwort des Benutzers
    * @apiBody (Ã„nderungen) {String} [newUsername] Optional. Ã„ndert den Benutzernamen
-   * @apiBody (Ã„nderungen) {String} [hobbies] Optional. Ã„ndert die Profilinformation "Hobbies"
-   * @apiBody (Ã„nderungen) {String} [about] Optional. Ã„ndert die Profilinformation "Ãœber mich"
+   * @apiBody (Ã„nderungen) {String} [hobbies] Optional. Ã„ndert die Profilinformation
+   *     "Hobbies"
+   * @apiBody (Ã„nderungen) {String} [about] Optional. Ã„ndert die Profilinformation "Ãœber
+   *     mich"
    * @apiSampleRequest /api/user/update
    */
   public void updateProfile(Context ctx) {
@@ -93,7 +97,8 @@ public class UserApiController {
       newUser.setId(oldUser.getId());
 
     } catch (Exception e) {
-      ctx.status(500).json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
+      ctx.status(500)
+          .json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
     }
     try {
       service.updateUser(oldUser, newUser);

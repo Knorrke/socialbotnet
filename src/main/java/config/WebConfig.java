@@ -9,10 +9,12 @@ import modules.util.JSONUtil;
 
 public class WebConfig {
   public WebConfig(PostService postService, UserService userService) {
-    Javalin app = Javalin.create(config -> {
-      config.addStaticFiles("/public", Location.CLASSPATH);
-      config.jsonMapper(JSONUtil.create());
-    });
+    Javalin app =
+        Javalin.create(
+            config -> {
+              config.addStaticFiles("/public", Location.CLASSPATH);
+              config.jsonMapper(JSONUtil.create());
+            });
 
     JavalinFreemarker.configure(FreeMarkerEngineConfig.getConfig());
 

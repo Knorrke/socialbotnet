@@ -1,22 +1,22 @@
 package modules.post.controller;
 
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PostController {
   static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -118,7 +118,10 @@ public class PostController {
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
       BeanUtils.populate(post, DecodeParams.decode(ctx));
-      String username = ctx.pathParamMap().containsKey("username") ? ctx.pathParam("username") : authenticatedUser.getUsername();
+      String username =
+          ctx.pathParamMap().containsKey("username")
+              ? ctx.pathParam("username")
+              : authenticatedUser.getUsername();
       if (username != null) {
         post.setWall(userService.getUserbyUsername(username));
         ctx.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
@@ -128,7 +131,7 @@ public class PostController {
             "/pinnwand/"
                 + URLEncoder.encode(authenticatedUser.getUsername(), DecodeParams.ENCODING));
       }
-      
+
       postService.addPost(post);
     } catch (Exception e) {
       logger.error(e.getMessage());

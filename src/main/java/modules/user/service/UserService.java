@@ -1,13 +1,13 @@
 package modules.user.service;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import io.javalin.http.Context;
+import java.util.List;
 import modules.error.InputTooLongException;
 import modules.user.dao.UserDaoInterface;
 import modules.user.model.User;
 import modules.util.PasswordUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {

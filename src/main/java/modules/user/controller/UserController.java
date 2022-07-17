@@ -1,15 +1,11 @@
 package modules.user.controller;
 
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
 import modules.error.InputTooLongException;
 import modules.post.controller.PostController;
 import modules.post.model.Post;
@@ -17,6 +13,10 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserController {
 
@@ -81,7 +81,8 @@ public class UserController {
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {
-        ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result("Bei der Registrierung ist ein Fehler aufgetreten");
+        ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
+            .result("Bei der Registrierung ist ein Fehler aufgetreten");
         logger.error("Internal server error on registration");
         return;
       }

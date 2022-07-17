@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.socialbotnet</groupId>
 	<artifactId>socialbotnet</artifactId>
@@ -35,9 +37,9 @@
 
 		<!-- Javalin -->
 		<dependency>
-		    <groupId>io.javalin</groupId>
-		    <artifactId>javalin</artifactId>
-		    <version>${javalin.version}</version>
+			<groupId>io.javalin</groupId>
+			<artifactId>javalin</artifactId>
+			<version>${javalin.version}</version>
 		</dependency>
 
 		<!-- Freemarker -->
@@ -137,35 +139,31 @@
 				<artifactId>embedded-postgres-binaries-bom</artifactId>
 				<version>11.15.0</version>
 				<type>pom</type>
-                <scope>import</scope>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>com.cosium.code</groupId>
-					<artifactId>git-code-format-maven-plugin</artifactId>
-					<version>${git-code-format-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>install-formatter-hook</id>
-							<goals>
-								<goal>install-hooks</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>validate-code-format</id>
-							<goals>
-								<goal>validate-code-format</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>com.cosium.code</groupId>
+				<artifactId>git-code-format-maven-plugin</artifactId>
+				<version>${git-code-format-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>install-formatter-hook</id>
+						<goals>
+							<goal>install-hooks</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>validate-code-format</id>
+						<goals>
+							<goal>validate-code-format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>

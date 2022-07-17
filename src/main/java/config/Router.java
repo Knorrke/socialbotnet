@@ -4,9 +4,7 @@ import static io.javalin.apibuilder.ApiBuilder.before;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
-import org.eclipse.jetty.util.MultiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
@@ -22,6 +20,9 @@ import modules.user.controller.UserController;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
+import org.eclipse.jetty.util.MultiMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Router {
   static final Logger logger = LoggerFactory.getLogger(Router.class);
@@ -40,120 +41,133 @@ public class Router {
   }
 
   public void setupRoutes() {
-    app.routes(() -> {
-    get("/registrieren", userController::register);
-    post("/registrieren", userController::register);
-
-    get("/login", userController::login);
-    post("/login", userController::login);
-
-    get("/logout", userController::logout);
-    post("/logout", userController::logout);
-
-    get("/user/profile/{username}", userController::showProfile);
-    get("/user/update", userController::updateProfile);
-    post("/user/update", userController::updateProfile);
-
-    get("/", postController::getPosts);
-    get("/pinnwand/{username}", userController::showProfile);
-
-    post("/post", postController::createPost);
-    post("/post/{username}", postController::createPost);
-
-    post("like", postController::likePost);
-    post("unlike", postController::unlikePost);
-
-
-    get("/material", ctx -> {
-      ctx.render("meta/material.ftl");
-    });
-    get("/didaktik", ctx -> {
-      ctx.render("meta/didactic.ftl");
-    });
-    get("/impressum", (ctx) -> {ctx.render("meta/impress.ftl");});
-
-    path(
-        "/api",
+    app.routes(
         () -> {
+          get("/registrieren", userController::register);
+          post("/registrieren", userController::register);
+
+          get("/login", userController::login);
+          post("/login", userController::login);
+
+          get("/logout", userController::logout);
+          post("/logout", userController::logout);
+
+          get("/user/profile/{username}", userController::showProfile);
+          get("/user/update", userController::updateProfile);
+          post("/user/update", userController::updateProfile);
+
+          get("/", postController::getPosts);
+          get("/pinnwand/{username}", userController::showProfile);
+
+          post("/post", postController::createPost);
+          post("/post/{username}", postController::createPost);
+
+          post("like", postController::likePost);
+          post("unlike", postController::unlikePost);
+
           get(
-              "",
+              "/material",
               ctx -> {
-                ctx.redirect("/docs/index.html");
+                ctx.render("meta/material.ftl");
               });
-          before("/*", ctx -> logger.debug("Received api call to " + ctx.path()));
-
-          // Activate CORS
-          app.options(
-              "/*",
+          get(
+              "/didaktik",
               ctx -> {
-                String accessControlRequestHeaders = ctx.header("Access-Control-Request-Headers");
-                if (accessControlRequestHeaders != null) {
-                  ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                ctx.render("meta/didactic.ftl");
+              });
+          get(
+              "/impressum",
+              (ctx) -> {
+                ctx.render("meta/impress.ftl");
+              });
+
+          path(
+              "/api",
+              () -> {
+                get(
+                    "",
+                    ctx -> {
+                      ctx.redirect("/docs/index.html");
+                    });
+                before("/*", ctx -> logger.debug("Received api call to " + ctx.path()));
+
+                // Activate CORS
+                app.options(
+                    "/*",
+                    ctx -> {
+                      String accessControlRequestHeaders =
+                          ctx.header("Access-Control-Request-Headers");
+                      if (accessControlRequestHeaders != null) {
+                        ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                      }
+
+                      String accessControlRequestMethod =
+                          ctx.header("Access-Control-Request-Method");
+                      if (accessControlRequestMethod != null) {
+                        ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                      }
+                    });
+                before(
+                    "/*",
+                    ctx -> {
+                      ctx.header("Access-Control-Allow-Origin", "*");
+                      ctx.header("Access-Control-Allow-Headers", "*");
+                    });
+                before("/*", this::checkCorrectRequestType);
+                before(
+                    "/*",
+                    ctx -> {
+                      if (ctx.method().equals("POST")) {
+                        MultiMap<String> params = DecodeParams.decode(ctx);
+                        String username = params.getString("username");
+                        String password = params.getString("password");
+
+                        if (password == null || username == null) {
+                          ctx.status(HttpCode.UNAUTHORIZED);
+                          throw new UnauthorizedResponse(
+                              "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.");
+                        }
+
+                        User authenticated = userApiController.login(ctx);
+
+                        if (authenticated == null) {
+                          ctx.status(HttpCode.UNAUTHORIZED);
+                          throw new UnauthorizedResponse(
+                              "Login fehlgeschlagen. Falscher Nutzername oder falsches Passwort.");
+                        }
+
+                        logger.debug("Authentication successfull");
+                      }
+                    });
+
+                get("/users", userApiController::getUsers);
+                get("/posts", postApiController::getPosts);
+                get("/pinnwand/{username}", postApiController::getUserPosts);
+
+                post("/user/update", userApiController::updateProfile);
+
+                post("/post", postApiController::createPost);
+                post("/post/{username}", postApiController::createPost);
+                post("/like", postApiController::likePost);
+                post("/unlike", postApiController::unlikePost);
+              });
+
+          app.error(
+              404,
+              ctx -> {
+                if (ctx.path().startsWith("/api/")) {
+                  ctx.json(new ResponseError("Diese Adresse existiert in der API nicht"));
+                } else {
+                  ctx.html("<html><body><h1>404 Not Found</h1></body></html>");
                 }
-
-                String accessControlRequestMethod = ctx.header("Access-Control-Request-Method");
-                if (accessControlRequestMethod != null) {
-                  ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-                }
-              });
-          before(
-              "/*",
-              ctx -> {
-                ctx.header("Access-Control-Allow-Origin", "*");
-                ctx.header("Access-Control-Allow-Headers", "*");
-              });
-          before("/*", this::checkCorrectRequestType);
-          before(
-              "/*",
-              ctx -> {
-                if (ctx.method().equals("POST")) {
-                  MultiMap<String> params = DecodeParams.decode(ctx);
-                  String username = params.getString("username");
-                  String password = params.getString("password");
-
-                  if (password == null || username == null) {
-                    ctx.status(HttpCode.UNAUTHORIZED);
-                    throw new UnauthorizedResponse("Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.");
-                  }
-
-                  User authenticated = userApiController.login(ctx);
-
-                  if (authenticated == null) {
-                    ctx.status(HttpCode.UNAUTHORIZED);
-                    throw new UnauthorizedResponse(
-                                "Login fehlgeschlagen. Falscher Nutzername oder falsches Passwort.");
-                  }
-
-                  logger.debug("Authentication successfull");
-                }
               });
 
-          get("/users", userApiController::getUsers);
-          get("/posts", postApiController::getPosts);
-          get("/pinnwand/{username}", postApiController::getUserPosts);
-
-          post("/user/update", userApiController::updateProfile);
-
-          post("/post", postApiController::createPost);
-          post("/post/{username}", postApiController::createPost);
-          post("/like", postApiController::likePost);
-          post("/unlike", postApiController::unlikePost);
+          app.exception(
+              HttpResponseException.class,
+              (e, ctx) -> {
+                ctx.json(new ResponseError(e.getMessage()));
+              });
         });
-
-      app.error(404,
-        ctx -> {
-          if (ctx.path().startsWith("/api/")) {
-            ctx.json(new ResponseError("Diese Adresse existiert in der API nicht"));
-          } else {
-            ctx.html("<html><body><h1>404 Not Found</h1></body></html>");
-          }
-        });
-
-      app.exception(HttpResponseException.class, (e,ctx) -> {
-        ctx.json(new ResponseError(e.getMessage()));
-      });
-
-    });
   }
 
   private boolean checkCorrectRequestType(Context ctx) throws HttpResponseException {
@@ -167,9 +181,10 @@ public class Router {
       for (String routePOST : routesPOSTRegex) {
         if (path.matches(routePOST)) {
           ctx.status(HttpCode.BAD_REQUEST);
-          throw new BadRequestResponse(String.format(
-              "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
-              "POST", requestMethod));
+          throw new BadRequestResponse(
+              String.format(
+                  "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
+                  "POST", requestMethod));
         }
       }
     }
@@ -178,9 +193,10 @@ public class Router {
       for (String routeGET : routesGETRegex) {
         if (path.matches(routeGET)) {
           ctx.status(HttpCode.BAD_REQUEST);
-          throw new BadRequestResponse(String.format(
-              "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
-              "GET", requestMethod));
+          throw new BadRequestResponse(
+              String.format(
+                  "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
+                  "GET", requestMethod));
         }
       }
     }

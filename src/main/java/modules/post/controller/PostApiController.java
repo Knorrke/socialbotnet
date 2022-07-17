@@ -1,10 +1,8 @@
 package modules.post.controller;
 
-import java.sql.Timestamp;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
+import java.sql.Timestamp;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.post.model.Post;
@@ -12,6 +10,8 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.DecodeParams;
+import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.jetty.util.MultiMap;
 
 public class PostApiController {
   private PostService postService;
@@ -100,8 +100,9 @@ public class PostApiController {
     User profileUser = userService.getUserbyUsername(username);
 
     if (profileUser == null) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der User %s existiert nicht", username));
-      return ;
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Der User %s existiert nicht", username));
+      return;
     }
 
     int limit = getLimitParam(ctx);
@@ -124,13 +125,15 @@ public class PostApiController {
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter postid fehlt in der Anfrage."));
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Parameter postid fehlt in der Anfrage."));
       return;
     }
     int id = Integer.parseInt(params.getString("postid"));
     Post post = postService.getPostById(id);
     if (post == null) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der Post mit id %s existiert nicht", id));
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Der Post mit id %s existiert nicht", id));
       return;
     }
     postService.likePost(post, authenticatedUser);
@@ -151,13 +154,15 @@ public class PostApiController {
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter postid fehlt in der Anfrage."));
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Parameter postid fehlt in der Anfrage."));
       return;
     }
     int id = Integer.parseInt(params.getString("postid"));
     Post post = postService.getPostById(id);
     if (post == null) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Der Post mit id %s existiert nicht", id));
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Der Post mit id %s existiert nicht", id));
       return;
     }
 
@@ -193,7 +198,8 @@ public class PostApiController {
     try { // populate post attributes by params
       MultiMap<String> params = DecodeParams.decode(ctx);
       if (!params.containsKey("message")) {
-        ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError("Parameter message fehlt in der Anfrage."));
+        ctx.status(HttpCode.BAD_REQUEST)
+            .json(new ResponseError("Parameter message fehlt in der Anfrage."));
         return;
       }
       BeanUtils.populate(post, params);
@@ -208,7 +214,8 @@ public class PostApiController {
         post.setWall(authenticatedUser);
       }
     } catch (Exception e) {
-      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
+      ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
+          .json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
       return;
     }
 
