@@ -2,8 +2,8 @@ package modules.post.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
+import modules.util.EncodingUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ public class PostController {
       return;
     }
 
-    MultiMap<String> params = DecodeParams.decode(ctx);
+    MultiMap<String> params = EncodingUtil.decode(ctx);
     Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
       ctx.status(HttpCode.UNAUTHORIZED).result("Post existiert nicht");
@@ -92,18 +92,25 @@ public class PostController {
     } else {
       postService.unlikePost(post, authenticatedUser);
     }
-    if (ctx.header("referer") != null) {
-      ctx.redirect(ctx.header("referer") + "#post-" + post.getId());
-    } else {
-      try {
-        ctx.redirect(
-            String.format(
-                "/pinnwand/%s#post-%s",
-                URLEncoder.encode(post.getUsername(), DecodeParams.ENCODING), post.getId()));
-      } catch (UnsupportedEncodingException e) {
-        logger.error("unsupported encoding UTF-8", e);
+
+    String defaultRedirectPath = "/pinnwand/" + EncodingUtil.uriEncode(post.getUsername());
+    try {
+      String referer = ctx.header("referer");
+      if (referer != null && new URI(referer).getPath() != null) {
+        String redirectPath = new URI(referer).getPath();
+        if (redirectPath.equals("/") || redirectPath.equals(defaultRedirectPath)) {
+          ctx.redirect(
+              String.format("%s#post-%d", redirectPath, post.getId()),
+              HttpCode.SEE_OTHER.getStatus());
+          return;
+        }
       }
+    } catch (URISyntaxException e) {
     }
+
+    ctx.redirect(
+        String.format("%s#post-%d", defaultRedirectPath, post.getId()),
+        HttpCode.SEE_OTHER.getStatus());
   }
 
   public void createPost(Context ctx) {
@@ -117,20 +124,13 @@ public class PostController {
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      BeanUtils.populate(post, DecodeParams.decode(ctx));
+      BeanUtils.populate(post, EncodingUtil.decode(ctx));
       String username =
           ctx.pathParamMap().containsKey("username")
               ? ctx.pathParam("username")
               : authenticatedUser.getUsername();
-      if (username != null) {
-        post.setWall(userService.getUserbyUsername(username));
-        ctx.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
-      } else {
-        post.setWall(authenticatedUser);
-        ctx.redirect(
-            "/pinnwand/"
-                + URLEncoder.encode(authenticatedUser.getUsername(), DecodeParams.ENCODING));
-      }
+      post.setWall(userService.getUserbyUsername(username));
+      ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
 
       postService.addPost(post);
     } catch (Exception e) {

@@ -19,7 +19,7 @@ import modules.user.controller.UserApiController;
 import modules.user.controller.UserController;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
+import modules.util.EncodingUtil;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +118,7 @@ public class Router {
                     "/*",
                     ctx -> {
                       if (ctx.method().equals("POST")) {
-                        MultiMap<String> params = DecodeParams.decode(ctx);
+                        MultiMap<String> params = EncodingUtil.decode(ctx);
                         String username = params.getString("username");
                         String password = params.getString("password");
 

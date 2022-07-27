@@ -7,7 +7,7 @@ import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
+import modules.util.EncodingUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 
@@ -22,7 +22,7 @@ public class UserApiController {
   public User login(Context ctx) {
     User user = new User();
     try {
-      MultiMap<String> params = DecodeParams.decode(ctx);
+      MultiMap<String> params = EncodingUtil.decode(ctx);
       List<String> password = params.getOrDefault("password", params.getValues("passwort"));
       params.put("password", password);
       BeanUtils.populate(user, params);
@@ -37,7 +37,7 @@ public class UserApiController {
   /**
    * @api {get} /api/users Ãœbersicht aller Nutzer
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
-   * @apiGroup Users â€�? GET
+   * @apiGroup Users â€�? GET
    * @apiQuery {String="id", "username", "hobbies", "about"} [sortby=id] Sortierung
    * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=100] Limit der angezeigten Posts.
@@ -68,7 +68,7 @@ public class UserApiController {
    * @api {post} /api/user/update Profilinformationen aktualisieren
    * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Ãœber
    *     mich"
-   * @apiGroup Users â€�? POST
+   * @apiGroup Users â€�? POST
    * @apiBody (Anmeldedaten) {String} username Aktueller Benutzername
    * @apiBody (Anmeldedaten) {String} password Passwort des Benutzers
    * @apiBody (Ã„nderungen) {String} [newUsername] Optional. Ã„ndert den Benutzernamen
@@ -82,7 +82,7 @@ public class UserApiController {
     User newUser = new User();
     User oldUser = new User();
     try {
-      MultiMap<String> params = DecodeParams.decode(ctx);
+      MultiMap<String> params = EncodingUtil.decode(ctx);
 
       oldUser = service.getUserbyUsername(params.getString("username"));
 

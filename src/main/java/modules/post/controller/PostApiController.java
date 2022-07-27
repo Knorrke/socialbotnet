@@ -9,7 +9,7 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
+import modules.util.EncodingUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 
@@ -121,7 +121,7 @@ public class PostApiController {
    * @apiSampleRequest /api/like
    */
   public void likePost(Context ctx) {
-    MultiMap<String> params = DecodeParams.decode(ctx);
+    MultiMap<String> params = EncodingUtil.decode(ctx);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
@@ -150,7 +150,7 @@ public class PostApiController {
    * @apiSampleRequest /api/unlike
    */
   public void unlikePost(Context ctx) {
-    MultiMap<String> params = DecodeParams.decode(ctx);
+    MultiMap<String> params = EncodingUtil.decode(ctx);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
@@ -196,7 +196,7 @@ public class PostApiController {
     Post post = new Post();
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     try { // populate post attributes by params
-      MultiMap<String> params = DecodeParams.decode(ctx);
+      MultiMap<String> params = EncodingUtil.decode(ctx);
       if (!params.containsKey("message")) {
         ctx.status(HttpCode.BAD_REQUEST)
             .json(new ResponseError("Parameter message fehlt in der Anfrage."));

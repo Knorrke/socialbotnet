@@ -2,7 +2,6 @@ package modules.user.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
+import modules.util.EncodingUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class UserController {
     if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by login params
-        BeanUtils.populate(user, DecodeParams.decode(ctx));
+        BeanUtils.populate(user, EncodingUtil.decode(ctx));
       } catch (Exception e) {
         ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
         return;
@@ -64,7 +63,7 @@ public class UserController {
     if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        MultiMap<String> params = DecodeParams.decode(ctx);
+        MultiMap<String> params = EncodingUtil.decode(ctx);
         if (params.get("password").equals(params.get("password2"))) {
           logger.debug("registration passwords match");
           BeanUtils.populate(user, params);
@@ -128,12 +127,11 @@ public class UserController {
     if (ctx.method().equals("POST")) {
       User user = new User();
       try { // populate user attributes by registration params
-        BeanUtils.populate(user, DecodeParams.decode(ctx));
+        BeanUtils.populate(user, EncodingUtil.decode(ctx));
         userService.updateUser(authenticatedUser, user);
         userService.addAuthenticatedUser(ctx, user);
         model.put("success", "Profil erfolgreich aktualisiert");
-        ctx.redirect(
-            "/user/profile/" + URLEncoder.encode(user.getUsername(), DecodeParams.ENCODING));
+        ctx.redirect("/user/profile/" + EncodingUtil.uriEncode(user.getUsername()));
         return;
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
