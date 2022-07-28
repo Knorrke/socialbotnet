@@ -2,13 +2,11 @@ package modules.user.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
-import java.util.List;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.EncodingUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 
 public class UserApiController {
@@ -21,17 +19,11 @@ public class UserApiController {
 
   public User login(Context ctx) {
     User user = new User();
-    try {
-      MultiMap<String> params = EncodingUtil.decode(ctx);
-      List<String> password = params.getOrDefault("password", params.getValues("passwort"));
-      params.put("password", password);
-      BeanUtils.populate(user, params);
-      return service.checkUser(user);
-    } catch (Exception e) {
-      ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
-          .result("Interner Fehler aufgetreten. Bitte melde das Problem!");
-      return null;
-    }
+    MultiMap<String> params = EncodingUtil.decode(ctx);
+    params.computeIfAbsent("password", p -> params.getValues("passwort"));
+    user.setUsername(params.getString("username"));
+    user.setPassword(params.getString("password"));
+    return service.checkUser(user);
   }
 
   /**

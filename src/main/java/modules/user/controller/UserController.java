@@ -12,7 +12,6 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.EncodingUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +31,11 @@ public class UserController {
     Map<String, Object> model = new HashMap<>();
     if (ctx.method().equals("POST")) {
       User user = new User();
-      try { // populate user attributes by login params
-        BeanUtils.populate(user, EncodingUtil.decode(ctx));
-      } catch (Exception e) {
-        ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
-        return;
-      }
+
+      MultiMap<String> params = EncodingUtil.decode(ctx);
+      user.setUsername(params.getString("username"));
+      user.setPassword(params.getString("password"));
+
       User authenticated = userService.checkUser(user);
       if (authenticated != null) {
         userService.addAuthenticatedUser(ctx, authenticated);
@@ -66,7 +64,8 @@ public class UserController {
         MultiMap<String> params = EncodingUtil.decode(ctx);
         if (params.get("password").equals(params.get("password2"))) {
           logger.debug("registration passwords match");
-          BeanUtils.populate(user, params);
+          user.setPassword(params.getString("password"));
+          user.setUsername(params.getString("username"));
           userService.registerUser(user);
           logger.debug("registration succeeded");
           userService.addAuthenticatedUser(ctx, user);
@@ -126,8 +125,11 @@ public class UserController {
     Map<String, Object> model = new HashMap<>();
     if (ctx.method().equals("POST")) {
       User user = new User();
-      try { // populate user attributes by registration params
-        BeanUtils.populate(user, EncodingUtil.decode(ctx));
+      MultiMap<String> params = EncodingUtil.decode(ctx);
+      user.setUsername(params.getString("username"));
+      user.setAbout(params.getString("about"));
+      user.setHobbies(params.getString("hobbies"));
+      try {
         userService.updateUser(authenticatedUser, user);
         userService.addAuthenticatedUser(ctx, user);
         model.put("success", "Profil erfolgreich aktualisiert");
@@ -135,9 +137,6 @@ public class UserController {
         return;
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
-      } catch (Exception e) {
-        ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
-        return;
       }
     }
 

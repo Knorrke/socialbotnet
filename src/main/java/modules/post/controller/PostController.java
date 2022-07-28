@@ -8,12 +8,12 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import modules.error.InputTooLongException;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.EncodingUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +93,8 @@ public class PostController {
       postService.unlikePost(post, authenticatedUser);
     }
 
-    String defaultRedirectPath = "/pinnwand/" + EncodingUtil.uriEncode(post.getUsername());
+    String defaultRedirectPath =
+        "/pinnwand/" + EncodingUtil.uriEncode(post.getWall().getUsername());
     try {
       String referer = ctx.header("referer");
       if (referer != null && new URI(referer).getPath() != null) {
@@ -124,17 +125,17 @@ public class PostController {
     Post post = new Post();
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
-    try { // populate post attributes by params
-      BeanUtils.populate(post, EncodingUtil.decode(ctx));
-      String username =
-          ctx.pathParamMap().containsKey("username")
-              ? ctx.pathParam("username")
-              : authenticatedUser.getUsername();
-      post.setWall(userService.getUserbyUsername(username));
-      ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
+    post.setMessage(EncodingUtil.decode(ctx).getString("message"));
+    String username =
+        ctx.pathParamMap().containsKey("username")
+            ? ctx.pathParam("username")
+            : authenticatedUser.getUsername();
+    post.setWall(userService.getUserbyUsername(username));
+    ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
 
+    try {
       postService.addPost(post);
-    } catch (Exception e) {
+    } catch (InputTooLongException e) {
       logger.error(e.getMessage());
       ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result(HttpCode.BAD_REQUEST.getMessage());
     }

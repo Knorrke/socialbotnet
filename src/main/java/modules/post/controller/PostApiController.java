@@ -10,7 +10,6 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.EncodingUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 
 public class PostApiController {
@@ -188,29 +187,23 @@ public class PostApiController {
   public void createPost(Context ctx) {
     Post post = new Post();
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
-    try { // populate post attributes by params
-      MultiMap<String> params = EncodingUtil.decode(ctx);
-      if (!params.containsKey("message")) {
-        ctx.status(HttpCode.BAD_REQUEST)
-            .json(new ResponseError("Parameter message fehlt in der Anfrage."));
-        return;
-      }
-      BeanUtils.populate(post, params);
-
-      User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-      post.setUser(authenticatedUser);
-
-      String username =
-          ctx.pathParamMap().containsKey("username")
-              ? ctx.pathParam("username")
-              : authenticatedUser.getUsername();
-
-      post.setWall(userService.getUserbyUsername(username));
-    } catch (Exception e) {
-      ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
-          .json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
+    MultiMap<String> params = EncodingUtil.decode(ctx);
+    if (!params.containsKey("message")) {
+      ctx.status(HttpCode.BAD_REQUEST)
+          .json(new ResponseError("Parameter message fehlt in der Anfrage."));
       return;
     }
+    post.setMessage(params.getString("message"));
+
+    User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
+    post.setUser(authenticatedUser);
+
+    String username =
+        ctx.pathParamMap().containsKey("username")
+            ? ctx.pathParam("username")
+            : authenticatedUser.getUsername();
+
+    post.setWall(userService.getUserbyUsername(username));
 
     try {
       postService.addPost(post);
