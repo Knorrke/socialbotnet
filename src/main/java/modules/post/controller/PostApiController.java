@@ -121,23 +121,7 @@ public class PostApiController {
    * @apiSampleRequest /api/like
    */
   public void likePost(Context ctx) {
-    MultiMap<String> params = EncodingUtil.decode(ctx);
-
-    User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
-    if (!params.containsKey("postid")) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Parameter postid fehlt in der Anfrage."));
-      return;
-    }
-    int id = Integer.parseInt(params.getString("postid"));
-    Post post = postService.getPostById(id);
-    if (post == null) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Der Post mit id %s existiert nicht", id));
-      return;
-    }
-    postService.likePost(post, authenticatedUser);
-    ctx.json(post);
+    handleLikeAndUnlike(true, ctx);
   }
 
   /**
@@ -150,6 +134,10 @@ public class PostApiController {
    * @apiSampleRequest /api/unlike
    */
   public void unlikePost(Context ctx) {
+    handleLikeAndUnlike(false, ctx);
+  }
+
+  private void handleLikeAndUnlike(boolean liked, Context ctx) {
     MultiMap<String> params = EncodingUtil.decode(ctx);
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
@@ -166,7 +154,12 @@ public class PostApiController {
       return;
     }
 
-    postService.unlikePost(post, authenticatedUser);
+    if (liked) {
+      postService.likePost(post, authenticatedUser);
+    } else {
+      postService.unlikePost(post, authenticatedUser);
+    }
+
     ctx.json(post);
   }
 
