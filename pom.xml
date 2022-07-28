@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.socialbotnet</groupId>
 	<artifactId>socialbotnet</artifactId>
@@ -15,6 +13,7 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.version>3.10.1</maven.compiler.version>
 		<javalin.version>4.6.4</javalin.version>
+		<assertj.version>3.23.1</assertj.version>
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
@@ -40,6 +39,26 @@
 			<groupId>io.javalin</groupId>
 			<artifactId>javalin</artifactId>
 			<version>${javalin.version}</version>
+		</dependency>
+
+		<!-- Test ressources -->
+		<dependency>
+			<groupId>io.javalin</groupId>
+			<artifactId>javalin-testtools</artifactId>
+			<version>${javalin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.2</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Freemarker -->

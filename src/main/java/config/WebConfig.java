@@ -8,8 +8,10 @@ import modules.user.service.UserService;
 import modules.util.JSONUtil;
 
 public class WebConfig {
+  Javalin app;
+
   public WebConfig(PostService postService, UserService userService) {
-    Javalin app =
+    app =
         Javalin.create(
             config -> {
               config.addStaticFiles("/public", Location.CLASSPATH);
@@ -28,5 +30,9 @@ public class WebConfig {
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
     return 30003; // return default port if heroku-port isn't set (i.e. on localhost)
+  }
+
+  public Javalin getJavalinApp() {
+    return app;
   }
 }
