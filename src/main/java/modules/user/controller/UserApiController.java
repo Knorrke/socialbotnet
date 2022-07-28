@@ -35,9 +35,9 @@ public class UserApiController {
   }
 
   /**
-   * @api {get} /api/users Ãœbersicht aller Nutzer
+   * @api {get} /api/users Übersicht aller Nutzer
    * @apiDescription Liefert die letzten 100 registrierten Nutzer.
-   * @apiGroup Users â€�? GET
+   * @apiGroup Users — GET
    * @apiQuery {String="id", "username", "hobbies", "about"} [sortby=id] Sortierung
    * @apiQuery {String="asc","desc"} [order=desc] Aufsteigende oder absteigende Sortierung
    * @apiQuery {Number} [limit=100] Limit der angezeigten Posts.
@@ -66,16 +66,13 @@ public class UserApiController {
 
   /**
    * @api {post} /api/user/update Profilinformationen aktualisieren
-   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Ãœber
-   *     mich"
-   * @apiGroup Users â€�? POST
+   * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Über mich"
+   * @apiGroup Users — POST
    * @apiBody (Anmeldedaten) {String} username Aktueller Benutzername
    * @apiBody (Anmeldedaten) {String} password Passwort des Benutzers
-   * @apiBody (Ã„nderungen) {String} [newUsername] Optional. Ã„ndert den Benutzernamen
-   * @apiBody (Ã„nderungen) {String} [hobbies] Optional. Ã„ndert die Profilinformation
-   *     "Hobbies"
-   * @apiBody (Ã„nderungen) {String} [about] Optional. Ã„ndert die Profilinformation "Ãœber
-   *     mich"
+   * @apiBody (Änderungen) {String} [newUsername] Optional. Ändert den Benutzernamen
+   * @apiBody (Änderungen) {String} [hobbies] Optional. Ändert die Profilinformation "Hobbies"
+   * @apiBody (Änderungen) {String} [about] Optional. Ändert die Profilinformation "Über mich"
    * @apiSampleRequest /api/user/update
    */
   public void updateProfile(Context ctx) {
