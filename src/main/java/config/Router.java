@@ -73,7 +73,7 @@ public class Router {
               "/api",
               () -> {
                 get("", ctx -> ctx.redirect("/docs/index.html"));
-                before("/*", ctx -> logger.debug("Received api call to " + ctx.path()));
+                before("/*", ctx -> logger.debug("Received api call to path {}", ctx.path()));
 
                 // Activate CORS
                 app.options(
