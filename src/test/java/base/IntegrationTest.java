@@ -32,7 +32,7 @@ public abstract class IntegrationTest {
   @RegisterExtension
   public static PreparedDbExtension pg =
       EmbeddedPostgresExtension.preparedDatabase(
-          FlywayPreparer.forClasspathLocation("db/test-migration"));
+          FlywayPreparer.forClasspathLocation("db/migration", "db/test-migration"));
 
   @Bean
   @Primary
