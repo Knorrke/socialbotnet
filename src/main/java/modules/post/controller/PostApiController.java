@@ -207,12 +207,12 @@ public class PostApiController {
       User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
       post.setUser(authenticatedUser);
 
-      String username = ctx.pathParam("username");
-      if (username != null) {
-        post.setWall(userService.getUserbyUsername(username));
-      } else {
-        post.setWall(authenticatedUser);
-      }
+      String username =
+          ctx.pathParamMap().containsKey("username")
+              ? ctx.pathParam("username")
+              : authenticatedUser.getUsername();
+
+      post.setWall(userService.getUserbyUsername(username));
     } catch (Exception e) {
       ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
           .json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));

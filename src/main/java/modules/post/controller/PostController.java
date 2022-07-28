@@ -106,6 +106,7 @@ public class PostController {
         }
       }
     } catch (URISyntaxException e) {
+      logger.warn("Invalid referer uri", e);
     }
 
     ctx.redirect(
@@ -136,7 +137,6 @@ public class PostController {
     } catch (Exception e) {
       logger.error(e.getMessage());
       ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result(HttpCode.BAD_REQUEST.getMessage());
-      return;
     }
   }
 

@@ -65,30 +65,14 @@ public class Router {
           post("like", postController::likePost);
           post("unlike", postController::unlikePost);
 
-          get(
-              "/material",
-              ctx -> {
-                ctx.render("meta/material.ftl");
-              });
-          get(
-              "/didaktik",
-              ctx -> {
-                ctx.render("meta/didactic.ftl");
-              });
-          get(
-              "/impressum",
-              (ctx) -> {
-                ctx.render("meta/impress.ftl");
-              });
+          get("/material", ctx -> ctx.render("meta/material.ftl"));
+          get("/didaktik", ctx -> ctx.render("meta/didactic.ftl"));
+          get("/impressum", ctx -> ctx.render("meta/impress.ftl"));
 
           path(
               "/api",
               () -> {
-                get(
-                    "",
-                    ctx -> {
-                      ctx.redirect("/docs/index.html");
-                    });
+                get("", ctx -> ctx.redirect("/docs/index.html"));
                 before("/*", ctx -> logger.debug("Received api call to " + ctx.path()));
 
                 // Activate CORS
@@ -163,10 +147,7 @@ public class Router {
               });
 
           app.exception(
-              HttpResponseException.class,
-              (e, ctx) -> {
-                ctx.json(new ResponseError(e.getMessage()));
-              });
+              HttpResponseException.class, (e, ctx) -> ctx.json(new ResponseError(e.getMessage())));
         });
   }
 

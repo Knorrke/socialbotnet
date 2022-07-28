@@ -6,9 +6,9 @@ import io.javalin.testtools.JavalinTest;
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 
-public class SetupTest extends IntegrationTest {
+class SetupTest extends IntegrationTest {
   @Test
-  public void app_is_up() {
+  void app_is_up() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -17,7 +17,7 @@ public class SetupTest extends IntegrationTest {
   }
 
   @Test
-  public void test_user_exists() {
+  void test_user_exists() {
     JavalinTest.test(
         app,
         (server, client) -> {

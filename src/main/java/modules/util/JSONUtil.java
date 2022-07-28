@@ -20,6 +20,7 @@ public class JSONUtil implements JsonMapper {
     return instance;
   }
 
+  @Override
   public String toJsonString(@NotNull Object obj) {
     return gson.toJson(obj);
   }

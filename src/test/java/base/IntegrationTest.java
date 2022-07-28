@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Primary;
 
 @Configuration
 @ComponentScan({"modules", "base"})
-public class IntegrationTest {
+public abstract class IntegrationTest {
   protected static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
   protected Javalin app;
 

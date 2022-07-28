@@ -11,15 +11,19 @@ public class EncodingUtil {
   private static Logger logger = LoggerFactory.getLogger(EncodingUtil.class);
   public static final String ENCODING = "UTF-8";
 
+  private EncodingUtil() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static MultiMap<String> decode(Context ctx) {
-    return new MultiMap<String>(ctx.formParamMap());
+    return new MultiMap<>(ctx.formParamMap());
   }
 
   public static String uriEncode(String s) {
     try {
       return URLEncoder.encode(s, ENCODING).replaceAll("[+]", "%20");
     } catch (UnsupportedEncodingException e) {
-      logger.error("Unsupported Encoding %s", ENCODING);
+      logger.error("Unsupported Encoding {}", ENCODING);
       return "";
     }
   }
