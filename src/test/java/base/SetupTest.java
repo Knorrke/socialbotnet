@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class SetupTest extends IntegrationTest {
   @Test
-  void app_is_up() {
+  void appIsUp() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -17,7 +17,7 @@ class SetupTest extends IntegrationTest {
   }
 
   @Test
-  void test_user_exists() {
+  void testUserExists() {
     JavalinTest.test(
         app,
         (server, client) -> {
