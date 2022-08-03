@@ -12,10 +12,14 @@ import io.javalin.http.HttpCode;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
+import java.util.stream.Stream;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class PostControllerTest extends IntegrationTest {
 
@@ -166,8 +170,9 @@ class PostControllerTest extends IntegrationTest {
         });
   }
 
-  @Test
-  void redirectBackToKnownRefererOnLike() {
+  @ParameterizedTest(name = "#{index}- Test redirect with referer {arguments}")
+  @MethodSource("provideRefererParameters")
+  void redirectBackToKnownRefererOnLike(String referer, String expectedPath) {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -177,41 +182,23 @@ class PostControllerTest extends IntegrationTest {
                   client,
                   "/like",
                   "post=3",
-                  req -> req.addHeader("referer", "https://domain.tld/pinnwand/test2"));
-          assertThat(response.code())
-              .as("Redirected back to profile when liking postid 3 there")
-              .isEqualTo(200);
+                  referer == null ? null : req -> req.addHeader("referer", referer));
+          assertThat(response.code()).isEqualTo(200);
           assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
           assertThat(response.request().url().encodedPath())
-              .as("stay on profile")
-              .isEqualTo("/pinnwand/test2");
-
-          response =
-              postWithUrlEncodedBody(
-                  client,
-                  "/like",
-                  "post=3",
-                  req -> req.addHeader("referer", "https://domain.tld/"));
-          assertThat(response.code())
-              .as("Redirected back to landing page when liking postid 3 there")
-              .isEqualTo(200);
-          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
-          assertThat(response.request().url().encodedPath()).as("stay on profile").isEqualTo("/");
-
-          response =
-              postWithUrlEncodedBody(
-                  client,
-                  "/like",
-                  "post=3",
-                  req -> req.addHeader("referer", "https://domain.tld/unknown/referer"));
-          assertThat(response.code())
-              .as("Redirected to profile when referer unknown")
-              .isEqualTo(200);
-          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
-          assertThat(response.request().url().encodedPath())
-              .as("default to pinnwand")
-              .isEqualTo("/pinnwand/test2");
+              .as("validated path from referer")
+              .isEqualTo(expectedPath);
         });
+  }
+
+  private static Stream<Arguments> provideRefererParameters() {
+    String defaultPath = "/pinnwand/test2";
+    return Stream.of(
+        Arguments.of("https://domain.tld/pinnwand/test2", defaultPath),
+        Arguments.of("https://domain.tld/", "/"),
+        Arguments.of("https://domain.tld/unexpected/path", defaultPath),
+        Arguments.of("unexpected referer format", defaultPath),
+        Arguments.of(null, defaultPath));
   }
 
   @Test
