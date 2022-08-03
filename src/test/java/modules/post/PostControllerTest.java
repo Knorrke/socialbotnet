@@ -137,12 +137,7 @@ class PostControllerTest extends IntegrationTest {
     JavalinTest.test(
         app,
         (server, client) -> {
-          Response response =
-              postWithUrlEncodedBody(
-                  client,
-                  "/like",
-                  "post=3",
-                  req -> req.addHeader("referer", "https://domain.tld/user/profile/test2"));
+          Response response = postWithUrlEncodedBody(client, "/like", "post=3");
           assertThat(response.code())
               .as("Unauthorized request")
               .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
@@ -164,12 +159,58 @@ class PostControllerTest extends IntegrationTest {
           assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
 
           Response response = postWithUrlEncodedBody(client, "/like", "post=3");
-          assertThat(response.code())
-              .as("Redirect authorized request for liking postid 3")
-              .isEqualTo(200);
+          assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(200);
 
           post = requestPostById(client, 3);
           assertThat(post.getLikesCount()).as("number of likes afterwards").isEqualTo(1);
+        });
+  }
+
+  @Test
+  void redirectBackToKnownRefererOnLike() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          Response response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/like",
+                  "post=3",
+                  req -> req.addHeader("referer", "https://domain.tld/pinnwand/test2"));
+          assertThat(response.code())
+              .as("Redirected back to profile when liking postid 3 there")
+              .isEqualTo(200);
+          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
+          assertThat(response.request().url().encodedPath())
+              .as("stay on profile")
+              .isEqualTo("/pinnwand/test2");
+
+          response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/like",
+                  "post=3",
+                  req -> req.addHeader("referer", "https://domain.tld/"));
+          assertThat(response.code())
+              .as("Redirected back to landing page when liking postid 3 there")
+              .isEqualTo(200);
+          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
+          assertThat(response.request().url().encodedPath()).as("stay on profile").isEqualTo("/");
+
+          response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/like",
+                  "post=3",
+                  req -> req.addHeader("referer", "https://domain.tld/unknown/referer"));
+          assertThat(response.code())
+              .as("Redirected to profile when referer unknown")
+              .isEqualTo(200);
+          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
+          assertThat(response.request().url().encodedPath())
+              .as("default to pinnwand")
+              .isEqualTo("/pinnwand/test2");
         });
   }
 
