@@ -9,7 +9,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
 import io.javalin.http.HttpCode;
+import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
+import java.io.IOException;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
@@ -149,5 +151,51 @@ class PostControllerTest extends IntegrationTest {
                   .fromJsonString(client.get("/api/post/3").body().string(), Post.class);
           assertThat(post.getLikesCount()).isEqualTo(0);
         });
+  }
+
+  @Test
+  void likePost() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Post post = requestPostById(client, 3);
+
+          assertThat(post.getLikesCount()).as("number of likes before").isEqualTo(0);
+          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+
+          Response response = postWithUrlEncodedBody(client, "/like", "post=3");
+          assertThat(response.code())
+              .as("Redirect authorized request for liking postid 3")
+              .isEqualTo(200);
+
+          post = requestPostById(client, 3);
+          assertThat(post.getLikesCount()).as("number of likes afterwards").isEqualTo(1);
+        });
+  }
+
+  @Test
+  void unlikePost() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Post post = requestPostById(client, 1);
+          assertThat(post.getLikesCount()).as("number of likes before").isEqualTo(2);
+          assertThat(post.getRecentLikes()).anyMatch(user -> user.getUsername().equals("test"));
+          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+
+          Response response = postWithUrlEncodedBody(client, "/unlike", "post=1");
+          assertThat(response.code())
+              .as("Redirect authorized request for liking postid 1")
+              .isEqualTo(200);
+
+          post = requestPostById(client, 1);
+          assertThat(post.getLikesCount()).as("number of likes afterwards").isEqualTo(1);
+          assertThat(post.getRecentLikes()).noneMatch(user -> user.getUsername().equals("test"));
+        });
+  }
+
+  private Post requestPostById(HttpClient client, int id) throws IOException {
+    return JSONUtil.create()
+        .fromJsonString(client.get("/api/post/" + id).body().string(), Post.class);
   }
 }
