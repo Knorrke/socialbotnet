@@ -170,6 +170,19 @@ class PostControllerTest extends IntegrationTest {
         });
   }
 
+  @Test
+  void likeNonexistentPost() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          Response response = postWithUrlEncodedBody(client, "/like", "post=999");
+          assertThat(response.code())
+              .as("nonexistent post")
+              .isEqualTo(HttpCode.NOT_FOUND.getStatus());
+        });
+  }
+
   @ParameterizedTest(name = "#{index}- Test redirect with referer {arguments}")
   @MethodSource("provideRefererParameters")
   void redirectBackToKnownRefererOnLike(String referer, String expectedPath) {
