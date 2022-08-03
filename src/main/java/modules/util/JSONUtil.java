@@ -24,4 +24,9 @@ public class JSONUtil implements JsonMapper {
   public String toJsonString(@NotNull Object obj) {
     return gson.toJson(obj);
   }
+
+  @Override
+  public <T> T fromJsonString(String json, Class<T> targetClass) {
+    return gson.fromJson(json, targetClass);
+  }
 }

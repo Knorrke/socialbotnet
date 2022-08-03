@@ -62,8 +62,8 @@ public class Router {
           post("/post", postController::createPost);
           post("/post/{username}", postController::createPost);
 
-          post("like", postController::likePost);
-          post("unlike", postController::unlikePost);
+          post("/like", postController::likePost);
+          post("/unlike", postController::unlikePost);
 
           get("/material", ctx -> ctx.render("meta/material.ftl"));
           get("/didaktik", ctx -> ctx.render("meta/didactic.ftl"));
@@ -125,7 +125,9 @@ public class Router {
                     });
 
                 get("/users", userApiController::getUsers);
+                get("/user/{username}", userApiController::getUserByUsername);
                 get("/posts", postApiController::getPosts);
+                get("/post/{postid}", postApiController::getPostById);
                 get("/pinnwand/{username}", postApiController::getUserPosts);
 
                 post("/user/update", userApiController::updateProfile);
@@ -155,8 +157,16 @@ public class Router {
     String requestMethod = ctx.method();
     String path = ctx.path();
 
-    String[] routesGETRegex = {"/api/users", "/api/posts", "/api/pinnwand/.*"};
-    String[] routesPOSTRegex = {"/api/post", "/api/post/.*", "/api/like", "/api/unlike"};
+    String[] routesGETRegex = {
+      "^/api/users$",
+      "^/api/user/.+$",
+      "^/api/posts$",
+      "^/api/pinnwand/.*$",
+      "^/api/post/[1-9]\\d*$"
+    };
+    String[] routesPOSTRegex = {
+      "^/api/post$", "^/api/post/.*[^0-9]+.*$", "^/api/like$", "^/api/unlike$"
+    };
 
     if (!requestMethod.equals("POST")) {
       for (String routePOST : routesPOSTRegex) {

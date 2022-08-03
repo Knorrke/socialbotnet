@@ -21,6 +21,10 @@ public class PostApiController {
     this.userService = userService;
   }
 
+  public void getPostById(Context ctx) {
+    ctx.json(postService.getPostById(ctx.pathParamAsClass("postid", Integer.class).get()));
+  }
+
   /**
    * @api {get} /api/posts Übersicht aller Posts
    * @apiDescription Liefert die Posts.

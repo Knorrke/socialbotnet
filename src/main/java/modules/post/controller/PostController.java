@@ -82,9 +82,10 @@ public class PostController {
     }
 
     MultiMap<String> params = EncodingUtil.decode(ctx);
+    logger.info("Request body {}");
     Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
     if (post == null) {
-      ctx.status(HttpCode.UNAUTHORIZED).result("Post existiert nicht");
+      ctx.status(HttpCode.NOT_FOUND).result("Post existiert nicht");
       return;
     }
     if (liked) {
@@ -125,7 +126,7 @@ public class PostController {
     Post post = new Post();
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
-    post.setMessage(EncodingUtil.decode(ctx).getString("message"));
+    post.setMessage(ctx.formParam("message"));
     String username =
         ctx.pathParamMap().containsKey("username")
             ? ctx.pathParam("username")

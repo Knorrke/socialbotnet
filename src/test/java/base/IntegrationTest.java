@@ -3,15 +3,22 @@ package base;
 import config.FreeMarkerEngineConfig;
 import config.Router;
 import io.javalin.Javalin;
+import io.javalin.http.ContentType;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.rendering.template.JavalinFreemarker;
+import io.javalin.testtools.HttpClient;
 import io.zonky.test.db.postgres.embedded.FlywayPreparer;
 import io.zonky.test.db.postgres.junit5.EmbeddedPostgresExtension;
 import io.zonky.test.db.postgres.junit5.PreparedDbExtension;
+import java.util.function.Consumer;
 import javax.sql.DataSource;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
 import modules.util.JSONUtil;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
@@ -57,5 +64,24 @@ public abstract class IntegrationTest {
     } catch (BeansException e) {
       logger.error("Annotation context couldn't be created. {}", e);
     }
+  }
+
+  protected Response useLogin(HttpClient client, String username) {
+    return postWithUrlEncodedBody(
+        client, "/login", String.format("username=%s&password=test", username));
+  }
+
+  protected Response postWithUrlEncodedBody(HttpClient client, String path, String body) {
+    return postWithUrlEncodedBody(client, path, body, null);
+  }
+
+  protected Response postWithUrlEncodedBody(
+      HttpClient client, String path, String body, Consumer<Request.Builder> consumer) {
+    return client.request(
+        path,
+        req -> {
+          req.post(RequestBody.create(body, MediaType.parse(ContentType.PLAIN)));
+          if (consumer != null) consumer.accept(req);
+        });
   }
 }

@@ -8,14 +8,17 @@ import static modules.post.PostFixtures.POST_BY_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
+import io.javalin.http.HttpCode;
 import io.javalin.testtools.JavalinTest;
+import modules.post.model.Post;
+import modules.util.JSONUtil;
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 
-public class PostControllerTest extends IntegrationTest {
+class PostControllerTest extends IntegrationTest {
 
   @Test
-  public void landingPageShowsAllPosts() {
+  void landingPageShowsAllPosts() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -29,7 +32,7 @@ public class PostControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void defaultOrder() {
+  void defaultOrder() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -52,7 +55,7 @@ public class PostControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void sortedByLikes() {
+  void sortedByLikes() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -71,7 +74,7 @@ public class PostControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void sortedByTime() {
+  void sortedByTime() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -90,7 +93,7 @@ public class PostControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void sortedByTrending() {
+  void sortedByTrending() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -113,7 +116,7 @@ public class PostControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void unknownSortOption() {
+  void unknownSortOption() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -124,6 +127,27 @@ public class PostControllerTest extends IntegrationTest {
           assertThat(html)
               .describedAs("same result as no parameter")
               .isEqualTo(client.get("/").body().string());
+        });
+  }
+
+  @Test
+  void unAuthorizedLike() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/like",
+                  "post=3",
+                  req -> req.addHeader("referer", "https://domain.tld/user/profile/test2"));
+          assertThat(response.code())
+              .as("Unauthorized request")
+              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+          Post post =
+              JSONUtil.create()
+                  .fromJsonString(client.get("/api/post/3").body().string(), Post.class);
+          assertThat(post.getLikesCount()).isEqualTo(0);
         });
   }
 }

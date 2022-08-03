@@ -56,6 +56,10 @@ public class UserApiController {
     ctx.json(service.getAllUsersSorted(sortby.toLowerCase(), asc, limit));
   }
 
+  public void getUserByUsername(Context ctx) {
+    ctx.json(service.getUserbyUsername(ctx.pathParam("username")));
+  }
+
   /**
    * @api {post} /api/user/update Profilinformationen aktualisieren
    * @apiDescription Aktualisiere die Profilinformationen wie Nutzername, "Hobbies" und "Über mich"
