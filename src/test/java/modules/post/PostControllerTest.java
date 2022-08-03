@@ -196,7 +196,9 @@ class PostControllerTest extends IntegrationTest {
     return Stream.of(
         Arguments.of("https://domain.tld/pinnwand/test2", defaultPath),
         Arguments.of("https://domain.tld/", "/"),
+        Arguments.of("https://domain.tld", "/"),
         Arguments.of("https://domain.tld/unexpected/path", defaultPath),
+        Arguments.of("mailto:bad@uri.com", defaultPath),
         Arguments.of("unexpected referer format", defaultPath),
         Arguments.of(null, defaultPath));
   }

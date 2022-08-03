@@ -14,7 +14,6 @@ import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
 import modules.util.EncodingUtil;
-import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,9 +80,7 @@ public class PostController {
       return;
     }
 
-    MultiMap<String> params = EncodingUtil.decode(ctx);
-    logger.info("Request body {}");
-    Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
+    Post post = postService.getPostById(ctx.formParamAsClass("post", Integer.class).get());
     if (post == null) {
       ctx.status(HttpCode.NOT_FOUND).result("Post existiert nicht");
       return;
@@ -94,16 +91,12 @@ public class PostController {
       postService.unlikePost(post, authenticatedUser);
     }
 
-    String defaultRedirectPath =
-        "/pinnwand/" + EncodingUtil.uriEncode(post.getWall().getUsername());
     try {
       String referer = ctx.header("referer");
-      if (referer != null && new URI(referer).getPath() != null) {
+      if (referer != null) {
         String redirectPath = new URI(referer).getPath();
-        if (redirectPath.equals("/") || redirectPath.equals(defaultRedirectPath)) {
-          ctx.redirect(
-              String.format("%s#post-%d", redirectPath, post.getId()),
-              HttpCode.SEE_OTHER.getStatus());
+        if (redirectPath != null && (redirectPath.equals("") || redirectPath.equals("/"))) {
+          ctx.redirect(String.format("/#post-%d", post.getId()));
           return;
         }
       }
@@ -112,8 +105,9 @@ public class PostController {
     }
 
     ctx.redirect(
-        String.format("%s#post-%d", defaultRedirectPath, post.getId()),
-        HttpCode.SEE_OTHER.getStatus());
+        String.format(
+            "/pinnwand/%s#post-%d",
+            EncodingUtil.uriEncode(post.getWall().getUsername()), post.getId()));
   }
 
   public void createPost(Context ctx) {
