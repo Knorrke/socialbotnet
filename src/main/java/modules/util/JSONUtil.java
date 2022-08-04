@@ -3,6 +3,7 @@ package modules.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.javalin.plugin.json.JsonMapper;
+import java.lang.reflect.Type;
 import org.jetbrains.annotations.NotNull;
 
 public class JSONUtil implements JsonMapper {
@@ -28,5 +29,9 @@ public class JSONUtil implements JsonMapper {
   @Override
   public <T> T fromJsonString(String json, Class<T> targetClass) {
     return gson.fromJson(json, targetClass);
+  }
+
+  public <T> T fromJsonString(String json, Type type) {
+    return gson.fromJson(json, type);
   }
 }

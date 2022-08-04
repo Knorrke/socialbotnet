@@ -113,7 +113,7 @@ public class PostController {
   public void createPost(Context ctx) {
     User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      ctx.status(HttpCode.BAD_REQUEST).result("Du bist nicht angemeldet!");
+      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
       return;
     }
 
@@ -125,14 +125,19 @@ public class PostController {
         ctx.pathParamMap().containsKey("username")
             ? ctx.pathParam("username")
             : authenticatedUser.getUsername();
-    post.setWall(userService.getUserbyUsername(username));
-    ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
+    User wall = userService.getUserbyUsername(username);
+    if (wall == null) {
+      ctx.status(HttpCode.NOT_FOUND).result("User existiert nicht");
+    } else {
+      post.setWall(wall);
+      ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
 
-    try {
-      postService.addPost(post);
-    } catch (InputTooLongException e) {
-      logger.error(e.getMessage());
-      ctx.status(HttpCode.INTERNAL_SERVER_ERROR).result(HttpCode.BAD_REQUEST.getMessage());
+      try {
+        postService.addPost(post);
+      } catch (InputTooLongException e) {
+        logger.error(e.getMessage());
+        ctx.status(HttpCode.BAD_REQUEST).result(e.getMessage());
+      }
     }
   }
 

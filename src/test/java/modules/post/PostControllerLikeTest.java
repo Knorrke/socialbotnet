@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class PostControllerLikeTest extends IntegrationTest {
+class PostControllerLikeTest extends IntegrationTest {
   @Test
   void unAuthorizedLike() {
     JavalinTest.test(
@@ -26,9 +26,7 @@ public class PostControllerLikeTest extends IntegrationTest {
           assertThat(response.code())
               .as("Unauthorized request")
               .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
-          Post post =
-              JSONUtil.create()
-                  .fromJsonString(client.get("/api/post/3").body().string(), Post.class);
+          Post post = requestPostById(client, 3);
           assertThat(post.getLikesCount()).isZero();
         });
   }
