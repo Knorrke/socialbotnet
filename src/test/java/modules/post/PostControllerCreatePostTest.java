@@ -31,7 +31,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
               .as("Unauthorized request")
               .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
           ArrayList<Post> posts = requestPosts(client);
-          assertThat(posts.size()).as("number of posts stays the same").isEqualTo(previousCount);
+          assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
   }
 
@@ -47,9 +47,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
           assertThat(response.code()).as("Authorized request for creating post").isEqualTo(200);
 
           ArrayList<Post> posts = requestPosts(client);
-          assertThat(posts.size())
-              .as("number of posts increased by one")
-              .isEqualTo(previousCount + 1);
+          assertThat(posts).as("number of posts increased by one").hasSize(previousCount + 1);
           assertThat(posts).anyMatch(post -> post.getMessage().equals(TEST_EXPECTED));
           Post newPost =
               posts.stream()
@@ -77,7 +75,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
               .as("Message too long")
               .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
           ArrayList<Post> posts = requestPosts(client);
-          assertThat(posts.size()).as("number of posts stays the same").isEqualTo(previousCount);
+          assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
   }
 
@@ -94,7 +92,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
               .as("Wall does not exist")
               .isEqualTo(HttpCode.NOT_FOUND.getStatus());
           ArrayList<Post> posts = requestPosts(client);
-          assertThat(posts.size()).as("number of posts stays the same").isEqualTo(previousCount);
+          assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
   }
 
@@ -113,9 +111,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
               .isEqualTo("/pinnwand/test2");
 
           ArrayList<Post> posts = requestPosts(client);
-          assertThat(posts.size())
-              .as("number of posts increased by one")
-              .isEqualTo(previousCount + 1);
+          assertThat(posts).as("number of posts increased by one").hasSize(previousCount + 1);
           assertThat(posts).anyMatch(post -> post.getMessage().equals(TEST_EXPECTED));
           Post newPost =
               posts.stream()
