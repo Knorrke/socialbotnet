@@ -9,6 +9,7 @@ import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
@@ -53,7 +54,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
           Post newPost =
               posts.stream()
                   .filter(post -> post.getMessage().equals(TEST_EXPECTED))
-                  .toList()
+                  .collect(Collectors.toList())
                   .get(0);
           assertThat(newPost.getUser().getUsername()).isEqualTo("test");
           assertThat(newPost.getWall().getUsername()).isEqualTo("test");
@@ -119,7 +120,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
           Post newPost =
               posts.stream()
                   .filter(post -> post.getMessage().equals(TEST_EXPECTED))
-                  .toList()
+                  .collect(Collectors.toList())
                   .get(0);
           assertThat(newPost.getUser().getUsername()).isEqualTo("test");
           assertThat(newPost.getWall().getUsername()).isEqualTo("test2");
