@@ -1,7 +1,9 @@
 package modules.user.controller;
 
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
+import io.javalin.http.InternalServerErrorResponse;
+import io.javalin.http.NotFoundResponse;
+import io.javalin.http.UnauthorizedResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,10 +81,8 @@ public class UserController {
       } catch (InputTooLongException e) {
         model.put("error", e.getMessage());
       } catch (Exception e) {
-        ctx.status(HttpCode.INTERNAL_SERVER_ERROR)
-            .result("Bei der Registrierung ist ein Fehler aufgetreten");
         logger.error("Internal server error on registration");
-        return;
+        throw new InternalServerErrorResponse("Bei der Registrierung ist ein Fehler aufgetreten");
       }
     }
 
@@ -95,8 +95,7 @@ public class UserController {
     String username = ctx.pathParam("username");
     User profileUser = userService.getUserbyUsername(username);
     if (profileUser == null) {
-      ctx.status(HttpCode.BAD_REQUEST).result("User unbekannt");
-      return;
+      throw new NotFoundResponse("User unbekannt");
     }
     model.put("user", profileUser);
 
@@ -119,8 +118,7 @@ public class UserController {
   public void updateProfile(Context ctx) {
     User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
-      return;
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
     Map<String, Object> model = new HashMap<>();
     if (ctx.method().equals("POST")) {

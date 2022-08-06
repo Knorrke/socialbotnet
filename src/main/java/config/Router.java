@@ -11,6 +11,8 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import io.javalin.http.HttpResponseException;
 import io.javalin.http.UnauthorizedResponse;
+import java.util.HashMap;
+import java.util.Map;
 import modules.error.ResponseError;
 import modules.post.controller.PostApiController;
 import modules.post.controller.PostController;
@@ -138,18 +140,21 @@ public class Router {
                 post("/unlike", postApiController::unlikePost);
               });
 
-          app.error(
-              404,
-              ctx -> {
+          app.exception(
+              HttpResponseException.class,
+              (e, ctx) -> {
                 if (ctx.path().startsWith("/api/")) {
-                  ctx.json(new ResponseError("Diese Adresse existiert in der API nicht"));
+                  ctx.status(e.getStatus()).json(new ResponseError(e.getMessage()));
                 } else {
-                  ctx.html("<html><body><h1>404 Not Found</h1></body></html>");
+                  Map<String, Object> model = new HashMap<>();
+                  model.put("error", e);
+                  for (HttpCode code : HttpCode.values()) {
+                    if (code.getStatus() == e.getStatus())
+                      model.put("defaultMessage", code.getMessage());
+                  }
+                  ctx.status(e.getStatus()).render("error/error.ftl", model);
                 }
               });
-
-          app.exception(
-              HttpResponseException.class, (e, ctx) -> ctx.json(new ResponseError(e.getMessage())));
         });
   }
 

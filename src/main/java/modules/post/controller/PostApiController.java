@@ -1,10 +1,10 @@
 package modules.post.controller;
 
+import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
+import io.javalin.http.NotFoundResponse;
 import java.sql.Timestamp;
 import modules.error.InputTooLongException;
-import modules.error.ResponseError;
 import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
@@ -103,9 +103,7 @@ public class PostApiController {
     User profileUser = userService.getUserbyUsername(username);
 
     if (profileUser == null) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Der User %s existiert nicht", username));
-      return;
+      throw new NotFoundResponse(String.format("Der User %s existiert nicht", username));
     }
 
     int limit = getLimitParam(ctx);
@@ -145,16 +143,12 @@ public class PostApiController {
 
     User authenticatedUser = userService.getUserbyUsername(params.getString("username"));
     if (!params.containsKey("postid")) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Parameter postid fehlt in der Anfrage."));
-      return;
+      throw new BadRequestResponse("Parameter postid fehlt in der Anfrage.");
     }
     int id = Integer.parseInt(params.getString("postid"));
     Post post = postService.getPostById(id);
     if (post == null) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Der Post mit id %s existiert nicht", id));
-      return;
+      throw new NotFoundResponse(String.format("Der Post mit id %d existiert nicht", id));
     }
 
     if (liked) {
@@ -193,9 +187,7 @@ public class PostApiController {
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
     MultiMap<String> params = EncodingUtil.decode(ctx);
     if (!params.containsKey("message")) {
-      ctx.status(HttpCode.BAD_REQUEST)
-          .json(new ResponseError("Parameter message fehlt in der Anfrage."));
-      return;
+      throw new BadRequestResponse("Parameter message fehlt in der Anfrage.");
     }
     post.setMessage(params.getString("message"));
 
@@ -212,8 +204,7 @@ public class PostApiController {
     try {
       postService.addPost(post);
     } catch (InputTooLongException e) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError(e));
-      return;
+      throw new BadRequestResponse(e.getMessage());
     }
     ctx.json(post);
   }

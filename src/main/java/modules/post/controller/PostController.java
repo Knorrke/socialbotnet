@@ -1,7 +1,10 @@
 package modules.post.controller;
 
+import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
+import io.javalin.http.NotFoundResponse;
+import io.javalin.http.UnauthorizedResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
@@ -76,14 +79,12 @@ public class PostController {
   private void handleLikeAndUnlike(boolean liked, Context ctx) {
     User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
-      return;
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
 
     Post post = postService.getPostById(ctx.formParamAsClass("post", Integer.class).get());
     if (post == null) {
-      ctx.status(HttpCode.NOT_FOUND).result("Post existiert nicht");
-      return;
+      throw new NotFoundResponse("Post existiert nicht");
     }
     if (liked) {
       postService.likePost(post, authenticatedUser);
@@ -113,8 +114,7 @@ public class PostController {
   public void createPost(Context ctx) {
     User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      ctx.status(HttpCode.UNAUTHORIZED).result("Du bist nicht angemeldet!");
-      return;
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
 
     Post post = new Post();
@@ -136,7 +136,7 @@ public class PostController {
         postService.addPost(post);
       } catch (InputTooLongException e) {
         logger.error(e.getMessage());
-        ctx.status(HttpCode.BAD_REQUEST).result(e.getMessage());
+        throw new BadRequestResponse(e.getMessage());
       }
     }
   }
