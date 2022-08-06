@@ -5,6 +5,7 @@ import static modules.post.PostFixtures.MOST_LIKED;
 import static modules.post.PostFixtures.MOST_TRENDING;
 import static modules.post.PostFixtures.NEWEST_POST;
 import static modules.post.PostFixtures.POST_BY_1_TO_2;
+import static modules.post.PostFixtures.POST_BY_2;
 import static modules.post.PostFixtures.POST_BY_NEWEST;
 import static modules.post.PostFixtures.POST_BY_NEWEST_TO_OLDEST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import modules.error.ResponseError;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
@@ -26,11 +28,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class PostAPIControllerTest extends IntegrationTest {
+class PostAPIControllerTest extends IntegrationTest {
   private static final JSONUtil jsonUtil = JSONUtil.create();
 
   @Test
-  public void getPostById() {
+  void getPostById() {
     JavalinTest.test(
         app,
         (server, client) -> {
@@ -119,6 +121,38 @@ public class PostAPIControllerTest extends IntegrationTest {
                 Pair.of(0, MOST_TRENDING.id()),
                 Pair.of(1, LESS_TRENDING.id()),
                 Pair.of(2, MOST_LIKED.id()))));
+  }
+
+  @Test
+  void wallPosts() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response = client.get("/api/pinnwand/test2");
+          assertThat(response.code()).as("response code of /api/pinnwand/test2").isEqualTo(200);
+          ArrayList<Post> posts = toPostList(response);
+          assertThat(posts).as("contains only posts written to test2").hasSize(2);
+          assertThat(posts)
+              .as("contains the post by test2 on own wall")
+              .anyMatch(post -> post.getMessage().equals(POST_BY_2.message()));
+          assertThat(posts)
+              .as("contains the post by test on test2 wall")
+              .anyMatch(post -> post.getMessage().equals(POST_BY_1_TO_2.message()));
+        });
+  }
+
+  @Test
+  void wallNonexistentUser() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response = client.get("/api/pinnwand/nonexistentUser");
+          assertThat(response.code()).as("user should not exist").isEqualTo(404);
+          assertThat(
+                  jsonUtil.fromJsonString(response.body().string(), ResponseError.class).getError())
+              .as("returns jsonified error response")
+              .contains("User nonexistentUser");
+        });
   }
 
   private ArrayList<Post> toPostList(Response response) throws IOException {
