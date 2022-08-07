@@ -15,9 +15,6 @@
   - [Alternativ: Lokaler Server](#alternativ-lokaler-server)
 - [API](#api)
   - [Daten abrufen](#daten-abrufen)
-    - [`/api/users` - Alle registrierten Nutzer abrufen](#apiusers---alle-registrierten-nutzer-abrufen)
-    - [`/api/posts` - Alle Posts abrufen](#apiposts---alle-posts-abrufen)
-    - [`/api/pinnwand/:username` - Posts der Pinnwand eines Users](#apipinnwandusername---posts-der-pinnwand-eines-users)
   - [Daten senden](#daten-senden)
 - [Server einrichten](#server-einrichten)
 
