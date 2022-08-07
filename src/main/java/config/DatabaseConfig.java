@@ -1,8 +1,9 @@
 package config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 import javax.sql.DataSource;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -17,12 +18,11 @@ public class DatabaseConfig {
       String username = System.getenv("JDBC_DATABASE_USERNAME");
       String password = System.getenv("JDBC_DATABASE_PASSWORD");
 
-      BasicDataSource basicDataSource = new BasicDataSource();
-      basicDataSource.setDriverClassName("org.postgresql.Driver");
-      basicDataSource.setUrl(dbUrl);
-      basicDataSource.setUsername(username);
-      basicDataSource.setPassword(password);
-      return basicDataSource;
+      HikariConfig config = new HikariConfig();
+      config.setJdbcUrl(dbUrl);
+      config.setUsername(username);
+      config.setPassword(password);
+      return new HikariDataSource(config);
     } else {
       return EmbeddedPostgres.builder().start().getPostgresDatabase();
     }

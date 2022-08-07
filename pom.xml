@@ -129,9 +129,9 @@
 
 		<!-- Connection pool -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-			<version>${dbcp.version}</version>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.0.1</version>
 		</dependency>
 
 		<!-- Password hashes -->
@@ -229,8 +229,8 @@
 											git-code-format-maven-plugin
 										</artifactId>
 										<versionRange>
-											[3.3,)
-										</versionRange>
+											[${git-code-format-maven-plugin.version},)
+											</versionRange>
 										<goals>
 											<goal>install-hooks</goal>
 										</goals>
@@ -283,6 +283,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<skip>${skipTests}</skip>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
