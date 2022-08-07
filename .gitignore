@@ -3,3 +3,4 @@ database
 node
 !*.zip
 !*.sql
+*.md.html
