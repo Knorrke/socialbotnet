@@ -18,92 +18,128 @@ public class Post implements Serializable {
   private int likes = 0;
   private List<User> likedBy = new ArrayList<>();
 
-  /** @return the message */
+  /**
+   * @return the message
+   */
   public String getMessage() {
     return message;
   }
 
-  /** @param message the message to set */
+  /**
+   * @param message the message to set
+   */
   public void setMessage(String message) {
     this.message = message;
   }
 
-  /** @return the publishingDate */
+  /**
+   * @return the publishingDate
+   */
   public Timestamp getPublishingDate() {
     return publishingDate;
   }
 
-  /** @param timestamp the publishingDate to set */
+  /**
+   * @param timestamp the publishingDate to set
+   */
   public void setPublishingDate(Timestamp timestamp) {
     this.publishingDate = timestamp;
   }
 
-  /** @return the id */
+  /**
+   * @return the id
+   */
   public int getId() {
     return id;
   }
 
-  /** @param id the id to set */
+  /**
+   * @param id the id to set
+   */
   public void setId(int id) {
     this.id = id;
   }
 
-  /** @return the userid */
+  /**
+   * @return the userid
+   */
   public int getUserId() {
     return user.getId();
   }
 
-  /** @return the username */
+  /**
+   * @return the username
+   */
   public String getUsername() {
     return user.getUsername();
   }
 
-  /** @return the user */
+  /**
+   * @return the user
+   */
   public User getUser() {
     return user;
   }
 
-  /** @param user the user to set */
+  /**
+   * @param user the user to set
+   */
   public void setUser(User user) {
     this.user = user;
   }
 
-  /** @return the recentLikes */
+  /**
+   * @return the recentLikes
+   */
   public List<User> getRecentLikes() {
     return likedBy;
   }
 
-  /** @param recentLikes the recentLikes to set */
+  /**
+   * @param recentLikes the recentLikes to set
+   */
   public void setRecentLikes(List<User> recentLikes) {
     this.likedBy = recentLikes;
   }
 
-  /** @return the likesCount */
+  /**
+   * @return the likesCount
+   */
   public int getLikesCount() {
     return likes;
   }
 
-  /** @param likesCount the likesCount to set */
+  /**
+   * @param likesCount the likesCount to set
+   */
   public void setLikesCount(int likesCount) {
     this.likes = likesCount;
   }
 
-  /** @return the trendingScore */
+  /**
+   * @return the trendingScore
+   */
   public double getTrendingScore() {
     return trendingScore;
   }
 
-  /** @param trendingScore the trendingScore to set */
+  /**
+   * @param trendingScore the trendingScore to set
+   */
   public void setTrendingScore(double trendingScore) {
     this.trendingScore = trendingScore;
   }
 
-  /** @return the wall */
+  /**
+   * @return the wall
+   */
   public User getWall() {
     return wall;
   }
 
-  /** @param wall the wall to set */
+  /**
+   * @param wall the wall to set
+   */
   public void setWall(User wall) {
     this.wall = wall;
   }

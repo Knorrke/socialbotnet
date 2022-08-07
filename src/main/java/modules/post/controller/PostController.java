@@ -141,7 +141,9 @@ public class PostController {
     }
   }
 
-  /** @return the acceptedsorts */
+  /**
+   * @return the acceptedsorts
+   */
   public static Map<String, String> getAcceptedSorts() {
     return acceptedSorts;
   }

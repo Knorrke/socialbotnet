@@ -24,7 +24,7 @@
 		<dbcp.version>2.9.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<sl4j.version>1.7.36</sl4j.version>
-		<git-code-format-maven-plugin.version>3.3</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>3.4</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
