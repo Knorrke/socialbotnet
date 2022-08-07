@@ -105,9 +105,9 @@
 
 		<!-- Connection pool -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-			<version>${dbcp.version}</version>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.0.1</version>
 		</dependency>
 
 		<!-- Password hashes -->
@@ -145,7 +145,7 @@
 				<artifactId>embedded-postgres-binaries-bom</artifactId>
 				<version>11.15.0</version>
 				<type>pom</type>
-                <scope>import</scope>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -153,27 +153,85 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>com.cosium.code</groupId>
-					<artifactId>git-code-format-maven-plugin</artifactId>
-					<version>${git-code-format-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>install-formatter-hook</id>
-							<goals>
-								<goal>install-hooks</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>validate-code-format</id>
-							<goals>
-								<goal>validate-code-format</goal>
-							</goals>
-						</execution>
-					</executions>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.2</version>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.cosium.code
+										</groupId>
+										<artifactId>
+											git-code-format-maven-plugin
+										</artifactId>
+										<versionRange>
+											[${git-code-format-maven-plugin.version},)
+										</versionRange>
+										<goals>
+											<goal>install-hooks</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.github.eirslett
+										</groupId>
+										<artifactId>
+											frontend-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.12.0,)
+										</versionRange>
+										<goals>
+											<goal>npx</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>com.cosium.code</groupId>
+				<artifactId>git-code-format-maven-plugin</artifactId>
+				<version>${git-code-format-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>install-formatter-hook</id>
+						<goals>
+							<goal>install-hooks</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>validate-code-format</id>
+						<goals>
+							<goal>validate-code-format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>${skipTests}</skip>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
