@@ -1,6 +1,5 @@
 package modules.post.model;
 
-import java.awt.Image;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ public class Post implements Serializable {
   private Timestamp publishingDate;
   private User user;
   private User wall;
-  private Image image;
   private double trendingScore;
   private int likes = 0;
   private List<User> likedBy = new ArrayList<>();
@@ -28,16 +26,6 @@ public class Post implements Serializable {
   /** @param message the message to set */
   public void setMessage(String message) {
     this.message = message;
-  }
-
-  /** @return the image */
-  public Image getImage() {
-    return image;
-  }
-
-  /** @param image the image to set */
-  public void setImage(Image image) {
-    this.image = image;
   }
 
   /** @return the publishingDate */
