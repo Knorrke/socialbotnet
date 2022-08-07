@@ -187,7 +187,7 @@ public class PostDao implements PostDaoInterface {
           sortingExpression = PUBLISHING_DATE;
           break;
         case "likes":
-          sortingExpression = LIKES_COUNT;
+          sortingExpression = String.format("LEAST(%s, 1000)", LIKES_COUNT);
           break;
         case "trending":
         case "trendingscore":
@@ -197,7 +197,7 @@ public class PostDao implements PostDaoInterface {
           break;
       }
     }
-    return sortingExpression + " " + order;
+    return String.format("%s %s, %s DESC", sortingExpression, order, ID);
   }
 
   private void populateLikedBy(List<Post> posts) {
