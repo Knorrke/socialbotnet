@@ -27,7 +27,7 @@
 							<button class="button action-button colored" type="submit" title="Gefällt mir nicht mehr">
 								<i class="icon-current fas fa-heart"></i>
 								<i class="icon-action fas fa-heart-broken"></i>
-								<span>${post.likesCount}</span>
+								<span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span>
 							</button>
 						</form>
 					<#else>
@@ -36,15 +36,15 @@
 							<button class="button action-button colored" type="submit" title="Gefällt mir">
 								<i class="icon-current far fa-heart"></i>
 								<i class="icon-action fas fa-heart"></i>
-								<span>${post.likesCount}</span>
+								<span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span>
 							</button>
 						</form>
 					</#if>
 				<#else>
-					<span class="likes-count"><i class="far fa-heart"></i><span>${post.likesCount}</span></span>
+					<span class="likes-count"><i class="far fa-heart"></i><span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span></span>
 				</#if>
 				<span class="likes">
-					<#if post.likesCount gt likesShown><span class="overlapping"><span class="profile-pic small" data-tooltip="${post.likesCount - likesShown} weitere">...</span></span></#if>
+					<#if post.likesCount gt likesShown><span class="overlapping"><span class="profile-pic small" data-tooltip="${post.likesCount - likesShown}${(post.likesCount >= 1000)?then("+","")} weitere">...</span></span></#if>
 					<#if post.likesCount gt 0>
 						<#list post.getRecentLikes()[(likesShown-1)..0] as likingUser>
 							 <a class="overlapping" data-tooltip="${likingUser.username}" href="/user/profile/${likingUser.username?url}"><img class="profile-pic small" alt="${likingUser.username} Like" src="${likingUser.image}" style="vertical-align:middle"></a>

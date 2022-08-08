@@ -32,8 +32,8 @@ public class PostDao implements PostDaoInterface {
   private static final String DEEP_SELECT =
       String.format(
           "SELECT p.*, u.%s, u.%s, u.%s, u.%s, w.%1$s as wall_%1$s, w.%2$s as wall_%2$s, w.%3$s as wall_%3$s, w.%4$s as wall_%4$s,"
-              // Rank posts by:  likes / (1+days)^gravity
-              + "(likes_count / POWER(1 + EXTRACT(epoch from AGE(NOW(), p.pub_date)) / 86400, 2)) as score",
+              // Rank posts by:  likes / (1+days)^gravity, capped at 1000 likes
+              + "(LEAST(likes_count, 1000) / POWER(1 + EXTRACT(epoch from AGE(NOW(), p.pub_date)) / 86400, 2)) as score",
           UserDao.ID, UserDao.USERNAME, UserDao.HOBBIES, UserDao.ABOUT);
 
   @Autowired
@@ -187,7 +187,7 @@ public class PostDao implements PostDaoInterface {
           sortingExpression = PUBLISHING_DATE;
           break;
         case "likes":
-          sortingExpression = LIKES_COUNT;
+          sortingExpression = String.format("LEAST(%s, 1000)", LIKES_COUNT);
           break;
         case "trending":
         case "trendingscore":
@@ -197,7 +197,7 @@ public class PostDao implements PostDaoInterface {
           break;
       }
     }
-    return sortingExpression + " " + order;
+    return String.format("%s %s, %s DESC", sortingExpression, order, ID);
   }
 
   private void populateLikedBy(List<Post> posts) {
@@ -225,7 +225,7 @@ public class PostDao implements PostDaoInterface {
         post.setId(rs.getInt(ID));
         post.setMessage(rs.getString(MESSAGE));
         post.setPublishingDate(rs.getTimestamp(PUBLISHING_DATE));
-        post.setLikesCount(rs.getInt(LIKES_COUNT));
+        post.setLikesCount(Math.min(rs.getInt(LIKES_COUNT), 1000));
         post.setTrendingScore(rs.getDouble(SCORE));
 
         post.setUser(getUserFromResult(rs, ""));
