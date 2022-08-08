@@ -127,7 +127,7 @@ public class Router {
                     });
 
                 get("/users", userApiController::getUsers);
-                get("/user/{username}", userApiController::getUserByUsername);
+                get("/user/{userid}", userApiController::getUserById);
                 get("/posts", postApiController::getPosts);
                 get("/post/{postid}", postApiController::getPostById);
                 get("/pinnwand/{username}", postApiController::getUserPosts);
@@ -164,13 +164,13 @@ public class Router {
 
     String[] routesGETRegex = {
       "^/api/users$",
-      "^/api/user/.+$",
+      "^/api/user/[1-9]\\d*$",
       "^/api/posts$",
       "^/api/pinnwand/.*$",
       "^/api/post/[1-9]\\d*$"
     };
     String[] routesPOSTRegex = {
-      "^/api/post$", "^/api/post/.*[^0-9]+.*$", "^/api/like$", "^/api/unlike$"
+      "^/api/post$", "^/api/post/.*$", "^/api/like$", "^/api/unlike$", "^/api/user/update$",
     };
 
     if (!requestMethod.equals("POST")) {

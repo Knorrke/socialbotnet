@@ -16,8 +16,11 @@ public class UserService {
   @Autowired private UserDaoInterface userDaoInterface;
 
   public User getUserbyUsername(String username) {
-    User user = userDaoInterface.getUserbyUsernameWithoutPassword(username);
-    return user;
+    return userDaoInterface.getUserByUsernameWithoutPassword(username);
+  }
+
+  public User getUserById(int id) {
+    return userDaoInterface.getUserByIdWithoutPassword(id);
   }
 
   public User checkUser(User user) {

@@ -56,8 +56,8 @@ public class UserApiController {
     ctx.json(service.getAllUsersSorted(sortby.toLowerCase(), asc, limit));
   }
 
-  public void getUserByUsername(Context ctx) {
-    ctx.json(service.getUserbyUsername(ctx.pathParam("username")));
+  public void getUserById(Context ctx) {
+    ctx.json(service.getUserById(ctx.pathParamAsClass("userid", Integer.class).get()));
   }
 
   /**
