@@ -67,6 +67,25 @@ class PostAPIControllerLikeTest extends IntegrationTest {
   }
 
   @Test
+  void likeTwice() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Post post = requestPostById(client, 3);
+          assertThat(post.getLikesCount()).as("number of likes before").isZero();
+
+          Response response =
+              postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS + "&postid=3");
+          assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(200);
+
+          response = postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS + "&postid=3");
+          assertThat(response.code()).as("Second request should get ignored").isEqualTo(200);
+          post = PostTestHelpers.toPost(response);
+          assertThat(post.getLikesCount()).as("second request doesn't change likes").isOne();
+        });
+  }
+
+  @Test
   void likeNonexistentPost() {
     JavalinTest.test(
         app,
@@ -99,6 +118,27 @@ class PostAPIControllerLikeTest extends IntegrationTest {
           assertThat(post.getLikesCount())
               .as("number of likes persistet in subsequent requests")
               .isOne();
+          assertThat(post.getRecentLikes()).noneMatch(user -> user.getUsername().equals("test"));
+        });
+  }
+
+  @Test
+  void unlikeTwice() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Post post = requestPostById(client, 1);
+          assertThat(post.getLikesCount()).as("number of likes before").isEqualTo(2);
+          assertThat(post.getRecentLikes()).anyMatch(user -> user.getUsername().equals("test"));
+
+          Response response =
+              postWithUrlEncodedBody(client, "/api/unlike", AUTH_PARAMS + "&postid=1");
+          assertThat(response.code()).as("Authorized request for liking postid 1").isEqualTo(200);
+
+          response = postWithUrlEncodedBody(client, "/api/unlike", AUTH_PARAMS + "&postid=1");
+          assertThat(response.code()).as("Second request should get ignored").isEqualTo(200);
+          post = PostTestHelpers.toPost(response);
+          assertThat(post.getLikesCount()).as("second request doesn't change likes").isOne();
           assertThat(post.getRecentLikes()).noneMatch(user -> user.getUsername().equals("test"));
         });
   }

@@ -1,5 +1,7 @@
 package modules.post;
 
+import java.util.Arrays;
+
 public enum PostFixtures {
   POST_BY_1("post test1", 1),
   POST_BY_2("post test2", 2),
@@ -25,5 +27,11 @@ public enum PostFixtures {
 
   public int id() {
     return id;
+  }
+
+  public static PostFixtures[] getSorted() {
+    PostFixtures[] values = values();
+    Arrays.sort(values, (fixture1, fixture2) -> fixture2.message().compareTo(fixture1.message()));
+    return values;
   }
 }

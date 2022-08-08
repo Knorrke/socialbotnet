@@ -16,6 +16,8 @@ import io.javalin.testtools.JavalinTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import modules.helpers.PostTestHelpers;
 import modules.post.model.Post;
@@ -90,10 +92,19 @@ class PostAPIControllerGetPostsTest extends IntegrationTest {
   private static Stream<Arguments> provideSortByParameters() {
     List<Pair<Integer, Integer>> defaultExpectedIds =
         Arrays.asList(Pair.of(0, NEWEST_POST.id()), Pair.of(-1, 1));
+
+    PostFixtures[] sortedMessages = PostFixtures.getSorted();
+
     return Stream.of(
         Arguments.of("", defaultExpectedIds),
         Arguments.of("sortby=unsupported", defaultExpectedIds),
         Arguments.of("sortby=publishingdate", defaultExpectedIds),
+        Arguments.of(
+            "sortby=message",
+            IntStream.range(0, sortedMessages.length)
+                .boxed()
+                .map(i -> Pair.of(i, sortedMessages[i].id()))
+                .collect(Collectors.toList())),
         Arguments.of(
             "sortby=likes",
             Arrays.asList(Pair.of(0, MOST_LIKED.id()), Pair.of(1, MOST_TRENDING.id()))),
