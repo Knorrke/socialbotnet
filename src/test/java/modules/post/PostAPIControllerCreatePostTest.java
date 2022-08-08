@@ -38,6 +38,23 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
   }
 
   @Test
+  void missingMessageParameter() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          int previousCount = requestPosts(client).size();
+          Response response = postWithUrlEncodedBody(client, "/api/post", AUTH_PARAMS);
+          assertThat(response.code())
+              .as("Missing message")
+              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+          assertThat(PostTestHelpers.toError(response).getError())
+              .contains("Parameter message fehlt");
+          ArrayList<Post> posts = requestPosts(client);
+          assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
+        });
+  }
+
+  @Test
   void createPost() {
     JavalinTest.test(
         app,

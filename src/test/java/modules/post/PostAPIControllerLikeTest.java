@@ -13,6 +13,8 @@ import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 
 class PostAPIControllerLikeTest extends IntegrationTest {
+  private static String AUTH_PARAMS = "username=test&password=test";
+
   @Test
   void unAuthorizedLike() {
     JavalinTest.test(
@@ -28,6 +30,22 @@ class PostAPIControllerLikeTest extends IntegrationTest {
   }
 
   @Test
+  void missingPostidParameter() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response = postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS);
+          assertThat(response.code())
+              .as("Missing postid parameter")
+              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+          assertThat(PostTestHelpers.toError(response).getError())
+              .contains("Parameter postid fehlt");
+          Post post = PostTestHelpers.toPost(client.get("/api/post/3"));
+          assertThat(post.getLikesCount()).isZero();
+        });
+  }
+
+  @Test
   void likePost() {
     JavalinTest.test(
         app,
@@ -36,7 +54,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
           assertThat(post.getLikesCount()).as("number of likes before").isZero();
 
           Response response =
-              postWithUrlEncodedBody(client, "/api/like", "username=test&password=test&postid=3");
+              postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS + "&postid=3");
           assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(200);
           post = PostTestHelpers.toPost(response);
           assertThat(post.getLikesCount()).as("number of likes updated in answer").isOne();
@@ -54,7 +72,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
         app,
         (server, client) -> {
           Response response =
-              postWithUrlEncodedBody(client, "/api/like", "username=test&password=test&postid=999");
+              postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS + "&postid=999");
           assertThat(response.code())
               .as("nonexistent post")
               .isEqualTo(HttpCode.NOT_FOUND.getStatus());
@@ -71,7 +89,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
           assertThat(post.getRecentLikes()).anyMatch(user -> user.getUsername().equals("test"));
 
           Response response =
-              postWithUrlEncodedBody(client, "/api/unlike", "username=test&password=test&postid=1");
+              postWithUrlEncodedBody(client, "/api/unlike", AUTH_PARAMS + "&postid=1");
           assertThat(response.code()).as("Authorized request for liking postid 1").isEqualTo(200);
           post = PostTestHelpers.toPost(response);
           assertThat(post.getLikesCount()).as("number of likes updated in answer").isOne();
