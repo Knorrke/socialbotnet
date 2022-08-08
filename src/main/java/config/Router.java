@@ -170,7 +170,7 @@ public class Router {
       "^/api/post/[1-9]\\d*$"
     };
     String[] routesPOSTRegex = {
-      "^/api/post$", "^/api/post/.*$", "^/api/like$", "^/api/unlike$", "^/api/user/update$",
+      "^/api/post$", "^/api/post/.*[^0-9].*$", "^/api/like$", "^/api/unlike$", "^/api/user/update$",
     };
 
     if (!requestMethod.equals("POST")) {
