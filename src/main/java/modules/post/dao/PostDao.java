@@ -197,7 +197,7 @@ public class PostDao implements PostDaoInterface {
           break;
       }
     }
-    return String.format("%s %s, %s DESC", sortingExpression, order, ID);
+    return String.format("%s %s, %s %2$s", sortingExpression, order, ID);
   }
 
   private void populateLikedBy(List<Post> posts) {

@@ -18,7 +18,7 @@ INSERT INTO public.post (author_id, wall_id, text, pub_date) VALUES
 (4, 4, 'less viral new', now() - INTERVAL '9 minutes'),
 (9, 9, 'post by newest user', now() - INTERVAL '8 minutes'),
 (9, 1, 'post by newest to oldest', now() - INTERVAL '7 minutes'),
-(1, 1, 'newest post', now());
+(8, 8, 'newest post', now());
 
 INSERT INTO public.likes (post_id, user_id) VALUES
 (1,1),(1,2),

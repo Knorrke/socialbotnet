@@ -4,6 +4,7 @@ import static modules.post.PostFixtures.LESS_TRENDING;
 import static modules.post.PostFixtures.MOST_LIKED;
 import static modules.post.PostFixtures.MOST_TRENDING;
 import static modules.post.PostFixtures.NEWEST_POST;
+import static modules.post.PostFixtures.POST_BY_1;
 import static modules.post.PostFixtures.POST_BY_1_TO_2;
 import static modules.post.PostFixtures.POST_BY_2;
 import static modules.post.PostFixtures.POST_BY_NEWEST;
@@ -85,7 +86,7 @@ class PostAPIControllerTest extends IntegrationTest {
                 .as("check index %d", pair.getLeft())
                 .isEqualTo(pair.getRight());
             assertThat(postsAsc.get(postsAsc.size() - 1 - index).getId())
-                .as("check ascending order")
+                .as("check ascending order %d", pair.getLeft())
                 .isEqualTo(pair.getRight());
           }
         });
@@ -104,11 +105,10 @@ class PostAPIControllerTest extends IntegrationTest {
         Arguments.of(
             "sortby=user",
             Arrays.asList(
-                Pair.of(0, POST_BY_NEWEST.id()), Pair.of(1, POST_BY_NEWEST_TO_OLDEST.id()))),
+                Pair.of(0, POST_BY_NEWEST_TO_OLDEST.id()), Pair.of(1, POST_BY_NEWEST.id()))),
         Arguments.of(
             "sortby=wall",
-            Arrays.asList(
-                Pair.of(0, POST_BY_NEWEST.id()), Pair.of(-1, POST_BY_NEWEST_TO_OLDEST.id()))),
+            Arrays.asList(Pair.of(0, POST_BY_NEWEST.id()), Pair.of(-1, POST_BY_1.id()))),
         Arguments.of(
             "sortby=trendingscore",
             Arrays.asList(
