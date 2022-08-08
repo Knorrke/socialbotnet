@@ -12,14 +12,13 @@ import static modules.post.PostFixtures.POST_BY_NEWEST_TO_OLDEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import com.google.gson.reflect.TypeToken;
 import io.javalin.testtools.JavalinTest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import modules.error.ResponseError;
+import modules.helpers.PostTestHelpers;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
@@ -29,9 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class PostAPIControllerTest extends IntegrationTest {
-  private static final JSONUtil jsonUtil = JSONUtil.create();
-
+class PostAPIControllerGetPostsTest extends IntegrationTest {
   @Test
   void getPostById() {
     JavalinTest.test(
@@ -39,7 +36,7 @@ class PostAPIControllerTest extends IntegrationTest {
         (server, client) -> {
           Response response = client.get("/api/post/" + POST_BY_1_TO_2.id());
           assertThat(response.code()).as("api accessible").isEqualTo(200);
-          Post post = toPost(response);
+          Post post = PostTestHelpers.toPost(response);
           assertThat(post).isNotNull();
           assertThat(post.getMessage()).isEqualTo(POST_BY_1_TO_2.message());
           assertThat(post.getId()).isEqualTo(POST_BY_1_TO_2.id());
@@ -57,7 +54,7 @@ class PostAPIControllerTest extends IntegrationTest {
         (server, client) -> {
           Response response = client.get("/api/posts");
           assertThat(response.code()).as("response code of /api/posts").isEqualTo(200);
-          ArrayList<Post> posts = toPostList(response);
+          ArrayList<Post> posts = PostTestHelpers.toPostList(response);
           for (PostFixtures fixture : PostFixtures.values()) {
             assertThat(posts)
                 .as("all posts")
@@ -74,11 +71,11 @@ class PostAPIControllerTest extends IntegrationTest {
         (server, client) -> {
           Response response = client.get("/api/posts?" + sortByParam);
           assertThat(response.code()).as("response code of /api/posts").isEqualTo(200);
-          ArrayList<Post> posts = toPostList(response);
+          ArrayList<Post> posts = PostTestHelpers.toPostList(response);
 
           response = client.get("/api/posts?order=asc&" + sortByParam);
           assertThat(response.code()).as("response code of /api/posts").isEqualTo(200);
-          ArrayList<Post> postsAsc = toPostList(response);
+          ArrayList<Post> postsAsc = PostTestHelpers.toPostList(response);
 
           for (Pair<Integer, Integer> pair : expectedIds) {
             int index = (pair.getLeft() + posts.size()) % posts.size();
@@ -130,7 +127,7 @@ class PostAPIControllerTest extends IntegrationTest {
         (server, client) -> {
           Response response = client.get("/api/pinnwand/test2");
           assertThat(response.code()).as("response code of /api/pinnwand/test2").isEqualTo(200);
-          ArrayList<Post> posts = toPostList(response);
+          ArrayList<Post> posts = PostTestHelpers.toPostList(response);
           assertThat(posts).as("contains only posts written to test2").hasSize(2);
           assertThat(posts)
               .as("contains the post by test2 on own wall")
@@ -149,18 +146,11 @@ class PostAPIControllerTest extends IntegrationTest {
           Response response = client.get("/api/pinnwand/nonexistentUser");
           assertThat(response.code()).as("user should not exist").isEqualTo(404);
           assertThat(
-                  jsonUtil.fromJsonString(response.body().string(), ResponseError.class).getError())
+                  JSONUtil.create()
+                      .fromJsonString(response.body().string(), ResponseError.class)
+                      .getError())
               .as("returns jsonified error response")
               .contains("User nonexistentUser");
         });
-  }
-
-  private ArrayList<Post> toPostList(Response response) throws IOException {
-    return jsonUtil.fromJsonString(
-        response.body().string(), new TypeToken<ArrayList<Post>>() {}.getType());
-  }
-
-  private Post toPost(Response response) throws IOException {
-    return jsonUtil.fromJsonString(response.body().string(), Post.class);
   }
 }

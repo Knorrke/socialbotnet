@@ -3,15 +3,14 @@ package modules.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import com.google.gson.reflect.TypeToken;
 import io.javalin.http.HttpCode;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import modules.helpers.PostTestHelpers;
 import modules.post.model.Post;
-import modules.util.JSONUtil;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -126,9 +125,6 @@ class PostControllerCreatePostTest extends IntegrationTest {
   }
 
   private ArrayList<Post> requestPosts(HttpClient client) throws IOException {
-    return JSONUtil.create()
-        .fromJsonString(
-            client.get("/api/posts?limit=100").body().string(),
-            new TypeToken<ArrayList<Post>>() {}.getType());
+    return PostTestHelpers.toPostList(client.get("/api/posts?limit=100"));
   }
 }

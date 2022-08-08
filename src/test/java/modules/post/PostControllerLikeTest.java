@@ -8,8 +8,8 @@ import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
 import java.util.stream.Stream;
+import modules.helpers.PostTestHelpers;
 import modules.post.model.Post;
-import modules.util.JSONUtil;
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -117,7 +117,6 @@ class PostControllerLikeTest extends IntegrationTest {
   }
 
   private Post requestPostById(HttpClient client, int id) throws IOException {
-    return JSONUtil.create()
-        .fromJsonString(client.get("/api/post/" + id).body().string(), Post.class);
+    return PostTestHelpers.toPost(client.get("/api/post/" + id));
   }
 }
