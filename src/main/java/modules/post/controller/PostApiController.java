@@ -199,7 +199,12 @@ public class PostApiController {
             ? ctx.pathParam("username")
             : authenticatedUser.getUsername();
 
-    post.setWall(userService.getUserbyUsername(username));
+    User wall = userService.getUserbyUsername(username);
+    if (wall == null) {
+      throw new NotFoundResponse(String.format("Der User %s existiert nicht", username));
+    }
+
+    post.setWall(wall);
 
     try {
       postService.addPost(post);

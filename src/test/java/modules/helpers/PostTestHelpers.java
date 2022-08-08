@@ -3,6 +3,7 @@ package modules.helpers;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
+import modules.error.ResponseError;
 import modules.post.model.Post;
 import modules.util.JSONUtil;
 import okhttp3.Response;
@@ -17,5 +18,9 @@ public class PostTestHelpers {
 
   public static Post toPost(Response response) throws IOException {
     return jsonUtil.fromJsonString(response.body().string(), Post.class);
+  }
+
+  public static ResponseError toError(Response response) throws IOException {
+    return jsonUtil.fromJsonString(response.body().string(), ResponseError.class);
   }
 }

@@ -2,7 +2,6 @@ package modules.post.controller;
 
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.http.UnauthorizedResponse;
 import java.net.URI;
@@ -127,7 +126,7 @@ public class PostController {
             : authenticatedUser.getUsername();
     User wall = userService.getUserbyUsername(username);
     if (wall == null) {
-      ctx.status(HttpCode.NOT_FOUND).result("User existiert nicht");
+      throw new NotFoundResponse("User existiert nicht");
     } else {
       post.setWall(wall);
       ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
@@ -135,7 +134,6 @@ public class PostController {
       try {
         postService.addPost(post);
       } catch (InputTooLongException e) {
-        logger.error(e.getMessage());
         throw new BadRequestResponse(e.getMessage());
       }
     }

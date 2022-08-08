@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import modules.error.ResponseError;
 import modules.helpers.PostTestHelpers;
 import modules.post.model.Post;
-import modules.util.JSONUtil;
 import okhttp3.Response;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
@@ -145,10 +143,7 @@ class PostAPIControllerGetPostsTest extends IntegrationTest {
         (server, client) -> {
           Response response = client.get("/api/pinnwand/nonexistentUser");
           assertThat(response.code()).as("user should not exist").isEqualTo(404);
-          assertThat(
-                  JSONUtil.create()
-                      .fromJsonString(response.body().string(), ResponseError.class)
-                      .getError())
+          assertThat(PostTestHelpers.toError(response).getError())
               .as("returns jsonified error response")
               .contains("User nonexistentUser");
         });

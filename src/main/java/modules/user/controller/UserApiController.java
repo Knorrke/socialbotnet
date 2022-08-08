@@ -1,7 +1,7 @@
 package modules.user.controller;
 
+import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
@@ -96,7 +96,7 @@ public class UserApiController {
     try {
       service.updateUser(oldUser, newUser);
     } catch (InputTooLongException e) {
-      ctx.status(HttpCode.BAD_REQUEST).json(new ResponseError(e));
+      throw new BadRequestResponse(e.getMessage());
     }
     ctx.json(oldUser);
   }
