@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.socialbotnet</groupId>
 	<artifactId>socialbotnet</artifactId>
-	<version>3.0</version>
+	<version>4.0</version>
 	<name>social-bot-net</name>
 
 	<properties>
