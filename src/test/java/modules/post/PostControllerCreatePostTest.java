@@ -9,7 +9,7 @@ import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import modules.helpers.PostTestHelpers;
+import modules.helpers.TestHelpers;
 import modules.post.model.Post;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -125,6 +125,6 @@ class PostControllerCreatePostTest extends IntegrationTest {
   }
 
   private ArrayList<Post> requestPosts(HttpClient client) throws IOException {
-    return PostTestHelpers.toPostList(client.get("/api/posts?limit=100"));
+    return TestHelpers.toPostList(client.get("/api/posts?limit=100"));
   }
 }

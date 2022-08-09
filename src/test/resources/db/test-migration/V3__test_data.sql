@@ -1,13 +1,13 @@
 INSERT INTO public.users (username, password, hobbies, about) VALUES
-('test','$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'test hobbies', 'test about'),
-('test2', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'test2 hobbies', 'test2 about'),
+('test','$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'test1 hobbies', 'a'),
+('test2', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'a', 'test2 about'),
 ('empty', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('viral', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('viral2', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('viral3', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('viral4', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('viral5', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', ''),
-('newest', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', '', '');
+('viral', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'b', 'b'),
+('viral2', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'c', 'c'),
+('viral3', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'd', 'd'),
+('viral4', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'e', 'e'),
+('viral5', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'f', 'f'),
+('newest', '$2a$10$/cjl6jS5IRwQ7Li/MJ2wt./2bRk9.cKo.WukW477vhDkiryE.1zEq', 'g', 'g');
 
 INSERT INTO public.post (author_id, wall_id, text, pub_date) VALUES
 (1, 1, 'post test1', now() - INTERVAL '3 days 3 minutes'),

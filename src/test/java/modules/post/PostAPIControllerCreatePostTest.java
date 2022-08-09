@@ -9,7 +9,7 @@ import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import modules.helpers.PostTestHelpers;
+import modules.helpers.TestHelpers;
 import modules.post.model.Post;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -47,8 +47,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           assertThat(response.code())
               .as("Missing message")
               .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
-          assertThat(PostTestHelpers.toError(response).getError())
-              .contains("Parameter message fehlt");
+          assertThat(TestHelpers.toError(response).getError()).contains("Parameter message fehlt");
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
@@ -92,7 +91,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           assertThat(response.code())
               .as("Message too long")
               .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
-          assertThat(PostTestHelpers.toError(response).getError())
+          assertThat(TestHelpers.toError(response).getError())
               .as("returns jsonified error response")
               .contains("zu lang");
           ArrayList<Post> posts = requestPosts(client);
@@ -110,7 +109,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           assertThat(response.code())
               .as("Wall does not exist")
               .isEqualTo(HttpCode.NOT_FOUND.getStatus());
-          assertThat(PostTestHelpers.toError(response).getError())
+          assertThat(TestHelpers.toError(response).getError())
               .as("returns jsonified error response")
               .contains("User nonexistentUser");
 
@@ -145,6 +144,6 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
   }
 
   private ArrayList<Post> requestPosts(HttpClient client) throws IOException {
-    return PostTestHelpers.toPostList(client.get("/api/posts?limit=100"));
+    return TestHelpers.toPostList(client.get("/api/posts?limit=100"));
   }
 }

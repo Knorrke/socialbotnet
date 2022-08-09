@@ -32,7 +32,7 @@ public class UserDao implements UserDaoInterface {
 
     String sql = "SELECT * FROM users WHERE users.username=:username";
     List<User> users = template.query(sql, params, userMapper);
-    if (users != null && !users.isEmpty()) {
+    if (!users.isEmpty()) {
       foundUser = users.get(0);
     }
 
@@ -91,7 +91,7 @@ public class UserDao implements UserDaoInterface {
     String sql =
         "SELECT user_id, username, null as password, hobbies, about FROM users WHERE users.user_id=:user_id";
     List<User> users = template.query(sql, params, userMapper);
-    if (users != null && !users.isEmpty()) {
+    if (!users.isEmpty()) {
       foundUser = users.get(0);
     }
 
@@ -107,7 +107,7 @@ public class UserDao implements UserDaoInterface {
     String sql =
         "SELECT user_id, username, null as password, hobbies, about FROM users WHERE users.username=:username";
     List<User> users = template.query(sql, params, userMapper);
-    if (users != null && !users.isEmpty()) {
+    if (!users.isEmpty()) {
       foundUser = users.get(0);
     }
 
