@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import modules.helpers.TestHelpers;
 import modules.user.model.User;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class UserApiControllerTest extends IntegrationTest {
+  private static final String AUTH_PARAM = "username=test&password=test";
 
   @ParameterizedTest(name = "#{index}- Test api authentication with {arguments}")
   @MethodSource("provideLoginParameters")
@@ -48,7 +50,7 @@ class UserApiControllerTest extends IntegrationTest {
         Arguments.of("Existing user, missing password", "username=test", HttpCode.UNAUTHORIZED),
         Arguments.of(
             "Existing user, wrong password", "username=test&password=wrong", HttpCode.UNAUTHORIZED),
-        Arguments.of("Correct login", "username=test&password=test", HttpCode.OK));
+        Arguments.of("Correct login", AUTH_PARAM, HttpCode.OK));
   }
 
   @Test
@@ -115,5 +117,105 @@ class UserApiControllerTest extends IntegrationTest {
         Arguments.of(
             "sortby=about",
             Arrays.asList(Pair.of(0, TEST2.username()), Pair.of(-1, EMPTY.username()))));
+  }
+
+  @Test
+  void updateUsername() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(
+                  client, "/api/user/update", AUTH_PARAM + "&newusername=changed");
+          assertThat(response.code()).as("Change username").isEqualTo(200);
+          assertThat(TestHelpers.toUser(response).getUsername())
+              .as("updated username in response")
+              .isEqualTo("changed");
+
+          assertThat(TestHelpers.toUser(client.get("/api/user/1")).getUsername())
+              .isEqualTo("changed");
+        });
+  }
+
+  @Test
+  void updateHobbies() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(client, "/api/user/update", AUTH_PARAM + "&hobbies=changed");
+          assertThat(response.code()).as("Change hobbies").isEqualTo(200);
+          assertThat(TestHelpers.toUser(response).getHobbies())
+              .as("updated hobbies in response")
+              .isEqualTo("changed");
+
+          assertThat(TestHelpers.toUser(client.get("/api/user/1")).getHobbies())
+              .isEqualTo("changed");
+        });
+  }
+
+  @Test
+  void updateAbout() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(client, "/api/user/update", AUTH_PARAM + "&about=changed");
+          assertThat(response.code()).as("Change about").isEqualTo(200);
+          assertThat(TestHelpers.toUser(response).getAbout())
+              .as("updated about in response")
+              .isEqualTo("changed");
+
+          assertThat(TestHelpers.toUser(client.get("/api/user/1")).getAbout()).isEqualTo("changed");
+        });
+  }
+
+  @Test
+  void changeMultipleData() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(
+                  client, "/api/user/update", AUTH_PARAM + "&newusername=changed&about=changed2");
+          assertThat(response.code()).as("Change username and about").isEqualTo(200);
+          User user = TestHelpers.toUser(response);
+          assertThat(user.getUsername()).as("updated username in response").isEqualTo("changed");
+          assertThat(user.getAbout()).as("updated about in response").isEqualTo("changed2");
+
+          user = TestHelpers.toUser(client.get("/api/user/1"));
+          assertThat(user.getUsername()).as("updated username in response").isEqualTo("changed");
+          assertThat(user.getAbout()).as("updated about in response").isEqualTo("changed2");
+        });
+  }
+
+  @Test
+  void inputTooLong() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/api/user/update",
+                          AUTH_PARAM + "&newUsername=" + StringUtils.repeat("a", 100))
+                      .code())
+              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/api/user/update",
+                          AUTH_PARAM + "&about=" + StringUtils.repeat("a", 300))
+                      .code())
+              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/api/user/update",
+                          AUTH_PARAM + "&hobbies=" + StringUtils.repeat("a", 300))
+                      .code())
+              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+        });
   }
 }

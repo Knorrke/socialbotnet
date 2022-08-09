@@ -80,8 +80,8 @@ public class UserApiController {
       oldUser = service.getUserbyUsername(params.getString("username"));
 
       newUser.setUsername(
-          params.getString("newUsername") != null
-              ? params.getString("newUsername")
+          params.getString("newusername") != null
+              ? params.getString("newusername")
               : oldUser.getUsername());
       newUser.setHobbies(
           params.getString("hobbies") != null ? params.getString("hobbies") : oldUser.getHobbies());

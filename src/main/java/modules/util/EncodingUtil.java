@@ -3,6 +3,8 @@ package modules.util;
 import io.javalin.http.Context;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,10 @@ public class EncodingUtil {
   private EncodingUtil() {}
 
   public static MultiMap<String> decode(Context ctx) {
-    return new MultiMap<>(ctx.formParamMap());
+    Map<String, List<String>> map = ctx.formParamMap();
+    MultiMap<String> caseInsensitive = new MultiMap<>();
+    map.forEach((k, v) -> caseInsensitive.put(k.toLowerCase(), v));
+    return caseInsensitive;
   }
 
   public static String uriEncode(String s) {
