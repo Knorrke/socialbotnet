@@ -18,17 +18,23 @@ public class InputTooLongException extends Exception {
         fieldDescription, maxLength, currentLength);
   }
 
-  /** @return the fieldDescription */
+  /**
+   * @return the fieldDescription
+   */
   public String getFieldDescription() {
     return fieldDescription;
   }
 
-  /** @return the maxLength */
+  /**
+   * @return the maxLength
+   */
   public int getMaxLength() {
     return maxLength;
   }
 
-  /** @return the currentLength */
+  /**
+   * @return the currentLength
+   */
   public int getCurrentLength() {
     return currentLength;
   }

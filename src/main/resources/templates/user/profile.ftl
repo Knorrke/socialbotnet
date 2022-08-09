@@ -2,7 +2,7 @@
 <#import "../layout/layout.ftl" as layout />
 <#assign pageTitle>
 <div><img class="profile-pic" src="${user.image}" alt="Profilbild von ${user.username}"></div>
-<div>${user.username}s Profil</span>
+<div>${user.username}s Profil</div>
 </#assign>
 
 <@layout.masterTemplate title=user.username+"s Profil" pageTitle=pageTitle colored=false>

@@ -1,7 +1,11 @@
 package modules.post.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import io.javalin.http.BadRequestResponse;
+import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
+import io.javalin.http.UnauthorizedResponse;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +15,9 @@ import modules.post.model.Post;
 import modules.post.service.PostService;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
-import modules.util.Renderer;
-import org.apache.commons.beanutils.BeanUtils;
-import org.eclipse.jetty.util.MultiMap;
+import modules.util.EncodingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 public class PostController {
   static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -39,15 +37,15 @@ public class PostController {
     this.userService = userService;
   }
 
-  public String getPosts(Request req, Response res) {
+  public void getPosts(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    User user = userService.getAuthenticatedUser(req);
+    User user = userService.getAuthenticatedUser(ctx);
     if (user != null) {
       model.put("authenticatedUser", user);
       model.put("postsLikedByUser", postService.getPostsLikedByUser(user));
     }
 
-    String sortBy = req.queryParams("sortby");
+    String sortBy = ctx.queryParam("sortby");
 
     if (acceptedSorts.containsKey(sortBy)) {
 
@@ -66,86 +64,84 @@ public class PostController {
       model.put("recent", posts);
     }
 
-    return Renderer.render(model, "posts/wall.page.ftl");
+    ctx.render("posts/wall.page.ftl", model);
   }
 
-  public String likePost(Request req, Response res) {
-    return handleLikeAndUnlike(true, req, res);
+  public void likePost(Context ctx) {
+    handleLikeAndUnlike(true, ctx);
   }
 
-  public String unlikePost(Request req, Response res) {
-    return handleLikeAndUnlike(false, req, res);
+  public void unlikePost(Context ctx) {
+    handleLikeAndUnlike(false, ctx);
   }
 
-  private String handleLikeAndUnlike(boolean liked, Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+  private void handleLikeAndUnlike(boolean liked, Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
 
-    MultiMap<String> params = DecodeParams.decode(req);
-    Post post = postService.getPostById(Integer.parseInt(params.getString("post")));
+    Post post = postService.getPostById(ctx.formParamAsClass("post", Integer.class).get());
     if (post == null) {
-      Spark.halt(400, "Post existiert nicht");
-      return null;
+      throw new NotFoundResponse("Post existiert nicht");
     }
     if (liked) {
       postService.likePost(post, authenticatedUser);
     } else {
       postService.unlikePost(post, authenticatedUser);
     }
-    if (req.headers("referer") != null) {
-      res.redirect(req.headers("referer") + "#post-" + post.getId());
-    } else {
-      try {
-        res.redirect(
-            String.format(
-                "/pinnwand/%s#post-%s",
-                URLEncoder.encode(post.getUsername(), DecodeParams.ENCODING), post.getId()));
-      } catch (UnsupportedEncodingException e) {
-        logger.error("unsupported encoding UTF-8", e);
+
+    try {
+      String referer = ctx.header("referer");
+      if (referer != null) {
+        String redirectPath = new URI(referer).getPath();
+        if (redirectPath != null && (redirectPath.equals("") || redirectPath.equals("/"))) {
+          ctx.redirect(String.format("/#post-%d", post.getId()));
+          return;
+        }
       }
+    } catch (URISyntaxException e) {
+      logger.warn("Invalid referer uri", e);
     }
-    return null;
+
+    ctx.redirect(
+        String.format(
+            "/pinnwand/%s#post-%d",
+            EncodingUtil.uriEncode(post.getWall().getUsername()), post.getId()));
   }
 
-  public String createPost(Request req, Response res) {
-    User authenticatedUser = userService.getAuthenticatedUser(req);
+  public void createPost(Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
     if (authenticatedUser == null) {
-      Spark.halt(401, "Du bist nicht angemeldet!");
-      return null;
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
 
     Post post = new Post();
     post.setUser(authenticatedUser);
     post.setPublishingDate(new Timestamp(System.currentTimeMillis()));
-    try { // populate post attributes by params
-      BeanUtils.populate(post, DecodeParams.decode(req));
-      String username = req.params("username");
-      if (username != null) {
-        post.setWall(userService.getUserbyUsername(username));
-        res.redirect("/pinnwand/" + URLEncoder.encode(username, DecodeParams.ENCODING));
-      } else {
-        post.setWall(authenticatedUser);
-        res.redirect(
-            "/pinnwand/"
-                + URLEncoder.encode(authenticatedUser.getUsername(), DecodeParams.ENCODING));
+    post.setMessage(ctx.formParam("message"));
+    String username =
+        ctx.pathParamMap().containsKey("username")
+            ? ctx.pathParam("username")
+            : authenticatedUser.getUsername();
+    User wall = userService.getUserbyUsername(username);
+    if (wall == null) {
+      throw new NotFoundResponse("User existiert nicht");
+    } else {
+      post.setWall(wall);
+      ctx.redirect("/pinnwand/" + EncodingUtil.uriEncode(username));
+
+      try {
+        postService.addPost(post);
+      } catch (InputTooLongException e) {
+        throw new BadRequestResponse(e.getMessage());
       }
-    } catch (Exception e) {
-      Spark.halt(500);
-      return null;
     }
-
-    try {
-      postService.addPost(post);
-    } catch (InputTooLongException e) {
-
-    }
-    return null;
   }
 
-  /** @return the acceptedsorts */
+  /**
+   * @return the acceptedsorts
+   */
   public static Map<String, String> getAcceptedSorts() {
     return acceptedSorts;
   }

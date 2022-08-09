@@ -12,8 +12,8 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.version>3.10.1</maven.compiler.version>
-		<spark.version>2.9.4</spark.version>
-		<spark.freemarker.version>2.7.1</spark.freemarker.version>
+		<javalin.version>4.6.4</javalin.version>
+		<assertj.version>3.23.1</assertj.version>
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.30</freemarker.version>
@@ -23,9 +23,8 @@
 		<embedded-postgres.version>1.3.1</embedded-postgres.version>
 		<dbcp.version>2.9.0</dbcp.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
-		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 		<sl4j.version>1.7.36</sl4j.version>
-		<git-code-format-maven-plugin.version>3.3</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>3.4</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,18 +33,43 @@
 			<version>1.3.2</version>
 		</dependency>
 
-		<!-- Spark Java -->
+		<!-- Javalin -->
 		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>${spark.version}</version>
+			<groupId>io.javalin</groupId>
+			<artifactId>javalin</artifactId>
+			<version>${javalin.version}</version>
 		</dependency>
 
-		<!-- Spark Freemarker -->
+		<!-- Test ressources -->
 		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-template-freemarker</artifactId>
-			<version>${spark.freemarker.version}</version>
+			<groupId>io.javalin</groupId>
+			<artifactId>javalin-testtools</artifactId>
+			<version>${javalin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp-urlconnection</artifactId>
+			<version>4.10.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.9.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.9.0</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Freemarker -->
@@ -117,13 +141,6 @@
 			<version>${jbcrypt.version}</version>
 		</dependency>
 
-		<!-- Populate bean from request -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>${commons.beanutils.version}</version>
-		</dependency>
-
 		<!-- For Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -149,6 +166,44 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.8</version>
+						<configuration>
+							<excludes>
+								<exclude>**/*.zip</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>prepare-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<formats>
+										<format>XML</format>
+									</formats>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -175,7 +230,7 @@
 										</artifactId>
 										<versionRange>
 											[${git-code-format-maven-plugin.version},)
-										</versionRange>
+											</versionRange>
 										<goals>
 											<goal>install-hooks</goal>
 										</goals>

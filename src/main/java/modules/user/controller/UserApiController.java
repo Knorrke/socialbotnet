@@ -1,16 +1,13 @@
 package modules.user.controller;
 
-import java.util.List;
+import io.javalin.http.BadRequestResponse;
+import io.javalin.http.Context;
 import modules.error.InputTooLongException;
 import modules.error.ResponseError;
 import modules.user.model.User;
 import modules.user.service.UserService;
-import modules.util.DecodeParams;
-import org.apache.commons.beanutils.BeanUtils;
+import modules.util.EncodingUtil;
 import org.eclipse.jetty.util.MultiMap;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 public class UserApiController {
 
@@ -20,16 +17,12 @@ public class UserApiController {
     this.service = service;
   }
 
-  public User login(Request req, Response res) {
+  public User login(Context ctx) {
     User user = new User();
-    try {
-      MultiMap<String> params = DecodeParams.decode(req);
-      List<String> password = params.getOrDefault("password", params.getValues("passwort"));
-      params.put("password", password);
-      BeanUtils.populate(user, params);
-    } catch (Exception e) {
-      Spark.halt(500, "Interner Fehler aufgetreten. Bitte melde das Problem!");
-    }
+    MultiMap<String> params = EncodingUtil.decode(ctx);
+    params.computeIfAbsent("password", p -> params.getValues("passwort"));
+    user.setUsername(params.getString("username"));
+    user.setPassword(params.getString("password"));
     return service.checkUser(user);
   }
 
@@ -54,11 +47,17 @@ public class UserApiController {
    * ]
    * @apiComment </pre>
    */
-  public List<User> getUsers(Request req, Response res) {
-    int limit = Integer.parseInt(req.queryParamOrDefault("limit", "100"));
-    String sortby = req.queryParamOrDefault("sortby", "id");
-    boolean asc = req.queryParamOrDefault("order", "desc").equals("asc");
-    return service.getAllUsersSorted(sortby.toLowerCase(), asc, limit);
+  public void getUsers(Context ctx) {
+    int limit = ctx.queryParamAsClass("limit", Integer.class).getOrDefault(100);
+    String sortby = ctx.queryParamAsClass("sortby", String.class).getOrDefault("id");
+    String order = ctx.queryParamAsClass("order", String.class).getOrDefault("desc");
+    boolean asc = order.equalsIgnoreCase("asc");
+
+    ctx.json(service.getAllUsersSorted(sortby.toLowerCase(), asc, limit));
+  }
+
+  public void getUserById(Context ctx) {
+    ctx.json(service.getUserById(ctx.pathParamAsClass("userid", Integer.class).get()));
   }
 
   /**
@@ -72,17 +71,17 @@ public class UserApiController {
    * @apiBody (Änderungen) {String} [about] Optional. Ändert die Profilinformation "Über mich"
    * @apiSampleRequest /api/user/update
    */
-  public Object updateProfile(Request req, Response res) {
+  public void updateProfile(Context ctx) {
     User newUser = new User();
     User oldUser = new User();
     try {
-      MultiMap<String> params = DecodeParams.decode(req);
+      MultiMap<String> params = EncodingUtil.decode(ctx);
 
       oldUser = service.getUserbyUsername(params.getString("username"));
 
       newUser.setUsername(
-          params.getString("newUsername") != null
-              ? params.getString("newUsername")
+          params.getString("newusername") != null
+              ? params.getString("newusername")
               : oldUser.getUsername());
       newUser.setHobbies(
           params.getString("hobbies") != null ? params.getString("hobbies") : oldUser.getHobbies());
@@ -91,15 +90,14 @@ public class UserApiController {
       newUser.setId(oldUser.getId());
 
     } catch (Exception e) {
-      res.status(500);
-      return new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!");
+      ctx.status(500)
+          .json(new ResponseError("Interner Fehler aufgetreten. Bitte melde das Problem!"));
     }
     try {
       service.updateUser(oldUser, newUser);
     } catch (InputTooLongException e) {
-      res.status(400);
-      return new ResponseError(e);
+      throw new BadRequestResponse(e.getMessage());
     }
-    return oldUser;
+    ctx.json(oldUser);
   }
 }

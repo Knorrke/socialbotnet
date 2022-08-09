@@ -7,7 +7,9 @@ public interface UserDaoInterface {
 
   User getUserbyUsername(String username);
 
-  User getUserbyUsernameWithoutPassword(String username);
+  User getUserByIdWithoutPassword(int id);
+
+  User getUserByUsernameWithoutPassword(String username);
 
   void registerUser(User user);
 
