@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import base.IntegrationTest;
 import io.javalin.http.HttpCode;
 import io.javalin.testtools.JavalinTest;
+import modules.helpers.TestHelpers;
+import modules.user.model.User;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 class UserControllerTest extends IntegrationTest {
@@ -101,6 +104,87 @@ class UserControllerTest extends IntegrationTest {
                       .string())
               .as("User password not overridden")
               .contains(FAILED_LOGIN);
+        });
+  }
+
+  @Test
+  void unauthorizedProfileUpdate() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(
+                  client, "/user/update", "username=changed&about=changed2&hobbies=changed3");
+          assertThat(response.code())
+              .as("Unauthorized request")
+              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+        });
+  }
+
+  @Test
+  void updateProfile() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          assertThat(useLogin(client, "test").code()).isEqualTo(200);
+          Response response =
+              postWithUrlEncodedBody(
+                  client, "/user/update", "username=changed&about=changed2&hobbies=changed3");
+          assertThat(response.code()).as("Change username").isEqualTo(200);
+          assertThat(response.body().string())
+              .as("Updated username")
+              .contains("changed")
+              .as("Updated about")
+              .contains("changed2")
+              .as("Updated hobbies")
+              .contains("changed3");
+
+          User user = TestHelpers.toUser(client.get("/api/user/1"));
+          assertThat(user.getUsername()).isEqualTo("changed");
+          assertThat(user.getAbout()).isEqualTo("changed2");
+          assertThat(user.getHobbies()).isEqualTo("changed3");
+        });
+  }
+
+  @Test
+  void inputTooLong() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          assertThat(useLogin(client, "test").code()).isEqualTo(200);
+
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/user/update",
+                          "about=x&hobbies=x&username=" + StringUtils.repeat("a", 100))
+                      .body()
+                      .string())
+              .as("username too long")
+              .contains("Benutzername zu lang");
+
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/user/update",
+                          "username=x&hobbies=x&about=" + StringUtils.repeat("a", 300))
+                      .body()
+                      .string())
+              .as("about too long")
+              .contains("Ueber mich zu lang");
+          assertThat(
+                  postWithUrlEncodedBody(
+                          client,
+                          "/user/update",
+                          "username=x&about=x&hobbies=" + StringUtils.repeat("a", 300))
+                      .body()
+                      .string())
+              .as("hobbies too long")
+              .contains("Hobbies zu lang");
+          User user = TestHelpers.toUser(client.get("/api/user/1"));
+          assertThat(user.getUsername()).isEqualTo("test");
+          assertThat(user.getAbout()).isEqualTo("test about");
+          assertThat(user.getHobbies()).isEqualTo("test hobbies");
         });
   }
 }
