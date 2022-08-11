@@ -2,7 +2,7 @@
 	"name": "SocialBotNet",
 	"description": "A botfriendly social network for educational purposes.",
 	"repository": "https://github.com/Knorrke/socialbotnet",
-	"logo": "https://www.socialbotnet.de/assets/images/favicon-32x32.png",
+	"logo": "https://www.socialbotnet.de/assets/v4.1/images/favicon-32x32.png",
 	"addons": [
 		{
 			"plan": "heroku-postgresql:hobby-dev"

@@ -1,10 +1,13 @@
 package config;
 
 import io.javalin.Javalin;
+import io.javalin.core.util.Header;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.rendering.template.JavalinFreemarker;
+import java.util.Map;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
+import modules.util.EncodingUtil;
 import modules.util.JSONUtil;
 
 public class WebConfig {
@@ -14,7 +17,17 @@ public class WebConfig {
     app =
         Javalin.create(
             config -> {
-              config.addStaticFiles("/public", Location.CLASSPATH);
+              config.addStaticFiles(
+                  staticFiles -> {
+                    staticFiles.directory = "/public";
+                    staticFiles.location = Location.CLASSPATH;
+                    staticFiles.headers =
+                        Map.of(
+                            Header.CACHE_CONTROL,
+                            "max-age=31622400",
+                            Header.CONTENT_ENCODING,
+                            EncodingUtil.ENCODING);
+                  });
               config.jsonMapper(JSONUtil.create());
             });
 
