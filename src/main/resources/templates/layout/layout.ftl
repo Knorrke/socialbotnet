@@ -25,7 +25,7 @@
 	            	<div id="gi-header">
 		            	<a class="prevent-external" href="https://fg-bil.gi.de/">
 		            		<div id="gi-fg-bil">
-		            			<img alt="Logo der Gesellschaft für Informatik" id="gi-image" src="/assets/v4.1/images/GI_Logo_links.png">
+		            			<img width="150" height="50" alt="Logo der Gesellschaft für Informatik" id="gi-image" src="/assets/v4.1/images/GI_Logo_links.png">
 		            			<span id="gi-fg-bil-title">
 		            				Fachgruppe<br>BIL
 	            				</span>
