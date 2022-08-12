@@ -1,4 +1,5 @@
 <#import "../layout/layout.ftl" as layout />
+<#import "../common/fa-icons.ftl" as fa/>
 
 <@layout.masterTemplate pageTitle="Profil aktualisieren">
     <#if success??>
@@ -31,6 +32,6 @@
 			     <textarea name="about" cols="30" rows="4">${authenticatedUser.about!}</textarea>
 		     </span>
 	   </dl>
-	   <div class="actions"><button class="button colored" type="submit"><i class="far fa-save"></i> Aktualisieren</button></div>
+	   <div class="actions"><button class="button colored" type="submit"><@fa.icon fa="save" /> Aktualisieren</button></div>
 	 </form>
 </@layout.masterTemplate>

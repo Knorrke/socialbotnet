@@ -1,4 +1,5 @@
 <#import "../layout/layout.ftl" as layout />
+<#import "../common/fa-icons.ftl" as fa/>
 
 <@layout.masterTemplate pageTitle="Anmelden">
     <#if success??>
@@ -24,6 +25,6 @@
 			 	<input type="password" name="password" size="30">
 			 </span>
 	   </dl>
-	   <div class="actions"><button class="button colored" type="submit"><i class="far fa-user"></i> Anmelden</button></div>
+	   <div class="actions"><button class="button colored" type="submit"><@fa.icon fa="user" /> Anmelden</button></div>
 	 </form>
 </@layout.masterTemplate>
