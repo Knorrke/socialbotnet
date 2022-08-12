@@ -1,4 +1,5 @@
 <#ftl output_format="XML">
+<#import "../common/fa-icons.ftl" as fa/>
 <#macro show post>
     <div id="post-${post.id?c}" class="media colored">
         <div class="media-body">
@@ -25,8 +26,8 @@
 						<form method="POST" action="/unlike" class="likes-count">
 							<input type="hidden" name="post" value="${post.id?c}">
 							<button class="button action-button colored" type="submit" title="Gefällt mir nicht mehr">
-								<i class="icon-current fas fa-heart"></i>
-								<i class="icon-action fas fa-heart-broken"></i>
+								<@fa.icon fa="heart" class="icon-current" />
+								<@fa.icon fa="heart-broken" class="icon-action" />
 								<span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span>
 							</button>
 						</form>
@@ -34,14 +35,14 @@
 						<form method="POST" action="/like" class="likes-count">
 							<input type="hidden" name="post" value="${post.id?c}">
 							<button class="button action-button colored" type="submit" title="Gefällt mir">
-								<i class="icon-current far fa-heart"></i>
-								<i class="icon-action fas fa-heart"></i>
+								<@fa.icon class="icon-current" solid=false fa="heart" />
+								<@fa.icon class="icon-action" fa="heart" />
 								<span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span>
 							</button>
 						</form>
 					</#if>
 				<#else>
-					<span class="likes-count"><i class="far fa-heart"></i><span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span></span>
+					<span class="likes-count"><@fa.icon solid=false fa="heart" /><span>${post.likesCount}${(post.likesCount >= 1000)?then("+","")}</span></span>
 				</#if>
 				<span class="likes">
 					<#if post.likesCount gt likesShown><span class="overlapping"><span class="profile-pic small" data-tooltip="${post.likesCount - likesShown}${(post.likesCount >= 1000)?then("+","")} weitere">...</span></span></#if>

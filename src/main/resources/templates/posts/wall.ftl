@@ -1,23 +1,24 @@
 <#ftl output_format="XML">
 <#import "./post.ftl" as postLayout />
 <#import "../common/text-input.ftl" as textInput/>
+<#import "../common/fa-icons.ftl" as fa/>
 
 <#assign filters>
 	<div id="filters">
 		<#if (sortby!"")=="trending">
-			<span class="button colored selected"><i class="fas fa-fire"></i> Trending</span>
+			<span class="button colored selected"><@fa.icon fa="fire" /> Trending</span>
 		<#else>
-			<a class="button colored" href="?sortby=trending"><i class="fas fa-fire"></i> Trending</a>
+			<a class="button colored" href="?sortby=trending"><@fa.icon fa="fire" /> Trending</a>
 		</#if>
 		<#if (sortby!"")!="trending" && (sortby!"")!="likes">
-			<span class="button colored selected"><i class="fas fa-history"></i> Neueste</span>
+			<span class="button colored selected"><@fa.icon fa="history" /> Neueste</span>
 		<#else>
-			<a class="button colored" href="?sortby=time"><i class="fas fa-history"></i> Neueste</a>
+			<a class="button colored" href="?sortby=time"><@fa.icon fa="history" /> Neueste</a>
 		</#if>
 		<#if (sortby!"")=="likes">
-			<span class="button colored selected"><i class="fas fa-crown"></i> Meiste Likes</span>
+			<span class="button colored selected"><@fa.icon fa="crown" /> Meiste Likes</span>
 		<#else>
-			<a class="button colored" href="?sortby=likes"><i class="fas fa-crown"></i> Meiste Likes</a>
+			<a class="button colored" href="?sortby=likes"><@fa.icon fa="crown" /> Meiste Likes</a>
 		</#if>
 	</div>
 </#assign>
@@ -56,7 +57,7 @@
 		${filters}
 	</#if>
 	<#if trending??>
-		<h2><i class="fas fa-fire"></i> Top 3 Trends</h2>
+		<h2><@fa.icon fa="fire" /> Top 3 Trends</h2>
 		<#list trending as post>
 			<@postLayout.show post=post />
 		<#else>
@@ -71,7 +72,7 @@
 		${filters}
 	</#if>
 	<#if mostliked??>
-		<h2><i class="fas fa-crown"></i> Meiste Likes</h2>
+		<h2><@fa.icon fa="crown" /> Meiste Likes</h2>
 		<#list mostliked as post>
 			<@postLayout.show post=post/>
 		<#else>
@@ -82,7 +83,7 @@
 		</#list>
 	</#if>
     <#if recent??>
-    	<h2><i class="fas fa-history"></i> Neueste Posts</h2>
+    	<h2><@fa.icon fa="history" /> Neueste Posts</h2>
         <#list recent as post>
         	<@postLayout.show post=post/>
         <#else>
