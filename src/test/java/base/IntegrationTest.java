@@ -5,8 +5,9 @@ import config.Router;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
 import io.javalin.http.staticfiles.Location;
-import io.javalin.plugin.rendering.template.JavalinFreemarker;
+import io.javalin.rendering.template.JavalinFreemarker;
 import io.javalin.testtools.HttpClient;
+import io.javalin.testtools.TestConfig;
 import io.zonky.test.db.postgres.embedded.FlywayPreparer;
 import io.zonky.test.db.postgres.junit5.EmbeddedPostgresExtension;
 import io.zonky.test.db.postgres.junit5.PreparedDbExtension;
@@ -61,11 +62,11 @@ public abstract class IntegrationTest {
       app =
           Javalin.create(
               config -> {
-                config.addStaticFiles("/public", Location.CLASSPATH);
+                config.staticFiles.add("/public", Location.CLASSPATH);
                 config.jsonMapper(JSONUtil.create());
               });
 
-      JavalinFreemarker.configure(FreeMarkerEngineConfig.getConfig());
+      JavalinFreemarker.init(FreeMarkerEngineConfig.getConfig());
       new Router(app, ctx.getBean(PostService.class), ctx.getBean(UserService.class)).setupRoutes();
       ctx.registerShutdownHook();
     } catch (BeansException e) {
@@ -84,24 +85,20 @@ public abstract class IntegrationTest {
     flyway.migrate();
   }
 
-  protected Response useLogin(HttpClient client, String username) {
+  protected Response login(HttpClient client, String username) {
     return postWithUrlEncodedBody(
-        usePersistantCookies(client),
-        "/login",
-        String.format("username=%s&password=test", username));
+        client, "/login", String.format("username=%s&password=test", username));
   }
 
   protected Response postWithUrlEncodedBody(HttpClient client, String path, String body) {
     return postWithUrlEncodedBody(client, path, body, null);
   }
 
-  protected HttpClient usePersistantCookies(HttpClient client) {
+  protected TestConfig withCookies() {
     CookieManager cookieManager = new CookieManager();
     cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
     CookieJar cookiejar = new JavaNetCookieJar(cookieManager);
-    OkHttpClient okHttpClient = client.getOkHttp().newBuilder().cookieJar(cookiejar).build();
-    client.setOkHttp(okHttpClient);
-    return client;
+    return new TestConfig(false, false, new OkHttpClient.Builder().cookieJar(cookiejar).build());
   }
 
   protected Response postWithUrlEncodedBody(

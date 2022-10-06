@@ -1,6 +1,7 @@
 package modules.user.controller;
 
 import io.javalin.http.Context;
+import io.javalin.http.HandlerType;
 import io.javalin.http.InternalServerErrorResponse;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.http.UnauthorizedResponse;
@@ -31,7 +32,7 @@ public class UserController {
 
   public void login(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    if (ctx.method().equals("POST")) {
+    if (ctx.method() == HandlerType.POST) {
       User user = new User();
 
       MultiMap<String> params = EncodingUtil.decode(ctx);
@@ -60,7 +61,7 @@ public class UserController {
 
   public void register(Context ctx) {
     Map<String, Object> model = new HashMap<>();
-    if (ctx.method().equals("POST")) {
+    if (ctx.method() == HandlerType.POST) {
       User user = new User();
       try { // populate user attributes by registration params
         MultiMap<String> params = EncodingUtil.decode(ctx);
@@ -121,7 +122,7 @@ public class UserController {
       throw new UnauthorizedResponse("Du bist nicht angemeldet!");
     }
     Map<String, Object> model = new HashMap<>();
-    if (ctx.method().equals("POST")) {
+    if (ctx.method() == HandlerType.POST) {
       User user = new User();
       MultiMap<String> params = EncodingUtil.decode(ctx);
       user.setUsername(params.getString("username"));

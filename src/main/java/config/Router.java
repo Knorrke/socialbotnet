@@ -8,8 +8,9 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HandlerType;
 import io.javalin.http.HttpResponseException;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.UnauthorizedResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,13 +104,13 @@ public class Router {
                 before(
                     "/*",
                     ctx -> {
-                      if (ctx.method().equals("POST")) {
+                      if (ctx.method() == HandlerType.POST) {
                         MultiMap<String> params = EncodingUtil.decode(ctx);
                         String username = params.getString("username");
                         String password = params.getString("password");
 
                         if (password == null || username == null) {
-                          ctx.status(HttpCode.UNAUTHORIZED);
+                          ctx.status(HttpStatus.UNAUTHORIZED);
                           throw new UnauthorizedResponse(
                               "Du bist nicht authentifiziert! Bitte schicke deinen Nutzernamen (username) und dein Passwort (password) mit.");
                         }
@@ -117,7 +118,7 @@ public class Router {
                         User authenticated = userApiController.login(ctx);
 
                         if (authenticated == null) {
-                          ctx.status(HttpCode.UNAUTHORIZED);
+                          ctx.status(HttpStatus.UNAUTHORIZED);
                           throw new UnauthorizedResponse(
                               "Login fehlgeschlagen. Falscher Nutzername oder falsches Passwort.");
                         }
@@ -148,8 +149,9 @@ public class Router {
                 } else {
                   Map<String, Object> model = new HashMap<>();
                   model.put("error", e);
-                  for (HttpCode code : HttpCode.values()) {
-                    if (code.getStatus() == e.getStatus())
+                  // wait for https://github.com/javalin/javalin/pull/1695/files
+                  for (HttpStatus code : HttpStatus.values()) {
+                    if (code.getCode() == e.getStatus())
                       model.put("defaultMessage", code.getMessage());
                   }
                   ctx.status(e.getStatus()).render("error/error.ftl", model);
@@ -159,7 +161,7 @@ public class Router {
   }
 
   private boolean checkCorrectRequestType(Context ctx) throws HttpResponseException {
-    String requestMethod = ctx.method();
+    HandlerType requestMethod = ctx.method();
     String path = ctx.path();
 
     String[] routesGETRegex = {
@@ -173,10 +175,10 @@ public class Router {
       "^/api/post$", "^/api/post/.*[^0-9].*$", "^/api/like$", "^/api/unlike$", "^/api/user/update$",
     };
 
-    if (!requestMethod.equals("POST")) {
+    if (requestMethod != HandlerType.POST) {
       for (String routePOST : routesPOSTRegex) {
         if (path.matches(routePOST)) {
-          ctx.status(HttpCode.BAD_REQUEST);
+          ctx.status(HttpStatus.BAD_REQUEST);
           throw new BadRequestResponse(
               String.format(
                   "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",
@@ -185,10 +187,10 @@ public class Router {
       }
     }
 
-    if (!requestMethod.equals("GET")) {
+    if (requestMethod != HandlerType.GET) {
       for (String routeGET : routesGETRegex) {
         if (path.matches(routeGET)) {
-          ctx.status(HttpCode.BAD_REQUEST);
+          ctx.status(HttpStatus.BAD_REQUEST);
           throw new BadRequestResponse(
               String.format(
                   "Falscher Anfragemodus. Erwartet wurde %s, erhalten wurde %s",

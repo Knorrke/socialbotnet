@@ -1,9 +1,9 @@
 package config;
 
 import io.javalin.Javalin;
-import io.javalin.core.util.Header;
+import io.javalin.http.Header;
 import io.javalin.http.staticfiles.Location;
-import io.javalin.plugin.rendering.template.JavalinFreemarker;
+import io.javalin.rendering.template.JavalinFreemarker;
 import java.util.Map;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
@@ -17,7 +17,7 @@ public class WebConfig {
     app =
         Javalin.create(
             config -> {
-              config.addStaticFiles(
+              config.staticFiles.add(
                   staticFiles -> {
                     staticFiles.directory = "/public";
                     staticFiles.location = Location.CLASSPATH;
@@ -31,7 +31,7 @@ public class WebConfig {
               config.jsonMapper(JSONUtil.create());
             });
 
-    JavalinFreemarker.configure(FreeMarkerEngineConfig.getConfig());
+    JavalinFreemarker.init(FreeMarkerEngineConfig.getConfig());
 
     app.start(getAssignedPort());
     new Router(app, postService, userService).setupRoutes();

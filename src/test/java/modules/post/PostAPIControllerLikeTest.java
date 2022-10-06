@@ -3,7 +3,7 @@ package modules.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
@@ -23,7 +23,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/api/like", "postid=3");
           assertThat(response.code())
               .as("Unauthorized request")
-              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
           Post post = TestHelpers.toPost(client.get("/api/post/3"));
           assertThat(post.getLikesCount()).isZero();
         });
@@ -37,7 +37,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS);
           assertThat(response.code())
               .as("Missing postid parameter")
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
           assertThat(TestHelpers.toError(response).getError()).contains("Parameter postid fehlt");
           Post post = TestHelpers.toPost(client.get("/api/post/3"));
           assertThat(post.getLikesCount()).isZero();
@@ -93,7 +93,7 @@ class PostAPIControllerLikeTest extends IntegrationTest {
               postWithUrlEncodedBody(client, "/api/like", AUTH_PARAMS + "&postid=999");
           assertThat(response.code())
               .as("nonexistent post")
-              .isEqualTo(HttpCode.NOT_FOUND.getStatus());
+              .isEqualTo(HttpStatus.NOT_FOUND.getCode());
         });
   }
 

@@ -7,7 +7,7 @@ import static modules.user.UserFixtures.TEST2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.JavalinTest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,27 +30,29 @@ class UserApiControllerTest extends IntegrationTest {
 
   @ParameterizedTest(name = "#{index}- Test api authentication with {arguments}")
   @MethodSource("provideLoginParameters")
-  void authentication(String description, String param, HttpCode expected) {
+  void authentication(String description, String param, HttpStatus expected) {
     JavalinTest.test(
         app,
         (server, client) -> {
           assertThat(postWithUrlEncodedBody(client, "/api/user/update", param).code())
               .as(description)
-              .isEqualTo(expected.getStatus());
+              .isEqualTo(expected.getCode());
         });
   }
 
   private static Stream<Arguments> provideLoginParameters() {
     return Stream.of(
-        Arguments.of("No Params", "", HttpCode.UNAUTHORIZED),
+        Arguments.of("No Params", "", HttpStatus.UNAUTHORIZED),
         Arguments.of(
-            "Nonexistent user, missing password", "username=nonexistent", HttpCode.UNAUTHORIZED),
+            "Nonexistent user, missing password", "username=nonexistent", HttpStatus.UNAUTHORIZED),
         Arguments.of(
-            "Nonexistent user", "username=nonexistent&password=test", HttpCode.UNAUTHORIZED),
-        Arguments.of("Existing user, missing password", "username=test", HttpCode.UNAUTHORIZED),
+            "Nonexistent user", "username=nonexistent&password=test", HttpStatus.UNAUTHORIZED),
+        Arguments.of("Existing user, missing password", "username=test", HttpStatus.UNAUTHORIZED),
         Arguments.of(
-            "Existing user, wrong password", "username=test&password=wrong", HttpCode.UNAUTHORIZED),
-        Arguments.of("Correct login", AUTH_PARAM, HttpCode.OK));
+            "Existing user, wrong password",
+            "username=test&password=wrong",
+            HttpStatus.UNAUTHORIZED),
+        Arguments.of("Correct login", AUTH_PARAM, HttpStatus.OK));
   }
 
   @Test
@@ -200,7 +202,7 @@ class UserApiControllerTest extends IntegrationTest {
                           "/api/user/update",
                           AUTH_PARAM + "&newUsername=" + StringUtils.repeat("a", 100))
                       .code())
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
 
           assertThat(
                   postWithUrlEncodedBody(
@@ -208,14 +210,14 @@ class UserApiControllerTest extends IntegrationTest {
                           "/api/user/update",
                           AUTH_PARAM + "&about=" + StringUtils.repeat("a", 300))
                       .code())
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
           assertThat(
                   postWithUrlEncodedBody(
                           client,
                           "/api/user/update",
                           AUTH_PARAM + "&hobbies=" + StringUtils.repeat("a", 300))
                       .code())
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
         });
   }
 }

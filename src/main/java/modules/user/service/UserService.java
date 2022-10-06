@@ -52,7 +52,7 @@ public class UserService {
   }
 
   public void removeAuthenticatedUser(Context ctx) {
-    ctx.req.getSession().removeAttribute(USER_SESSION_ID);
+    ctx.req().getSession().removeAttribute(USER_SESSION_ID);
   }
 
   public User getAuthenticatedUser(Context ctx) {
