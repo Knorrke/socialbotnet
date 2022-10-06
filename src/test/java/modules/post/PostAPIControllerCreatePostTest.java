@@ -3,7 +3,7 @@ package modules.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
@@ -31,7 +31,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/api/post", MESSAGE_PARAM);
           assertThat(response.code())
               .as("Unauthorized request")
-              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
@@ -46,7 +46,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/api/post", AUTH_PARAMS);
           assertThat(response.code())
               .as("Missing message")
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
           assertThat(TestHelpers.toError(response).getError()).contains("Parameter message fehlt");
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
@@ -90,7 +90,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
                   String.format("%s&message=%s", AUTH_PARAMS, StringUtils.repeat("a", 300)));
           assertThat(response.code())
               .as("Message too long")
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
           assertThat(TestHelpers.toError(response).getError())
               .as("returns jsonified error response")
               .contains("zu lang");
@@ -108,7 +108,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/api/post/nonexistentUser", BODY);
           assertThat(response.code())
               .as("Wall does not exist")
-              .isEqualTo(HttpCode.NOT_FOUND.getStatus());
+              .isEqualTo(HttpStatus.NOT_FOUND.getCode());
           assertThat(TestHelpers.toError(response).getError())
               .as("returns jsonified error response")
               .contains("User nonexistentUser");

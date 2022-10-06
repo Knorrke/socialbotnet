@@ -3,7 +3,7 @@ package modules.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
@@ -28,7 +28,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/post", MESSAGE_PARAM);
           assertThat(response.code())
               .as("Unauthorized request")
-              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
@@ -38,9 +38,10 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void createPost() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
 
           Response response = postWithUrlEncodedBody(client, "/post", MESSAGE_PARAM);
           assertThat(response.code()).as("Authorized request for creating post").isEqualTo(200);
@@ -64,15 +65,16 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void messageTooLong() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
           Response response =
               postWithUrlEncodedBody(
                   client, "/post", String.format("message=%s", StringUtils.repeat("a", 300)));
           assertThat(response.code())
               .as("Message too long")
-              .isEqualTo(HttpCode.BAD_REQUEST.getStatus());
+              .isEqualTo(HttpStatus.BAD_REQUEST.getCode());
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
@@ -82,14 +84,15 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void writeToNonexistentWall() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
           Response response =
               postWithUrlEncodedBody(client, "/post/nonexistentwall", MESSAGE_PARAM);
           assertThat(response.code())
               .as("Wall does not exist")
-              .isEqualTo(HttpCode.NOT_FOUND.getStatus());
+              .isEqualTo(HttpStatus.NOT_FOUND.getCode());
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts stays the same").hasSize(previousCount);
         });
@@ -99,9 +102,10 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void writeToWall() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
 
           Response response = postWithUrlEncodedBody(client, "/post/test2", MESSAGE_PARAM);
           assertThat(response.code()).as("Writing to wall of test2").isEqualTo(200);

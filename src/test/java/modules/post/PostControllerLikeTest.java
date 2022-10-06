@@ -3,7 +3,7 @@ package modules.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import java.io.IOException;
@@ -25,7 +25,7 @@ class PostControllerLikeTest extends IntegrationTest {
           Response response = postWithUrlEncodedBody(client, "/like", "post=3");
           assertThat(response.code())
               .as("Unauthorized request")
-              .isEqualTo(HttpCode.UNAUTHORIZED.getStatus());
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
           Post post = requestPostById(client, 3);
           assertThat(post.getLikesCount()).isZero();
         });
@@ -35,11 +35,12 @@ class PostControllerLikeTest extends IntegrationTest {
   void likePost() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           Post post = requestPostById(client, 3);
 
           assertThat(post.getLikesCount()).as("number of likes before").isZero();
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
 
           Response response = postWithUrlEncodedBody(client, "/like", "post=3");
           assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(200);
@@ -53,12 +54,13 @@ class PostControllerLikeTest extends IntegrationTest {
   void likeNonexistentPost() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
           Response response = postWithUrlEncodedBody(client, "/like", "post=999");
           assertThat(response.code())
               .as("nonexistent post")
-              .isEqualTo(HttpCode.NOT_FOUND.getStatus());
+              .isEqualTo(HttpStatus.NOT_FOUND.getCode());
         });
   }
 
@@ -67,8 +69,9 @@ class PostControllerLikeTest extends IntegrationTest {
   void redirectBackToKnownRefererOnLike(String referer, String expectedPath) {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
           Response response =
               postWithUrlEncodedBody(
                   client,
@@ -99,11 +102,12 @@ class PostControllerLikeTest extends IntegrationTest {
   void unlikePost() {
     JavalinTest.test(
         app,
+        withCookies(),
         (server, client) -> {
           Post post = requestPostById(client, 1);
           assertThat(post.getLikesCount()).as("number of likes before").isEqualTo(2);
           assertThat(post.getRecentLikes()).anyMatch(user -> user.getUsername().equals("test"));
-          assertThat(useLogin(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
 
           Response response = postWithUrlEncodedBody(client, "/unlike", "post=1");
           assertThat(response.code())
