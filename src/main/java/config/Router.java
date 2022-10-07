@@ -149,11 +149,8 @@ public class Router {
                 } else {
                   Map<String, Object> model = new HashMap<>();
                   model.put("error", e);
-                  // wait for https://github.com/javalin/javalin/pull/1695/files
-                  for (HttpStatus code : HttpStatus.values()) {
-                    if (code.getCode() == e.getStatus())
-                      model.put("defaultMessage", code.getMessage());
-                  }
+                  model.put(
+                      "defaultMessage", HttpStatus.Companion.forStatus(e.getStatus()).getMessage());
                   ctx.status(e.getStatus()).render("error/error.ftl", model);
                 }
               });
