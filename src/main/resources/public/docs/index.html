@@ -359,7 +359,7 @@
         <fieldset>
           <div class="form-group">
             <label class="col-md-3 control-label" for="{{../id}}-sample-request-url">URL</label>
-            <div class="input-group">
+            <div class="input-group col-md-6">
               <span class="input-group-addon">{{__ "url"}}</span>
               <input id="{{../id}}-sample-request-url" type="url" class="form-control sample-request-url" value="{{article.sampleRequest.0.url}}" />
             </div>
@@ -373,7 +373,7 @@
               {{#each this}}
               <div class="form-group">
                 <label class="col-md-3 control-label" for="sample-request-header-field-{{field}}">{{field}}</label>
-                <div class="input-group">
+                <div class="input-group col-md-6">
                   <span class="input-group-addon">{{{type}}}</span>
                   <input type="text" id="sample-request-header-field-{{field}}"
                     class="form-control sample-request-input"
@@ -394,7 +394,7 @@
         {{#if article.parameter.fields}}
           <h3>{{__ "Parameters"}}</h3>
           {{#each article.parameter.fields}}
-            <div class="col-md-3">
+            <div hidden class="col-md-3">
               <select   name="{{../id}}-sample-header-content-type" class="{{../id}}-sample-request-param-select sample-header-content-type sample-header-content-type-switch">
                 <option value="auto" selected>ajax-auto</option>
                 <option value="json" >json</option>
@@ -404,7 +404,7 @@
 
             <div class="{{../id}}-sample-request-param-body {{../id}}-sample-header-content-type-body hide">
               <div class="form-group">
-                <div class="input-group">
+                <div class="input-group col-md-6">
                   <div class="input-group-addon">json</div>
                   <textarea id="sample-request-body-json" class="form-control sample-request-body" data-sample-request-body-group="sample-request-param-{{@./index}}" rows="6" style="OVERFLOW: visible" {{#if optional}}data-sample-request-param-optional="true"{{/if}}></textarea>
                 </div>
@@ -414,7 +414,7 @@
               {{#each this}}
               <div class="form-group">
                 <label class="col-md-3 control-label" for="sample-request-param-field-{{field}}">{{field}}</label>
-                <div class="input-group">
+                <div class="input-group col-md-6">
                   <div class="input-group-addon">{{{type}}}</div>
                   {{#if allowedValues}}
                   <div class="input-group-addon sample-request-select">
@@ -487,15 +487,15 @@
       {{#if article.body}}
         <h3>{{__ "Body"}}</h3>
 
-        <div class="col-md-3">
+        <div class="col-md-3" hidden>
           <label for="body-content-type-{{this.id}}">{{__ "Content-Type"}}</label>
           <select id="body-content-type-{{this.id}}" data-id="{{this.id}}" class="sample-request-content-type-switch form-control">
-            <option value="body-json" selected>json</option>
-            <option value="body-form-data">form-data</option>
+            <option value="body-json">json</option>
+            <option value="body-form-data" selected>form-data</option>
           </select>
         </div>
 
-        <div class="col-md-9" id="sample-request-body-json-input-{{this.id}}">
+        <div hidden id="sample-request-body-json-input-{{this.id}}">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">json</div>
@@ -508,11 +508,11 @@
           </div>
         </div>
 
-        <div hidden class="col-md-9" id="sample-request-body-form-input-{{this.id}}">
+        <div id="sample-request-body-form-input-{{this.id}}">
           {{#each article.body}}
             <div class="form-group">
               <label class="col-md-3 control-label" for="sample-request-param-field-{{field}}">{{field}}</label>
-              <div class="input-group">
+              <div class="input-group col-md-6">
                 <div class="input-group-addon">{{{type}}}</div>
                 {{#if allowedValues}}
                 <div class="input-group-addon sample-request-select">
