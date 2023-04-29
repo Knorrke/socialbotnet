@@ -309,16 +309,31 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>Install dependencies</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>
+							  install ./apidoc-template
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
 						<id>Build ApiDoc</id>
 						<goals>
 							<goal>npx</goal>
 						</goals>
-
 						<phase>generate-resources</phase>
-
 						<configuration>
-							<arguments>apidoc@0.51.1 -c ./apidoc.json -o
-								./src/main/resources/public/docs</arguments>
+							<arguments>
+							  apidoc@1.0.1 
+									-c ./apidoc.json 
+									-o ./src/main/resources/public/docs 
+									-t ./apidoc-template/ 
+									-i ./src/main/java
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>

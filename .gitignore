@@ -4,3 +4,5 @@ node
 !*.zip
 !*.sql
 *.md.html
+src/main/resources/public/docs
+node_modules
