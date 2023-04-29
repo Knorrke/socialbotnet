@@ -27,7 +27,7 @@
         	</div>
         	<h3 class="media-title">Beispiel eines Unterrichtskonzeptes</h3>
         	<div class="media-body">
-        		<p>Ein mögliches Unterrichtskonzept für die Oberstufe über den Verlauf von 4 Schulstunden wird im Folgenden kurz dargestellt. Ausführlichere Informationen finden sich insbesondere in der <a href="/assets/v4.1.1/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Ausarbeitung für den GI Unterrichtspreis 2019</a></p>
+        		<p>Ein mögliches Unterrichtskonzept für die Oberstufe über den Verlauf von 4 Schulstunden wird im Folgenden kurz dargestellt. Ausführlichere Informationen finden sich insbesondere in der <a href="/assets/v4.2.0/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Ausarbeitung für den GI Unterrichtspreis 2019</a></p>
         		<p>Neben den Programmierkenntnissen (sicherer Umgang mit Datentypen, Objekten und for-Wiederholung) ist Vorwissen zum Schichtenmodell und dem Client-Server-Prinzip für die Unterrichtssequenz hilfreich.</p>
         		<h4>Erste Stunde: Einführung zu Social Bots und Verknüpfung mit Protokollen</h4>
         		<ol>
@@ -72,7 +72,7 @@
 			<figure>
 				<div class="javaTab">
 			        <div class="media-body">
-			        	<p> Hier kann ein <a href="/assets/v4.1.1/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:</p>
+			        	<p> Hier kann ein <a href="/assets/v4.2.0/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:</p>
 						<ul>
 			        		<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
 			        		<li> der einfache Bot nur mit JSON zum Vergleich, </li>
@@ -82,7 +82,7 @@
 				</div>
 				<div class="pythonTab">
 			        <div class="media-body">
-			    	 	<p> Hier kann ein <a href="/assets/v4.1.1/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
+			    	 	<p> Hier kann ein <a href="/assets/v4.2.0/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
 			    	 	
 			    	 	<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
 			        </div>
@@ -116,11 +116,11 @@
         <div class="media-body">
         	<p>
         	Dieses Projekt ist im Rahmen einer Zulassungsarbeit am Lehrstuhl für Didaktik der Informatik der Ludwig-Maximilians-Universität München entstanden. 
-        	<a href="/assets/v4.1.1/material/zulassungsarbeit.pdf" title="Zulassungsarbeit Social Bots herunterladen" download>Download der Zulassungsarbeit</a>
+        	<a href="/assets/v4.2.0/material/zulassungsarbeit.pdf" title="Zulassungsarbeit Social Bots herunterladen" download>Download der Zulassungsarbeit</a>
         	</p>
         	<p>
         	Die Unterrichtseinheit wurde außerdem bei der INFOS 2019 mit dem <a href="https://gi.de/aktuelles/wettbewerbe/unterrichtspreis/" target="_blank" rel="noopener noreferrer">Unterrichtspreis</a> der Gesellschaft für Informatik ausgezeichnet.
-        	<a href="/assets/v4.1.1/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Download der Ausarbeitung</a></p>
+        	<a href="/assets/v4.2.0/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Download der Ausarbeitung</a></p>
         </div>
     </div>
 </@layout.masterTemplate>
