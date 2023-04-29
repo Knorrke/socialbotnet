@@ -149,8 +149,7 @@ public class Router {
                 } else {
                   Map<String, Object> model = new HashMap<>();
                   model.put("error", e);
-                  model.put(
-                      "defaultMessage", HttpStatus.Companion.forStatus(e.getStatus()).getMessage());
+                  model.put("defaultMessage", HttpStatus.forStatus(e.getStatus()).getMessage());
                   ctx.status(e.getStatus()).render("error/error.ftl", model);
                 }
               });

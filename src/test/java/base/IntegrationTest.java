@@ -78,6 +78,7 @@ public abstract class IntegrationTest {
   public void cleanDB() throws Exception {
     Flyway flyway =
         Flyway.configure()
+            .cleanDisabled(false)
             .dataSource(dataSource())
             .locations("db/migration", "db/test-migration")
             .load();
