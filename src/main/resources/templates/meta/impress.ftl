@@ -20,10 +20,10 @@
         </div>
         <div class="media-body">
         	Benjamin Knorr<br />
-        	Woferlstraße 26 <br />
-        	81737 München <br />
+        	Römerstraße 42a <br />
+        	85586 München <br />
         	<br />
-        	E-Mail: <@mailObfuscator.generate coded="XHqii.z@eVh.xC" key="jXZzDcVKupIrCatAUP7dsR9fYi6wTovE4x2JNS1lyQOqGnghMkBbWFmL850He3" />
+        	E-Mail: <@mailObfuscator.generate coded="rtnv@Qv1rMbovAtUA.pU" key="ITnBkxbLuyg5eDs9JjpP67tHRFoCq3i4UcQOKGNz0aA2fVvwlmrEX1Y8SZhWdM" />
     	</div>
     </div>
     
