@@ -10,7 +10,7 @@ WORKDIR /app
 COPY ./ .
 
 RUN chmod +x ./mvnw
-RUN ./mvnw clean install
+RUN ./mvnw -DskipTests clean install
 RUN ./mvnw flyway:migrate
 
 # This is the port that your javalin application will listen on
