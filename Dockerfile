@@ -21,7 +21,7 @@ ENV JDBC_DATABASE_URL=${SET_FROM_RENDERCOM:-"jdbc:postgres://${DB_HOST}:${DB_POR
 #
 # Package stage
 #
-FROM openjdk:17-jre-slim
+FROM openjdk:17
 COPY --from=build /app/target/socialbotnet-4.2-jar-with-dependencies.jar /usr/local/lib/socialbotnet.jar
 EXPOSE 30003
 ENTRYPOINT ["java", "-jar", "/usr/local/lib/socialbotnet.jar"]
