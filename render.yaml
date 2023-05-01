@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: socialbotnet
+    env: docker
+    repo: https://github.com/Knorrke/socialbotnet.git
+    region: frankfurt # (oregon,frankfurt,ohio,singapore)
+    plan: free # (free, starter, standard, pro, pro plus, pro max, pro ultra)
+    branch: master
+    healthCheckPath: /
+    envVars:
+      - key: JDBC_DATABASE_URL
+        fromDatabase:
+          name: socialbotnet_db
+          property: connectionString
+      - key: JDBC_DATABASE_USERNAME
+        fromDatabase:
+          name: socialbotnet_db
+          porperty: user
+      - key: JDBC_DATABASE_PASSWORD
+        fromDatabase:
+          name: socialbotnet_db
+          porperty: password
+    autoDeploy: false
+
+databases:
+# db
+- name: prod
+  region: frankfurt
+  plan: free
+  databaseName: socialbotnet_db
+  ipAllowList: [] # none - only internal access. (defaults to allow all)

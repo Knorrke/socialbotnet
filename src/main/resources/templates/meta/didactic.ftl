@@ -45,7 +45,7 @@
         			<li>Posts nach Schlüsselwörtern durchsuchen und dann liken.<em>(anspruchsvoll)</em></li>
         			<li>Nutzerprofile nach Schlüsselwörtern durchsuchen und dann vorgefertigte Texte an diese Nutzer schreiben. <em>(anspruchsvoll)</em></li>
         			<li>Anbinden externer Webservices wie <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> oder <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a>. <em>(sehr anspruchsvoll)</em>
-        			<p>Eine Übersicht über zahlreiche offene APIs gibt es <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener noreferrer">im Github-Projekt public-apis</a>. Über Rückmeldungen zu gut verwendbaren APIs daraus würde ich mich freuen!</p>
+        			<p>Eine Übersicht über zahlreiche offene APIs gibt es <a href="https://github.com/public-apis-dev/public-apis" target="_blank" rel="noopener noreferrer">im Github-Projekt public-apis-dev</a>. Über Rückmeldungen zu gut verwendbaren APIs daraus würde ich mich freuen!</p>
         			</li>
         		</ul>
         		<p>Die <a href="/material">Arbeitsblätter und Projektvorlagen</a> dienen zur Unterstützung der selbstgesteuerten Arbeit der Lernenden. </p>
@@ -100,11 +100,11 @@
     		<h2 class="media-title">Eigener Server</h2>
     	</div>
     	<div class="media-body">
-    		<p>Mit einem Account bei <a href="https://heroku.com" target="_blank" rel="noopener noreferrer">Heroku</a> lässt sich ein eigener Server mit nur einem Klick erstellen:</p>
+    		<p>Mit einem Account bei <a href="https://render.com" target="_blank" rel="noopener noreferrer">Render.com</a> lässt sich ein eigener Server mit nur einem Klick erstellen:</p>
     		<p styles="text-align:center;">
-			<a class="prevent-external" href="https://heroku.com/deploy?template=https://github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer">
-			  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Direkt auf Heroku erstellen">
-			</a>
+				<a class="prevent-external" href="https://render.com/deploy?repo=https://github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer">
+					<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+				</a>
 			</p>
 			<p> <strong>Einschränkungen</strong>: Die kostenlose Datenbank ist beschränkt auf 10.000 Einträge (User, Posts und Likes) und die Anwendung wird nach 30 Minuten Inaktivität in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert.
     	</div>
