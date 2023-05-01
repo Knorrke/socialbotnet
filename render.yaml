@@ -15,11 +15,11 @@ services:
       - key: JDBC_DATABASE_USERNAME
         fromDatabase:
           name: socialbotnet_db
-          porperty: user
+          property: user
       - key: JDBC_DATABASE_PASSWORD
         fromDatabase:
           name: socialbotnet_db
-          porperty: password
+          property: password
     autoDeploy: false
 
 databases:
