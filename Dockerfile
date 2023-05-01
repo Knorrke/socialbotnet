@@ -15,13 +15,13 @@ RUN mvn -DskipTests clean package
 #RUN mvn flyway:migrate
 
 
-#ADD JDBC_DATABASE_URL if only DB_HOST, DB_PORT and DB_DATABASE is set.
-ENV JDBC_DATABASE_URL=${JDBC_DATABASE_URL:-"jdbc:postgres://${DB_HOST}:${DB_PORT}/${DB_DATABASE}"}
+#ADD JDBC_DATABASE_URL from DB_HOST, DB_PORT and DB_DATABASE because render.com can't generate JDBC connect string
+ENV JDBC_DATABASE_URL=${SET_FROM_RENDERCOM:-"jdbc:postgres://${DB_HOST}:${DB_PORT}/${DB_DATABASE}"}
 
 #
 # Package stage
 #
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jre-slim
 COPY --from=build /app/target/socialbotnet-4.2-jar-with-dependencies.jar /usr/local/lib/socialbotnet.jar
 EXPOSE 30003
 ENTRYPOINT ["java", "-jar", "/usr/local/lib/socialbotnet.jar"]
