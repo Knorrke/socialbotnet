@@ -5,7 +5,6 @@ services:
     repo: https://github.com/Knorrke/socialbotnet.git
     region: frankfurt # (oregon,frankfurt,ohio,singapore)
     plan: free # (free, starter, standard, pro, pro plus, pro max, pro ultra)
-    branch: master
     healthCheckPath: /
     envVars:
       - key: JDBC_DATABASE_URL
@@ -20,6 +19,14 @@ services:
         fromDatabase:
           name: socialbotnet_db
           property: password
+      - key: DB_HOST:
+        fromDatabase:
+          name: socialbotnet_db
+          property: host
+      - key: DB_PORT:
+        fromDatabase:
+          name: socialbotnet_db
+          property: port
     autoDeploy: false
 
 databases:
