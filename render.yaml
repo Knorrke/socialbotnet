@@ -24,8 +24,7 @@ services:
 
 databases:
 # db
-- name: prod
+- name: socialbotnet_db
   region: frankfurt
   plan: free
-  databaseName: socialbotnet_db
   ipAllowList: [] # none - only internal access. (defaults to allow all)
