@@ -16,7 +16,8 @@ RUN mvn -DskipTests clean package
 
 
 #ADD JDBC_DATABASE_URL from DB_HOST, DB_PORT and DB_DATABASE because render.com can't generate JDBC connect string
-ENV JDBC_DATABASE_URL=${SET_FROM_RENDERCOM:-"jdbc:postgres://${DB_HOST}:${DB_PORT}/${DB_DATABASE}"}
+ENV URL_FROM_RENDER=${SET_FROM_RENDERCOM:+"jdbc:postgres://${DB_HOST}:${DB_PORT}/${DB_DATABASE}?user=${JDBC_DATABASE_USERNAME}&password=user=${JDBC_DATABASE_PASSWORD}&sslmode=require"}
+ENV JDBC_DATABASE_URL=${URL_FROM_RENDER:-${JDBC_DATABASE_URL}}
 
 #
 # Package stage
