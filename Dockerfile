@@ -1,5 +1,7 @@
-FROM openjdk:17-alpine
-
+#
+# Build stage
+#
+FROM maven:3.9.1-eclipse-temurin-17 AS build
 # Setup app
 RUN mkdir -p /app
 
@@ -9,10 +11,13 @@ WORKDIR /app
 # Add application
 COPY ./ .
 
-RUN chmod +x ./mvnw
-RUN ./mvnw -DskipTests clean install
-RUN ./mvnw flyway:migrate
+RUN mvn -f /app/pom.xml -DskipTests clean package
+RUN mvn flyway:migrate
 
-# This is the port that your javalin application will listen on
-EXPOSE 7000 
-ENTRYPOINT ["java", "-jar", "./target/socialbotnet-4.2-jar-with-dependencies.jar"]
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /app/target/socialbotnet-4.2-jar-with-dependencies.jar /usr/local/lib/socialbotnet.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/socialbotnet.jar"]
