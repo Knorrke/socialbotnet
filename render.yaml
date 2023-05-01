@@ -7,10 +7,6 @@ services:
     plan: free # (free, starter, standard, pro, pro plus, pro max, pro ultra)
     healthCheckPath: /
     envVars:
-      - key: JDBC_DATABASE_URL
-        fromDatabase:
-          name: socialbotnet_db
-          property: connectionString
       - key: JDBC_DATABASE_USERNAME
         fromDatabase:
           name: socialbotnet_db
