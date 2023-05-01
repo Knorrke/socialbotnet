@@ -12,7 +12,7 @@ WORKDIR /app
 COPY ./ .
 
 RUN mvn -f /app/pom.xml -DskipTests clean package
-RUN mvn flyway:migrate
+RUN mvn -f /app/pom.xml flyway:migrate
 
 #
 # Package stage
