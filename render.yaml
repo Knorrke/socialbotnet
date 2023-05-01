@@ -27,8 +27,6 @@ services:
         fromDatabase:
           name: socialbotnet_db
           property: database
-      - key: SET_FROM_RENDERCOM
-        value: true
     autoDeploy: false
 
 databases:

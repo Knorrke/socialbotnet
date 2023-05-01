@@ -2,6 +2,17 @@
 # Build stage
 #
 FROM maven:3.9.1-eclipse-temurin-17 AS build
+ARG JDBC_DATABASE_USERNAME
+ARG JDBC_DATABASE_PASSWORD
+ARG DB_HOST
+ARG DB_PORT
+ARG DB_DATABASE
+
+#ADD JDBC_DATABASE_URL from DB_HOST, DB_PORT and DB_DATABASE because render.com can't generate JDBC connect string
+ENV JDBC_DATABASE_URL="jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_DATABASE?user=$JDBC_DATABASE_USERNAME&password=$JDBC_DATABASE_PASSWORD&sslmode=require"
+
+RUN echo $JDBC_DATABASE_URL
+
 # Setup app
 RUN mkdir -p /app
 
@@ -12,12 +23,7 @@ WORKDIR /app
 COPY ./ .
 
 RUN mvn -DskipTests clean package
-#RUN mvn flyway:migrate
-
-
-#ADD JDBC_DATABASE_URL from DB_HOST, DB_PORT and DB_DATABASE because render.com can't generate JDBC connect string
-ENV URL_FROM_RENDER=${SET_FROM_RENDERCOM:+"jdbc:postgres://${DB_HOST}:${DB_PORT}/${DB_DATABASE}?user=${JDBC_DATABASE_USERNAME}&password=user=${JDBC_DATABASE_PASSWORD}&sslmode=require"}
-ENV JDBC_DATABASE_URL=${URL_FROM_RENDER:-${JDBC_DATABASE_URL}}
+RUN mvn flyway:migrate
 
 #
 # Package stage
