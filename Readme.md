@@ -28,7 +28,12 @@ Mit einem Account bei [Render](https://render.com) lässt sich der Server mit nu
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Knorrke/socialbotnet)
 
-**Einschränkungen**: Der kostenlose Service  kostenlose Datenbank ist beschränkt auf 10.000 Einträge (User, Posts und Likes) und die Anwendung wird nach 30 Minuten Inaktivität in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert.
+**Einschränkungen**: 
+
+- Nach 15 Minuten Inaktivität wird die App in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert. 
+- Ausgehende Bandbreite beschränkt auf 100 GB pro Monat
+- Die kostenlose Datenbank wird nach 90 Tagen gelöscht
+- Weitere Einschränkungen https://render.com/docs/free
 
 ### Alternativ: Lokaler Server
 Um den Server lokal laufen zu lassen, muss die .jar-Datei aus den [releases](https://github.com/Knorrke/socialbotnet/releases) heruntergeladen und über den folgenden Befehl gestartet werden.
@@ -38,7 +43,7 @@ $ java -jar pfad/zur/socialbotnet-4.2-jar-with-dependencies.jar
 Dieser Befehlt startet einen jetty-Server auf [localhost:30003](http://localhost:30003), **jedoch ohne persistente Datenbank**. Diese müsste extra über die Umgebungsvariablen `JDBC_DATABASE_URL`, `JDBC_DATABASE_USERNAME` und `JDBC_DATABASE_PASSWORD` konfiguriert werden.
 
 
-Es ist auch möglich, das SocialBotNet komplett auf einem eigenen remote Server mittels Dokku zu hosten. Details zur Einrichtung sind unten im Abschnitt [" Server einrichten"](#server-einrichten).
+Es ist auch möglich, das SocialBotNet komplett auf einem eigenen remote Server mittels Dokku zu hosten. Details zur Einrichtung sind unten im Abschnitt ["Server einrichten"](#server-einrichten).
 
 
 ## API

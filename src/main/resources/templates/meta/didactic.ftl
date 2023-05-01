@@ -13,7 +13,24 @@
     		<strong>Error:</strong> ${error}
     	</div>
     </#if>
-    
+    <div class="media media-info">
+    	<div class="media-heading">
+    		<h2 class="media-title">Eigener Server</h2>
+    	</div>
+    	<div class="media-body">
+    		<p>Mit einem Account bei <a href="https://render.com" target="_blank" rel="noopener noreferrer">Render.com</a> lässt sich ein eigener Server mit nur einem Klick erstellen:</p>
+    		<p styles="text-align:center;">
+				<a class="prevent-external" href="https://render.com/deploy?repo=https://github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer">
+					<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+				</a>
+			</p>
+			<p> <strong>Einschränkungen</strong> siehe <a href="https://render.com/docs/free">https://render.com/docs/free</a>, insbesondere:
+			<ul>
+				<li>Nach 15 Minuten Inaktivität wird die App in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert.</li>
+				<li>Die ausgehende Bandbreite ist beschränkt auf 100 GB pro Monat.</li>
+			</ul>
+    	</div>
+    </div>    
     <div class="media media-info">
         <div class="media-heading">
         	<h2 class="media-title">Überblick der Didaktik</h2>
@@ -59,55 +76,41 @@
         	<h2 class="media-title">Beispielprojekte</h2>
         </div>
 	    <div class="tabbed">
-			<input checked="checked" id="java" type="radio" name="language" />
-			<input id="python" type="radio" name="language" />
-			<input id="js" type="radio" name="language" />
-		
-			<nav>
-				<label for="java">Java</label>
-				<label for="python">Python</label>
-				<label for="js">JavaScript</label>
-			</nav>		   
+				<input checked="checked" id="java" type="radio" name="language" />
+				<input id="python" type="radio" name="language" />
+				<input id="js" type="radio" name="language" />
+			
+				<nav>
+					<label for="java">Java</label>
+					<label for="python">Python</label>
+					<label for="js">JavaScript</label>
+				</nav>		   
 
-			<figure>
-				<div class="javaTab">
-			        <div class="media-body">
-			        	<p> Hier kann ein <a href="/assets/v4.2.0/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:</p>
-						<ul>
-			        		<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
-			        		<li> der einfache Bot nur mit JSON zum Vergleich, </li>
-			        		<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">api.openweathermap.org</a>.
-			        	</ul>
-			        </div>
-				</div>
-				<div class="pythonTab">
-			        <div class="media-body">
-			    	 	<p> Hier kann ein <a href="/assets/v4.2.0/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
-			    	 	
-			    	 	<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
-			        </div>
-				</div>
-				<div class="jsTab">
-					<div class="media-body">
-			        	<p> Der Einsatz von JavaScript ist ebenfalls möglich, wie der <a href="https://glitch.com/~automatic-glimmer-albacore"  target="_blank" rel="noopener noreferrer">exemplarische JavaScript-Client</a> von <a href="https://wi-wissen.de" target="_blank" rel="noopener noreferrer">Julian Dorn</a> zeigt.</p>
+				<figure>
+					<div class="javaTab">
+								<div class="media-body">
+									<p> Hier kann ein <a href="/assets/v4.2.0/material/java/socialbot-examples.zip">Javaprojekt mit Beispielbots</a> heruntergeladen werden. Enthalten sind:</p>
+							<ul>
+										<li> ein einfacher und ein fortgeschrittener Social Bot im Projekt mit Objekten, </li>
+										<li> der einfache Bot nur mit JSON zum Vergleich, </li>
+										<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">api.openweathermap.org</a>.
+									</ul>
+								</div>
 					</div>
-				</div>
-			</figure>
-		</div>
-    </div>   
-    <div class="media media-info">
-    	<div class="media-heading">
-    		<h2 class="media-title">Eigener Server</h2>
-    	</div>
-    	<div class="media-body">
-    		<p>Mit einem Account bei <a href="https://render.com" target="_blank" rel="noopener noreferrer">Render.com</a> lässt sich ein eigener Server mit nur einem Klick erstellen:</p>
-    		<p styles="text-align:center;">
-				<a class="prevent-external" href="https://render.com/deploy?repo=https://github.com/Knorrke/socialbotnet" target="_blank" rel="noopener noreferrer">
-					<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
-				</a>
-			</p>
-			<p> <strong>Einschränkungen</strong>: Die kostenlose Datenbank ist beschränkt auf 10.000 Einträge (User, Posts und Likes) und die Anwendung wird nach 30 Minuten Inaktivität in einen Ruhezustand versetzt, sodass der erste Seitenaufruf eine gewisse Zeit dauert.
-    	</div>
+					<div class="pythonTab">
+								<div class="media-body">
+								<p> Hier kann ein <a href="/assets/v4.2.0/material/python/socialbot-example.zip">Beispielbot mit Python</a> heruntergeladen werden. Der Bot kann Beiträge posten und liken und mit der Pokemon API von <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">pokeapi.co</a> kommunizieren, um Fakten über Pokemons zu posten.</p>
+								
+								<p> Die Python Materialien wurden dankenswerterweise von Christopher Frank (E-Mail: <@mailObfuscator.generate coded="eBxr@KU01U0VF.BUF" key="cbUFwYfSyBh8JsVPaW09TK3xvgEDNqil7QzXCjOL4HAodG5etZpRImn2Mk6ur1" />) erstellt, der auch gerne bei Fragen kontaktiert werden kann.
+								</div>
+					</div>
+					<div class="jsTab">
+						<div class="media-body">
+									<p> Der Einsatz von JavaScript ist ebenfalls möglich, wie der <a href="https://glitch.com/~automatic-glimmer-albacore"  target="_blank" rel="noopener noreferrer">exemplarische JavaScript-Client</a> von <a href="https://wi-wissen.de" target="_blank" rel="noopener noreferrer">Julian Dorn</a> zeigt.</p>
+						</div>
+					</div>
+				</figure>
+			</div>
     </div>
     <div class="media media-info">
         <div class="media-heading">
