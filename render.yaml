@@ -2,6 +2,7 @@ services:
   - type: web
     name: socialbotnet
     env: docker
+    dockerfilePath: ./.render/Dockerfile
     repo: https://github.com/Knorrke/socialbotnet.git
     region: frankfurt # (oregon,frankfurt,ohio,singapore)
     plan: free # (free, starter, standard, pro, pro plus, pro max, pro ultra)
