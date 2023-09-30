@@ -84,7 +84,7 @@ public class User implements Serializable {
 
   public String getImage() {
     return String.format(
-        "https://avatars.dicebear.com/api/bottts/%s.svg?width=%d",
+        "https://api.dicebear.com/7.x/bottts/svg?seed=%s.&size=%d",
         UrlEncoded.encodeString(username), 100);
   }
 }
