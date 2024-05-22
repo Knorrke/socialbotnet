@@ -46,6 +46,26 @@ public class Router {
   public void setupRoutes() {
     app.routes(
         () -> {
+          // Activate CORS
+          app.options(
+              "/*",
+              ctx -> {
+                String accessControlRequestHeaders = ctx.header("Access-Control-Request-Headers");
+                if (accessControlRequestHeaders != null) {
+                  ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                }
+
+                String accessControlRequestMethod = ctx.header("Access-Control-Request-Method");
+                if (accessControlRequestMethod != null) {
+                  ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                }
+              });
+          before(
+              "/*",
+              ctx -> {
+                ctx.header("Access-Control-Allow-Origin", "*");
+                ctx.header("Access-Control-Allow-Headers", "*");
+              });
           get("/registrieren", userController::register);
           post("/registrieren", userController::register);
 
@@ -78,28 +98,6 @@ public class Router {
                 get("", ctx -> ctx.redirect("/docs/index.html"));
                 before("/*", ctx -> logger.debug("Received api call to path {}", ctx.path()));
 
-                // Activate CORS
-                app.options(
-                    "/*",
-                    ctx -> {
-                      String accessControlRequestHeaders =
-                          ctx.header("Access-Control-Request-Headers");
-                      if (accessControlRequestHeaders != null) {
-                        ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-                      }
-
-                      String accessControlRequestMethod =
-                          ctx.header("Access-Control-Request-Method");
-                      if (accessControlRequestMethod != null) {
-                        ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-                      }
-                    });
-                before(
-                    "/*",
-                    ctx -> {
-                      ctx.header("Access-Control-Allow-Origin", "*");
-                      ctx.header("Access-Control-Allow-Headers", "*");
-                    });
                 before("/*", this::checkCorrectRequestType);
                 before(
                     "/*",
