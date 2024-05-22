@@ -23,7 +23,7 @@
 		<embedded-postgres.version>2.0.7</embedded-postgres.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<sl4j.version>2.0.7</sl4j.version>
-		<git-code-format-maven-plugin.version>3.4</git-code-format-maven-plugin.version>
+		<git-code-format-maven-plugin.version>5.3</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -290,6 +290,13 @@
 				<configuration>
 					<skip>${skipTests}</skip>
 				</configuration>
+				<dependencies>
+					<dependency>
+					    <groupId>com.cosium.code</groupId>
+					    <artifactId>google-java-format</artifactId>
+					    <version>5.3</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
