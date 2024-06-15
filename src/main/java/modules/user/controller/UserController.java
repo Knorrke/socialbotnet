@@ -2,6 +2,7 @@ package modules.user.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.InternalServerErrorResponse;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.http.UnauthorizedResponse;
@@ -48,6 +49,7 @@ public class UserController {
         return;
       } else {
         model.put("error", "Login fehlgeschlagen.");
+        ctx.status(HttpStatus.UNAUTHORIZED);
       }
     }
 
@@ -141,5 +143,36 @@ public class UserController {
 
     model.put("authenticatedUser", authenticatedUser);
     ctx.render("user/updateProfile.ftl", model);
+  }
+
+  public void changePassword(Context ctx) {
+    User authenticatedUser = userService.getAuthenticatedUser(ctx);
+    if (authenticatedUser == null) {
+      throw new UnauthorizedResponse("Du bist nicht angemeldet!");
+    }
+    Map<String, Object> model = new HashMap<>();
+    if (ctx.method() == HandlerType.POST) {
+      MultiMap<String> params = EncodingUtil.decode(ctx);
+      if (params.getString("new_password").equals(params.getString("new_password2"))) {
+        // fetch user again to keep password out of session
+        User user = userService.getUserById(authenticatedUser.getId());
+        user.setPassword(params.getString("password"));
+        User validated = userService.checkUser(user);
+
+        if (validated != null) {
+          validated.setPassword(params.getString("new_password"));
+          userService.updatePassword(validated);
+          model.put("success", "Profil erfolgreich aktualisiert");
+        } else {
+          model.put("error", "Falsches Passwort.");
+          ctx.status(HttpStatus.UNAUTHORIZED);
+        }
+      } else {
+        model.put("error", "Passwörter stimmen nicht überein.");
+      }
+    }
+
+    model.put("authenticatedUser", authenticatedUser);
+    ctx.render("user/changePassword.ftl", model);
   }
 }

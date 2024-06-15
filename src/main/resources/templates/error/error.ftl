@@ -5,6 +5,6 @@
 <@layout.masterTemplate title="${error.status} &mdash; ${defaultMessage}" colored=false pageTitle=pageTitle>
     	<p>Bei der Bearbeitung der Anfrage ist leider ein Fehler aufgetreten:</p>
 		<div class="warning">
-			<p style="padding: 15px 0;">${error.message}</p>
+			<p>${error.message}</p>
     	</div>
 </@layout.masterTemplate>

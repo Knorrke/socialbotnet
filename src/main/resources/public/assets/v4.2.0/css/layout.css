@@ -1,8 +1,10 @@
 :root {
-	/** using color palette https://coolors.co/f0f7fa-8ecae6-219ebc-023047-ffb703-fb8500 */
+	/** using color palette https://coolors.co/f0f7fa-8ecae6-219ebc-023047-37be3c-ffb703-fb8500 */
     --bg-layout: #023047;
     --color-layout: #fff;
     --hover-header: #fb8500;
+    --warning: #ffb703;
+    --success: #37be3c;
     --bg-main: #fff;
     --bg-content: #f2f2f2;
     --color-content: #000;

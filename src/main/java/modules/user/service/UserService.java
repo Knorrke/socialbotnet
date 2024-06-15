@@ -39,6 +39,11 @@ public class UserService {
     userDaoInterface.registerUser(user);
   }
 
+  public void updatePassword(User validated) {
+    validated.setPassword(PasswordUtil.hashPassword(validated.getPassword()));
+    userDaoInterface.updatePassword(validated);
+  }
+
   public List<User> getAllUsersSorted(String sortBy, boolean asc, int limit) {
     return userDaoInterface.getAllUsersSorted(sortBy, asc, limit);
   }

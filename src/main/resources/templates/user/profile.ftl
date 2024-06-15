@@ -46,6 +46,9 @@
         	<div class="media colored">
         		<a href="/user/update">Profil bearbeiten</a>
         	</div>
+        	<div class="media colored">
+        		<a href="/user/change-password">Passwort ändern</a>
+        	</div>
         </#if>
     </div>
     </div>
