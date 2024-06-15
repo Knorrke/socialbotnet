@@ -5,6 +5,7 @@
 	margin-left: 0; 
 	border-bottom: 1px solid silver;
 	clear: both;
+	width: 100%;
 }
 
 .tabbed > input,
@@ -18,9 +19,13 @@
 	line-height: 1.5em;
 	letter-spacing: 0.3px;
 	color: #444;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 #java:checked ~ figure .javaTab,
+#onlineIDE:checked ~ figure .onlineIDETab,
 #python:checked ~ figure .pythonTab,
 #js:checked ~ figure .jsTab { display: block; }
 
@@ -31,8 +36,11 @@
 	border-right: 1px solid silver;
 	background: var(--bg-primary);
 	color: var(--color-primary);
-	width: 250px;
+	width: 25%;
 	text-align: center;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;	
 }
 
 .tabbed nav label:nth-child(1) { border-left: 1px solid silver; }
@@ -40,6 +48,7 @@
 
 .tabbed nav label:active,
 #java:checked ~ nav label[for="java"],
+#onlineIDE:checked ~ nav label[for="onlineIDE"],
 #python:checked ~ nav label[for="python"],
 #js:checked ~ nav label[for="js"] {
 	background: var(--bg-main);
@@ -49,6 +58,7 @@
 }
 
 #java:checked ~ nav label[for="java"]:after,
+#onlineIDE:checked ~ nav label[for="onlineIDE"]:after,
 #python:checked ~ nav label[for="python"]:after,
 #js:checked ~ nav label[for="js"]:after {
 	content: "";
