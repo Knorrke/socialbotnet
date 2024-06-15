@@ -101,7 +101,7 @@
 			
 				<nav>
 					<label for="java">Java (BlueJ)</label>
-					<label for="onlineIDE">Java (OnlineIDE)</label>
+					<label for="onlineIDE">Java (Online-IDE)</label>
 					<label for="python">Python</label>
 					<label for="js">JavaScript</label>
 				</nav>		   
@@ -120,7 +120,7 @@
 					<div class="onlineIDETab">
 								<div class="media-body">
 								<p> Eine Beispiellösung für einen Bot und das Arbeitsblatt kann auf Anfrage zugeschickt werden. </p>
-								<p> Die Python Materialien wurden dankenswerterweise von Jürgen Horzella erstellt.
+								<p> Die Materialien für die Online-IDE wurden dankenswerterweise von Jürgen Horzella erstellt.
 								</div>
 					</div>
 					<div class="pythonTab">
