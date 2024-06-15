@@ -5,16 +5,13 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
-import io.javalin.Javalin;
+import io.javalin.config.JavalinConfig;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.HttpResponseException;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.UnauthorizedResponse;
-import java.util.HashMap;
-import java.util.Map;
-import modules.error.ResponseError;
 import modules.post.controller.PostApiController;
 import modules.post.controller.PostController;
 import modules.post.service.PostService;
@@ -29,43 +26,21 @@ import org.slf4j.LoggerFactory;
 
 public class Router {
   static final Logger logger = LoggerFactory.getLogger(Router.class);
-  private Javalin app;
   private UserController userController;
   private UserApiController userApiController;
   private PostController postController;
   private PostApiController postApiController;
 
-  public Router(Javalin app, PostService postService, UserService userService) {
-    this.app = app;
+  public Router(PostService postService, UserService userService) {
     this.userController = new UserController(userService, postService);
     this.postController = new PostController(postService, userService);
     this.userApiController = new UserApiController(userService);
     this.postApiController = new PostApiController(postService, userService);
   }
 
-  public void setupRoutes() {
-    app.routes(
+  public void setupRoutes(JavalinConfig config) {
+    config.router.apiBuilder(
         () -> {
-          // Activate CORS
-          app.options(
-              "/*",
-              ctx -> {
-                String accessControlRequestHeaders = ctx.header("Access-Control-Request-Headers");
-                if (accessControlRequestHeaders != null) {
-                  ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-                }
-
-                String accessControlRequestMethod = ctx.header("Access-Control-Request-Method");
-                if (accessControlRequestMethod != null) {
-                  ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-                }
-              });
-          before(
-              "/*",
-              ctx -> {
-                ctx.header("Access-Control-Allow-Origin", "*");
-                ctx.header("Access-Control-Allow-Headers", "*");
-              });
           get("/registrieren", userController::register);
           post("/registrieren", userController::register);
 
@@ -137,19 +112,6 @@ public class Router {
                 post("/post/{username}", postApiController::createPost);
                 post("/like", postApiController::likePost);
                 post("/unlike", postApiController::unlikePost);
-              });
-
-          app.exception(
-              HttpResponseException.class,
-              (e, ctx) -> {
-                if (ctx.path().startsWith("/api/")) {
-                  ctx.status(e.getStatus()).json(new ResponseError(e.getMessage()));
-                } else {
-                  Map<String, Object> model = new HashMap<>();
-                  model.put("error", e);
-                  model.put("defaultMessage", HttpStatus.forStatus(e.getStatus()).getMessage());
-                  ctx.status(e.getStatus()).render("error/error.ftl", model);
-                }
               });
         });
   }
