@@ -21,7 +21,7 @@
 		
 			<nav>
 				<label for="java">Java (BlueJ)</label>
-				<label for="onlineIDE">Java (OnlineIDE)</label>
+				<label for="onlineIDE">Java (Online-IDE)</label>
 				<label for="python">Python</label>
 			</nav>
 		   
@@ -54,9 +54,9 @@
 			        	<h2 class="media-title">Projektvorlagen</h2>
 			        </div>
 			        <div class="media-body">
-			        	<p>Die Projektvorlage für die <a href="https://online-ide.de/">OnlineIDE</a> stellt eine Klasse <code>SocialBot</code> bereit, die das senden von HTTP-Anfragen vereinfacht und als Oberklasse für eigene Bots verwendet werden kann.</p>
+			        	<p>Die Projektvorlage für die <a href="https://online-ide.de/">Online-IDE</a> stellt eine Klasse <code>SocialBot</code> bereit, die das senden von HTTP-Anfragen vereinfacht und als Oberklasse für eigene Bots verwendet werden kann.</p>
 			        	<p>Zudem gibt es einen <code>Satzgenerator</code>, der in Bots genutzt werden kann um zufällige Beiträge zu erstellen.</p>
-			        	<p><a href="/assets/v4.2.0/material/java/onlineide-socialbot-vorlage.json">Vorlage für die Online-IDE</a>.
+			        	<p><a href="/assets/v4.2.0/material/java/onlineide-socialbot-vorlage.json" download>Vorlage für die Online-IDE</a>.
 			        </div>
 			        <div class="media-heading">
 			        	<h2 class="media-title">Arbeitsblatt</h2>
