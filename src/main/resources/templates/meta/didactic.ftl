@@ -30,7 +30,25 @@
 				<li>Die ausgehende Bandbreite ist beschränkt auf 100 GB pro Monat.</li>
 			</ul>
     	</div>
-    </div>    
+    </div>
+    <div class="media media-info">
+        <div class="media-heading">
+        	<h2 class="media-title">Ausarbeitungen</h2>
+        </div>
+        <div class="media-body">
+        	<p>
+        	Im <a href="https://www.mnu.de/publikationen/mnu-journal">MNU-Journal</a> Ausgabe 3/2022 wurde das SocialBotNet und der Einsatz im Unterricht vorgestellt. <a href="/assets/v4.2.0/material/MNU_journal_03-2022_193-196.pdf" title="Artikel aus MNU Journal 3/2022 herunterladen" download>Download des MNU-Journal Artikels.</a> 
+        	</p>
+        	<p>
+        	Die Unterrichtseinheit wurde außerdem bei der INFOS 2019 mit dem <a href="https://gi.de/aktuelles/wettbewerbe/unterrichtspreis/" target="_blank" rel="noopener noreferrer">Unterrichtspreis</a> der Gesellschaft für Informatik ausgezeichnet.
+        	<a href="/assets/v4.2.0/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Download der Ausarbeitung</a>
+        	</p>
+        	<p>
+        	Dieses Projekt ist im Rahmen einer Zulassungsarbeit am Lehrstuhl für Didaktik der Informatik der Ludwig-Maximilians-Universität München entstanden. 
+        	<a href="/assets/v4.2.0/material/zulassungsarbeit.pdf" title="Zulassungsarbeit Social Bots herunterladen" download>Download der Zulassungsarbeit</a>
+        	</p>
+        </div>
+    </div>
     <div class="media media-info">
         <div class="media-heading">
         	<h2 class="media-title">Überblick der Didaktik</h2>
@@ -40,7 +58,6 @@
         	<div class="media-body">
         		<p>Die Webseite bietet eine einfache, offene Programmierschnittstelle ("API") über HTTP und HTTPS an, über die die Daten der Webseite abgerufen und neue Inhalte erstellt werden können. Dadurch können Schüler*innen selbst Bots programmieren und so erfahren, wie Social Bots funktionieren. Die Auseinandersetzung durch die eigene Programmierung ermöglicht ihnen, die Technologie zu reflektieren und Gefahren sowie Grenzen einschätzen zu können.</p>
         		<p>Mit einem Account auf der Webseite können Beiträge auf der eigenen Pinnwand oder an bestimmte Nutzer geschrieben werden, Posts geliket und ein Profil gestaltet werden. Besondere Herausforderung ist, mit den eigenen Beiträgen in die Top-Trends auf der Startseite zu gelangen.</p>
-        		<p>Hinweis für die Durchführung an der Schule: Beim Einsatz von Bots kann es durch die SSL-Handshakes bei HTTPS zu Verzögerungen kommen. Ist dies der Fall, sollte auf HTTP ausgewichen werden.</p>
         	</div>
         	<h3 class="media-title">Beispiel eines Unterrichtskonzeptes</h3>
         	<div class="media-body">
@@ -50,7 +67,8 @@
         		<ol>
         			<li>Aktivierung: Sammeln von Vorerfahrungen oder zeigen eines Videos. Gut geeignet z.B. <a href="https://youtu.be/HVuB1QPxdT0" target="_blank" rel="noopener noreferrer">"Social Bots" von ZDF heuteplus</a> und <a href="https://youtu.be/j14s00N3clg" target="_blank" rel="noopener noreferrer">"Fake News & Social Bots in 3 Minuten erklärt" von explain-it</a></li>
         			<li>"Nutzersicht" der Webseite: Die Lernenden erstellen einen Account und analysieren, welche Möglichkeiten es auf der Webseite gibt und welche Stellen anfällig für Manipulationen sind.</li>
-        			<li>Erläuterung der "Programmierersicht": Gleiches Protokoll (HTTP), aber andere Schnittstelle. Wegen des gleichen Protokolls kann die API auch im Browser betrachtet werden. Die Lernenden rufen als Beispiel <a href="/api/posts?sortby=trending">/api/posts?sortby=trending</a> auf und vergleichen es mit der Benutzersicht der Startseite.</li>        				
+        			<li>Sichtbare Client-Server-Kommunikation: Über die Entwicklertools des Browsers kann die Netzwerkkommunikation sichtbar gemacht werden. Hervorzuheben ist, dass der Browser mittels GET-Anfragen Daten vom Server abruft und mittels POST Daten an den Server sendet.</li>
+        			<li>Erläuterung der "Programmierersicht": Gleiches Protokoll (HTTP), aber andere Schnittstelle. Wegen des gleichen Protokolls kann die API auch im Browser betrachtet werden. Die Lernenden rufen als Beispiel <a href="/api/posts?sortby=trending">/api/posts?sortby=trending</a> auf und vergleichen es mit der Benutzersicht der Startseite.</li>
         		</ol>
         		<iframe style="width: 100%" height="150" src="/api/posts?sortby=trending&limit=3">Top 3 der Trends in der API. Leider konnte das eingebettete Frame nicht geladen werden. Folgen Sie bitte dem Link oben.</iframe>
         		<h4>Zweite und Dritte Stunde: Programmieren eines eigenen Social Bots</h4>
@@ -77,11 +95,13 @@
         </div>
 	    <div class="tabbed">
 				<input checked="checked" id="java" type="radio" name="language" />
+				<input id="onlineIDE" type="radio" name="language" />
 				<input id="python" type="radio" name="language" />
 				<input id="js" type="radio" name="language" />
 			
 				<nav>
-					<label for="java">Java</label>
+					<label for="java">Java (BlueJ)</label>
+					<label for="onlineIDE">Java (OnlineIDE)</label>
 					<label for="python">Python</label>
 					<label for="js">JavaScript</label>
 				</nav>		   
@@ -95,6 +115,12 @@
 										<li> der einfache Bot nur mit JSON zum Vergleich, </li>
 										<li> ein Bot, der mit der Wetter-API von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">openweathermap.org</a> kommuniziert und Beiträge passend zum Wetter schreibt. Benötigt (kostenlosen) API-Key von <a href="https://api.openweathermap.org" target="_blank" rel="noopener noreferrer">api.openweathermap.org</a>.
 									</ul>
+								</div>
+					</div>
+					<div class="onlineIDETab">
+								<div class="media-body">
+								<p> Eine Beispiellösung für einen Bot und das Arbeitsblatt kann auf Anfrage zugeschickt werden. </p>
+								<p> Die Python Materialien wurden dankenswerterweise von Jürgen Horzella erstellt.
 								</div>
 					</div>
 					<div class="pythonTab">
@@ -111,19 +137,5 @@
 					</div>
 				</figure>
 			</div>
-    </div>
-    <div class="media media-info">
-        <div class="media-heading">
-        	<h2 class="media-title">Ausarbeitungen</h2>
-        </div>
-        <div class="media-body">
-        	<p>
-        	Dieses Projekt ist im Rahmen einer Zulassungsarbeit am Lehrstuhl für Didaktik der Informatik der Ludwig-Maximilians-Universität München entstanden. 
-        	<a href="/assets/v4.2.0/material/zulassungsarbeit.pdf" title="Zulassungsarbeit Social Bots herunterladen" download>Download der Zulassungsarbeit</a>
-        	</p>
-        	<p>
-        	Die Unterrichtseinheit wurde außerdem bei der INFOS 2019 mit dem <a href="https://gi.de/aktuelles/wettbewerbe/unterrichtspreis/" target="_blank" rel="noopener noreferrer">Unterrichtspreis</a> der Gesellschaft für Informatik ausgezeichnet.
-        	<a href="/assets/v4.2.0/material/gi_unterrichtspreis.pdf" title="Bewerbung für den GI Unterrichtspreis 2019 herunterladen" download>Download der Ausarbeitung</a></p>
-        </div>
     </div>
 </@layout.masterTemplate>
