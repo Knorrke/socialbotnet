@@ -12,24 +12,30 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.version>3.11.0</maven.compiler.version>
-		<javalin.version>5.6.3</javalin.version>
-		<assertj.version>3.23.1</assertj.version>
+		<javalin.version>6.1.3</javalin.version>
+		<jakarta.annotation.version>3.0.0</jakarta.annotation.version>
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
-		<freemarker.version>2.3.32</freemarker.version>
-		<spring.version>6.0.19</spring.version>
-		<flyway.version>9.19.0</flyway.version>
-		<postgresql.version>42.7.2</postgresql.version>
+		<freemarker.version>2.3.33</freemarker.version>
+		<spring.version>6.1.9</spring.version>
+		<flyway.version>10.15.0</flyway.version>
+		<postgresql.version>42.7.3</postgresql.version>
 		<embedded-postgres.version>2.0.7</embedded-postgres.version>
+		<hikari.version>5.0.1</hikari.version>
+		<gson.version>2.11.0</gson.version>
 		<jbcrypt.version>0.4</jbcrypt.version>
-		<sl4j.version>2.0.7</sl4j.version>
+		<sl4j.version>2.0.13</sl4j.version>
 		<git-code-format-maven-plugin.version>5.3</git-code-format-maven-plugin.version>
+		<assertj.version>3.26.0</assertj.version>
+		<okhttp.version>4.12.0</okhttp.version>
+		<jupiter.version>5.10.2</jupiter.version>
+		<maven-surfire-plugin.version>3.3.0</maven-surfire-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation.version}</version>
 		</dependency>
 
 		<!-- Javalin -->
@@ -54,7 +60,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp-urlconnection</artifactId>
-			<version>4.11.0</version>
+			<version>${okhttp.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -66,13 +72,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.9.0</version>
+			<version>${jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.9.0</version>
+			<version>${jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -130,12 +136,17 @@
 			<artifactId>flyway-core</artifactId>
 			<version>${flyway.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-postgresql</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
 
 		<!-- Connection pool -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>5.0.1</version>
+			<version>${hikari.version}</version>
 		</dependency>
 
 		<!-- Password hashes -->
@@ -156,7 +167,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10.1</version>
+			<version>${gson.version}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -164,7 +175,7 @@
 			<dependency>
 				<groupId>io.zonky.test.postgres</groupId>
 				<artifactId>embedded-postgres-binaries-bom</artifactId>
-				<version>11.15.0</version>
+				<version>16.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -214,7 +225,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.2</version>
+					<version>${maven-surfire-plugin.version}</version>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
@@ -240,7 +251,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -259,7 +270,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -292,19 +303,19 @@
 				</configuration>
 				<dependencies>
 					<dependency>
-					    <groupId>com.cosium.code</groupId>
-					    <artifactId>google-java-format</artifactId>
-					    <version>5.3</version>
+						<groupId>com.cosium.code</groupId>
+						<artifactId>google-java-format</artifactId>
+						<version>5.3</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.12.0</version>				
-			    <configuration>
-			        <workingDirectory>apidoc-template</workingDirectory>
-			    </configuration>
+				<version>1.12.0</version>
+				<configuration>
+					<workingDirectory>apidoc-template</workingDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<id>install node and npm</id>

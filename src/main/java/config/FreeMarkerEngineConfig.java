@@ -8,7 +8,7 @@ public class FreeMarkerEngineConfig {
   private FreeMarkerEngineConfig() {}
 
   public static Configuration getConfig() {
-    Configuration config = new Configuration(new Version(2, 3, 28));
+    Configuration config = new Configuration(new Version(2, 3, 33));
     config.setClassForTemplateLoading(FreeMarkerEngineConfig.class, "/templates");
     config.setOutputEncoding(EncodingUtil.ENCODING);
     config.setDefaultEncoding(EncodingUtil.ENCODING);

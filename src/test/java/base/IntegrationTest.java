@@ -1,11 +1,8 @@
 package base;
 
-import config.FreeMarkerEngineConfig;
-import config.Router;
+import config.WebConfig;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
-import io.javalin.http.staticfiles.Location;
-import io.javalin.rendering.template.JavalinFreemarker;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.TestConfig;
 import io.zonky.test.db.postgres.embedded.FlywayPreparer;
@@ -17,7 +14,6 @@ import java.util.function.Consumer;
 import javax.sql.DataSource;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
-import modules.util.JSONUtil;
 import okhttp3.CookieJar;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
@@ -59,15 +55,7 @@ public abstract class IntegrationTest {
   public void setup() {
     try (AnnotationConfigApplicationContext ctx =
         new AnnotationConfigApplicationContext(IntegrationTest.class)) {
-      app =
-          Javalin.create(
-              config -> {
-                config.staticFiles.add("/public", Location.CLASSPATH);
-                config.jsonMapper(JSONUtil.create());
-              });
-
-      JavalinFreemarker.init(FreeMarkerEngineConfig.getConfig());
-      new Router(app, ctx.getBean(PostService.class), ctx.getBean(UserService.class)).setupRoutes();
+      app = WebConfig.configure(ctx.getBean(PostService.class), ctx.getBean(UserService.class));
       ctx.registerShutdownHook();
     } catch (BeansException e) {
       logger.error("Annotation context couldn't be created. {}", e);
