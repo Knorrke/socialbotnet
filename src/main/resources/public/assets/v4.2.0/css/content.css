@@ -6,10 +6,10 @@
 }
 
 .warning {
-	background-color: #ffcc66;
+	background-color: var(--warning);
 	border-radius: 20px;
 	position: relative;
-	padding-left: 70px !important;
+	padding: 15px 0 15px 70px !important;
 }
 
 .warning::before {
@@ -20,6 +20,20 @@
 	top: 0;
 	color: red;
 	font-size: 30pt;
+}
+
+.error {
+	background-color: var(--warning);
+	border-radius: 20px;
+	position: relative;
+	padding: 15px;
+}
+
+.success {
+	background-color: var(--success);
+	border-radius: 20px;
+	position: relative;
+	padding: 15px;
 }
 
 .colored {

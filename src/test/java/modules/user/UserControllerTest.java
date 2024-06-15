@@ -152,6 +152,62 @@ class UserControllerTest extends IntegrationTest {
   }
 
   @Test
+  void unauthorizedPasswordChange() {
+    JavalinTest.test(
+        app,
+        (server, client) -> {
+          Response response =
+              postWithUrlEncodedBody(
+                  client, "/user/update", "password=test&new_password=test&new_password2=test");
+          assertThat(response.code())
+              .as("Unauthorized request")
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
+        });
+  }
+
+  @Test
+  void wrongPasswordChange() {
+    JavalinTest.test(
+        app,
+        withCookies(),
+        (server, client) -> {
+          assertThat(login(client, "test").code()).isEqualTo(200);
+          Response response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/user/change-password",
+                  "password=wrong&new_password=test&new_password2=test");
+          assertThat(response.code())
+              .as("Wrong password")
+              .isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
+          assertThat(response.body().string())
+              .as("Error message displayed")
+              .contains("Falsches Passwort");
+        });
+  }
+
+  @Test
+  void changePassword() {
+    JavalinTest.test(
+        app,
+        withCookies(),
+        (server, client) -> {
+          assertThat(login(client, "test").code()).isEqualTo(200);
+          Response response =
+              postWithUrlEncodedBody(
+                  client,
+                  "/user/change-password",
+                  "password=test&new_password=changed&new_password2=changed");
+          assertThat(response.code()).as("Change password").isEqualTo(200);
+          assertThat(response.body().string()).as("Successfull").contains("erfolgreich");
+          assertThat(login(client, "test").code()).as("Old password invalidated").isEqualTo(401);
+          assertThat(login(client, "test", "changed").code())
+              .as("New password valid")
+              .isEqualTo(200);
+        });
+  }
+
+  @Test
   void inputTooLong() {
     JavalinTest.test(
         app,

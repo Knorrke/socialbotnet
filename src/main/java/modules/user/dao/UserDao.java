@@ -132,6 +132,15 @@ public class UserDao implements UserDaoInterface {
     oldUser.setAbout(newUser.getAbout());
   }
 
+  @Override
+  public void updatePassword(User newUser) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(ID, newUser.getId());
+    params.put(PASSWORD, newUser.getPassword());
+    String sql = "UPDATE users " + "SET password=:password " + "WHERE user_id = :user_id";
+    template.update(sql, params);
+  }
+
   private String generateOrderByFromParams(String sortBy, boolean asc) {
     String order = asc ? "ASC" : "DESC";
 

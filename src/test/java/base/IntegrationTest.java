@@ -79,6 +79,11 @@ public abstract class IntegrationTest {
         client, "/login", String.format("username=%s&password=test", username));
   }
 
+  protected Response login(HttpClient client, String username, String password) {
+    return postWithUrlEncodedBody(
+        client, "/login", String.format("username=%s&password=%s", username, password));
+  }
+
   protected Response postWithUrlEncodedBody(HttpClient client, String path, String body) {
     return postWithUrlEncodedBody(client, path, body, null);
   }

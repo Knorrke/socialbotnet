@@ -53,6 +53,8 @@ public class Router {
           get("/user/profile/{username}", userController::showProfile);
           get("/user/update", userController::updateProfile);
           post("/user/update", userController::updateProfile);
+          get("/user/change-password", userController::changePassword);
+          post("/user/change-password", userController::changePassword);
 
           get("/", postController::getPosts);
           get("/pinnwand/{username}", userController::showProfile);
