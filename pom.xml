@@ -17,7 +17,7 @@
 		<!-- If you change this, you might want to change Configuration version 
 			too -->
 		<freemarker.version>2.3.33</freemarker.version>
-		<spring.version>6.1.9</spring.version>
+		<spring.version>6.1.12</spring.version>
 		<flyway.version>9.19.0</flyway.version>
 		<postgresql.version>42.7.3</postgresql.version>
 		<embedded-postgres.version>2.0.7</embedded-postgres.version>
@@ -246,7 +246,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -265,7 +265,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
