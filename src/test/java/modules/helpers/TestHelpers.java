@@ -2,7 +2,6 @@ package modules.helpers;
 
 import com.google.gson.reflect.TypeToken;
 import io.javalin.testtools.Response;
-import java.io.IOException;
 import java.util.ArrayList;
 import modules.error.ResponseError;
 import modules.post.model.Post;
@@ -14,25 +13,25 @@ public class TestHelpers {
 
   private static final JSONUtil jsonUtil = JSONUtil.create();
 
-  public static ArrayList<Post> toPostList(Response response) throws IOException {
+  public static ArrayList<Post> toPostList(Response response) {
     return jsonUtil.fromJsonString(
         response.body().string(), new TypeToken<ArrayList<Post>>() {}.getType());
   }
 
-  public static Post toPost(Response response) throws IOException {
+  public static Post toPost(Response response) {
     return jsonUtil.fromJsonString(response.body().string(), Post.class);
   }
 
-  public static ResponseError toError(Response response) throws IOException {
+  public static ResponseError toError(Response response) {
     return jsonUtil.fromJsonString(response.body().string(), ResponseError.class);
   }
 
-  public static ArrayList<User> toUserList(Response response) throws IOException {
+  public static ArrayList<User> toUserList(Response response) {
     return jsonUtil.fromJsonString(
         response.body().string(), new TypeToken<ArrayList<User>>() {}.getType());
   }
 
-  public static User toUser(Response response) throws IOException {
+  public static User toUser(Response response) {
     return jsonUtil.fromJsonString(response.body().string(), User.class);
   }
 }
