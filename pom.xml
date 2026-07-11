@@ -27,6 +27,7 @@
 		<okhttp.version>5.4.0</okhttp.version>
 		<jupiter.version>6.1.1</jupiter.version>
 		<maven-surfire-plugin.version>3.5.6</maven-surfire-plugin.version>
+		<maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -358,26 +359,26 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<descriptorRefs>
-						<!-- This tells Maven to include all dependencies -->
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>app.Main</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-shade-plugin</artifactId>
+			    <version>${maven-shade-plugin.version}</version>
+			    <executions>
+			        <execution>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>shade</goal>
+			            </goals>
+			            <configuration>
+			                <transformers>
+			                    <!-- merges META-INF/services files instead of overwriting them -->
+			                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+			                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+			                        <mainClass>app.Main</mainClass>
+			                    </transformer>
+			                </transformers>
+			            </configuration>
+			        </execution>
+			    </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.flywaydb</groupId>
