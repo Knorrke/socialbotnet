@@ -6,12 +6,13 @@ import base.IntegrationTest;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
+import io.javalin.testtools.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -38,13 +39,12 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void createPost() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
 
           Response response = postWithUrlEncodedBody(client, "/post", MESSAGE_PARAM);
-          assertThat(response.code()).as("Authorized request for creating post").isEqualTo(200);
+          assertThat(response.code()).as("Authorized request for creating post").isEqualTo(302);
 
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts increased by one").hasSize(previousCount + 1);
@@ -65,10 +65,9 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void messageTooLong() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(
                   client, "/post", String.format("message=%s", StringUtils.repeat("a", 300)));
@@ -84,10 +83,9 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void writeToNonexistentWall() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(client, "/post/nonexistentwall", MESSAGE_PARAM);
           assertThat(response.code())
@@ -102,16 +100,15 @@ class PostControllerCreatePostTest extends IntegrationTest {
   void writeToWall() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           int previousCount = requestPosts(client).size();
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
 
           Response response = postWithUrlEncodedBody(client, "/post/test2", MESSAGE_PARAM);
-          assertThat(response.code()).as("Writing to wall of test2").isEqualTo(200);
-          assertThat(response.request().url().encodedPath())
+          assertThat(response.code()).as("Writing to wall of test2").isEqualTo(302);
+          assertThat(response.headers().get("Location"))
               .as("redirected to profile")
-              .isEqualTo("/pinnwand/test2");
+              .isEqualTo(List.of("/pinnwand/test2"));
 
           ArrayList<Post> posts = requestPosts(client);
           assertThat(posts).as("number of posts increased by one").hasSize(previousCount + 1);

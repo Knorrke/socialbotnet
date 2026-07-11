@@ -6,11 +6,11 @@ import base.IntegrationTest;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
+import io.javalin.testtools.Response;
 import java.io.IOException;
 import java.util.stream.Stream;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,15 +35,14 @@ class PostControllerLikeTest extends IntegrationTest {
   void likePost() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           Post post = requestPostById(client, 3);
 
           assertThat(post.getLikesCount()).as("number of likes before").isZero();
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
 
           Response response = postWithUrlEncodedBody(client, "/like", "post=3");
-          assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(200);
+          assertThat(response.code()).as("Authorized request for liking postid 3").isEqualTo(302);
 
           post = requestPostById(client, 3);
           assertThat(post.getLikesCount()).as("number of likes afterwards").isOne();
@@ -54,9 +53,8 @@ class PostControllerLikeTest extends IntegrationTest {
   void likeNonexistentPost() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response = postWithUrlEncodedBody(client, "/like", "post=999");
           assertThat(response.code())
               .as("nonexistent post")
@@ -69,18 +67,18 @@ class PostControllerLikeTest extends IntegrationTest {
   void redirectBackToKnownRefererOnLike(String referer, String expectedPath) {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(
                   client,
                   "/like",
                   "post=3",
-                  referer == null ? null : req -> req.addHeader("referer", referer));
-          assertThat(response.code()).isEqualTo(200);
-          assertThat(response.request().url().fragment()).as("jump to post").isEqualTo("post-3");
-          assertThat(response.request().url().encodedPath())
+                  referer == null ? null : req -> req.header("referer", referer));
+          assertThat(response.code()).isEqualTo(302);
+          String redirectLocation = response.headers().get("Location").get(0);
+          assertThat(redirectLocation.split("#")[1]).as("jump to post").isEqualTo("post-3");
+          assertThat(redirectLocation.split("#")[0])
               .as("validated path from referer")
               .isEqualTo(expectedPath);
         });
@@ -102,17 +100,16 @@ class PostControllerLikeTest extends IntegrationTest {
   void unlikePost() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           Post post = requestPostById(client, 1);
           assertThat(post.getLikesCount()).as("number of likes before").isEqualTo(2);
           assertThat(post.getRecentLikes()).anyMatch(user -> user.getUsername().equals("test"));
-          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
 
           Response response = postWithUrlEncodedBody(client, "/unlike", "post=1");
           assertThat(response.code())
               .as("Redirect authorized request for liking postid 1")
-              .isEqualTo(200);
+              .isEqualTo(302);
 
           post = requestPostById(client, 1);
           assertThat(post.getLikesCount()).as("number of likes afterwards").isOne();

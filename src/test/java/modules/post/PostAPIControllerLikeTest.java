@@ -6,10 +6,10 @@ import base.IntegrationTest;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
+import io.javalin.testtools.Response;
 import java.io.IOException;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 
 class PostAPIControllerLikeTest extends IntegrationTest {

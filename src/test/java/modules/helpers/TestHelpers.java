@@ -1,13 +1,13 @@
 package modules.helpers;
 
 import com.google.gson.reflect.TypeToken;
+import io.javalin.testtools.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import modules.error.ResponseError;
 import modules.post.model.Post;
 import modules.user.model.User;
 import modules.util.JSONUtil;
-import okhttp3.Response;
 
 public class TestHelpers {
   private TestHelpers() {}

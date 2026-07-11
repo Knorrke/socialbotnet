@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
 import io.javalin.testtools.JavalinTest;
-import okhttp3.Response;
+import io.javalin.testtools.Response;
 import org.junit.jupiter.api.Test;
 
 class PostControllerGetPostsTest extends IntegrationTest {

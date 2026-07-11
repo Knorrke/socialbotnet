@@ -3,7 +3,7 @@ package base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.javalin.testtools.JavalinTest;
-import okhttp3.Response;
+import io.javalin.testtools.Response;
 import org.junit.jupiter.api.Test;
 
 class SetupTest extends IntegrationTest {

@@ -33,40 +33,42 @@ public class WebConfig {
                   });
               config.jsonMapper(JSONUtil.create());
               config.fileRenderer(new JavalinFreemarker(FreeMarkerEngineConfig.getConfig()));
+
+              // Activate CORS
+              config.routes.options(
+                  "/*",
+                  ctx -> {
+                    String accessControlRequestHeaders =
+                        ctx.header("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                      ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = ctx.header("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                      ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                    }
+                  });
+              config.routes.before(
+                  "/*",
+                  ctx -> {
+                    ctx.header("Access-Control-Allow-Origin", "*");
+                    ctx.header("Access-Control-Allow-Headers", "*");
+                  });
+
+              config.routes.exception(
+                  HttpResponseException.class,
+                  (e, ctx) -> {
+                    if (ctx.path().startsWith("/api/")) {
+                      ctx.status(e.getStatus()).json(new ResponseError(e.getMessage()));
+                    } else {
+                      Map<String, Object> model = new HashMap<>();
+                      model.put("error", e);
+                      model.put("defaultMessage", HttpStatus.forStatus(e.getStatus()).getMessage());
+                      ctx.status(e.getStatus()).render("error/error.ftl", model);
+                    }
+                  });
             });
-    // Activate CORS
-    app.options(
-        "/*",
-        ctx -> {
-          String accessControlRequestHeaders = ctx.header("Access-Control-Request-Headers");
-          if (accessControlRequestHeaders != null) {
-            ctx.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-          }
-
-          String accessControlRequestMethod = ctx.header("Access-Control-Request-Method");
-          if (accessControlRequestMethod != null) {
-            ctx.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-          }
-        });
-    app.before(
-        "/*",
-        ctx -> {
-          ctx.header("Access-Control-Allow-Origin", "*");
-          ctx.header("Access-Control-Allow-Headers", "*");
-        });
-
-    app.exception(
-        HttpResponseException.class,
-        (e, ctx) -> {
-          if (ctx.path().startsWith("/api/")) {
-            ctx.status(e.getStatus()).json(new ResponseError(e.getMessage()));
-          } else {
-            Map<String, Object> model = new HashMap<>();
-            model.put("error", e);
-            model.put("defaultMessage", HttpStatus.forStatus(e.getStatus()).getMessage());
-            ctx.status(e.getStatus()).render("error/error.ftl", model);
-          }
-        });
 
     return app;
   }

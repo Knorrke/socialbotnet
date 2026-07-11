@@ -39,7 +39,7 @@ public class Router {
   }
 
   public void setupRoutes(JavalinConfig config) {
-    config.router.apiBuilder(
+    config.routes.apiBuilder(
         () -> {
           get("/registrieren", userController::register);
           post("/registrieren", userController::register);

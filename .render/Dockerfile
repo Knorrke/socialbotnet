@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM maven:3.9.1-eclipse-temurin-17 AS build
+FROM maven:3.9.16-amazoncorretto-25 AS build
 ARG JDBC_DATABASE_USERNAME
 ARG JDBC_DATABASE_PASSWORD
 ARG DB_HOST
@@ -26,7 +26,7 @@ RUN mvn flyway:migrate
 #
 # Package stage
 #
-FROM openjdk:17
+FROM amazoncorretto:25
 ARG JDBC_DATABASE_USERNAME
 ARG JDBC_DATABASE_PASSWORD
 ARG DB_HOST

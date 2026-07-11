@@ -2,25 +2,17 @@ package base;
 
 import config.WebConfig;
 import io.javalin.Javalin;
-import io.javalin.http.ContentType;
 import io.javalin.testtools.HttpClient;
-import io.javalin.testtools.TestConfig;
+import io.javalin.testtools.Request;
+import io.javalin.testtools.Response;
 import io.zonky.test.db.postgres.embedded.FlywayPreparer;
 import io.zonky.test.db.postgres.junit5.EmbeddedPostgresExtension;
 import io.zonky.test.db.postgres.junit5.PreparedDbExtension;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.util.function.Consumer;
 import javax.sql.DataSource;
 import modules.post.service.PostService;
 import modules.user.service.UserService;
-import okhttp3.CookieJar;
-import okhttp3.JavaNetCookieJar;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,19 +80,12 @@ public abstract class IntegrationTest {
     return postWithUrlEncodedBody(client, path, body, null);
   }
 
-  protected TestConfig withCookies() {
-    CookieManager cookieManager = new CookieManager();
-    cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-    CookieJar cookiejar = new JavaNetCookieJar(cookieManager);
-    return new TestConfig(false, false, new OkHttpClient.Builder().cookieJar(cookiejar).build());
-  }
-
   protected Response postWithUrlEncodedBody(
       HttpClient client, String path, String body, Consumer<Request.Builder> consumer) {
     return client.request(
         path,
         req -> {
-          req.post(RequestBody.create(body, MediaType.parse(ContentType.PLAIN)));
+          req.post(BodyPublishers.ofString(body));
           if (consumer != null) consumer.accept(req);
         });
   }
