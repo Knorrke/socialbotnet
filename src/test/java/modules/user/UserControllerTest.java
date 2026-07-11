@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import base.IntegrationTest;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.JavalinTest;
+import io.javalin.testtools.Response;
 import modules.helpers.TestHelpers;
 import modules.user.model.User;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,6 @@ class UserControllerTest extends IntegrationTest {
   void loginNonexistentUsername() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           assertThat(login(client, "nonexistent").body().string())
               .as("nonexistent user")
@@ -45,7 +44,6 @@ class UserControllerTest extends IntegrationTest {
   void login() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           assertThat(login(client, "test").body().string())
               .as("Successfull")
@@ -57,12 +55,11 @@ class UserControllerTest extends IntegrationTest {
   void register() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           Response response =
               postWithUrlEncodedBody(
                   client, "/registrieren", "username=new&password=test&password2=test");
-          assertThat(response.code()).as("Registration successfull").isEqualTo(200);
+          assertThat(response.code()).as("Registration successfull").isEqualTo(302);
           String html = response.body().string();
           assertThat(html).doesNotContain(FAILED_REGISTRATION);
 
@@ -76,7 +73,6 @@ class UserControllerTest extends IntegrationTest {
   void registerNotMatchingPasswords() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
           assertThat(
                   postWithUrlEncodedBody(
@@ -129,13 +125,13 @@ class UserControllerTest extends IntegrationTest {
   void updateProfile() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successful").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(
                   client, "/user/update", "username=changed&about=changed2&hobbies=changed3");
-          assertThat(response.code()).as("Change username").isEqualTo(200);
+          assertThat(response.code()).as("Change username").isEqualTo(302);
+          response = client.get(response.headers().get("Location").get(0));
           assertThat(response.body().string())
               .as("Updated username")
               .contains("changed")
@@ -169,9 +165,8 @@ class UserControllerTest extends IntegrationTest {
   void wrongPasswordChange() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(
                   client,
@@ -190,9 +185,8 @@ class UserControllerTest extends IntegrationTest {
   void changePassword() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
           Response response =
               postWithUrlEncodedBody(
                   client,
@@ -203,7 +197,7 @@ class UserControllerTest extends IntegrationTest {
           assertThat(login(client, "test").code()).as("Old password invalidated").isEqualTo(401);
           assertThat(login(client, "test", "changed").code())
               .as("New password valid")
-              .isEqualTo(200);
+              .isEqualTo(302);
         });
   }
 
@@ -211,9 +205,8 @@ class UserControllerTest extends IntegrationTest {
   void inputTooLong() {
     JavalinTest.test(
         app,
-        withCookies(),
         (server, client) -> {
-          assertThat(login(client, "test").code()).isEqualTo(200);
+          assertThat(login(client, "test").code()).as("Login successfull").isEqualTo(302);
 
           assertThat(
                   postWithUrlEncodedBody(

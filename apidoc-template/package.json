@@ -8,7 +8,7 @@
   "bin": "bin/apidoc",
   "main": "./src/main.js",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "bootstrap": "3.4.1",

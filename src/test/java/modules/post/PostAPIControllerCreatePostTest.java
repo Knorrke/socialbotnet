@@ -6,12 +6,11 @@ import base.IntegrationTest;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
-import java.io.IOException;
+import io.javalin.testtools.Response;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -143,7 +142,7 @@ class PostAPIControllerCreatePostTest extends IntegrationTest {
         });
   }
 
-  private ArrayList<Post> requestPosts(HttpClient client) throws IOException {
+  private ArrayList<Post> requestPosts(HttpClient client) {
     return TestHelpers.toPostList(client.get("/api/posts?limit=100"));
   }
 }

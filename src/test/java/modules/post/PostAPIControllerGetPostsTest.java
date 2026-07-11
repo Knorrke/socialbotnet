@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import base.IntegrationTest;
 import io.javalin.testtools.JavalinTest;
+import io.javalin.testtools.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
-import okhttp3.Response;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
