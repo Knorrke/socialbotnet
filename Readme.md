@@ -38,7 +38,7 @@ Mit einem Account bei [Render](https://render.com) lässt sich der Server mit nu
 ### Alternativ: Lokaler Server
 Um den Server lokal laufen zu lassen, muss die .jar-Datei aus den [releases](https://github.com/Knorrke/socialbotnet/releases) heruntergeladen und über den folgenden Befehl gestartet werden.
 ```sh
-$ java -jar pfad/zur/socialbotnet-4.2-jar-with-dependencies.jar
+$ java -jar pfad/zur/socialbotnet-4.2.jar
 ```
 Dieser Befehlt startet einen jetty-Server auf [localhost:30003](http://localhost:30003), **jedoch ohne persistente Datenbank**. Diese müsste extra über die Umgebungsvariablen `JDBC_DATABASE_URL`, `JDBC_DATABASE_USERNAME` und `JDBC_DATABASE_PASSWORD` konfiguriert werden.
 
