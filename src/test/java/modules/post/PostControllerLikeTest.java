@@ -7,7 +7,6 @@ import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import io.javalin.testtools.Response;
-import java.io.IOException;
 import java.util.stream.Stream;
 import modules.helpers.TestHelpers;
 import modules.post.model.Post;
@@ -117,7 +116,7 @@ class PostControllerLikeTest extends IntegrationTest {
         });
   }
 
-  private Post requestPostById(HttpClient client, int id) throws IOException {
+  private Post requestPostById(HttpClient client, int id) {
     return TestHelpers.toPost(client.get("/api/post/" + id));
   }
 }

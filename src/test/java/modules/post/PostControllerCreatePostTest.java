@@ -7,7 +7,6 @@ import io.javalin.http.HttpStatus;
 import io.javalin.testtools.HttpClient;
 import io.javalin.testtools.JavalinTest;
 import io.javalin.testtools.Response;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,7 +124,7 @@ class PostControllerCreatePostTest extends IntegrationTest {
         });
   }
 
-  private ArrayList<Post> requestPosts(HttpClient client) throws IOException {
+  private ArrayList<Post> requestPosts(HttpClient client) {
     return TestHelpers.toPostList(client.get("/api/posts?limit=100"));
   }
 }
